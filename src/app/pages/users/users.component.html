@@ -1,0 +1,42 @@
+<div *ngIf="!mostrar">
+  <div class="container">
+    <label for="boton">Obtener todos los usuarios de CocherasUTN</label>
+    <br>
+    <br>
+    <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Get</button>
+  </div>
+</div>
+
+<div *ngIf="mostrar" class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Dni</th>
+        <th scope="col">Address</th>
+        <th scope="col">Mail</th>
+        <th scope="col">Telephone</th>
+        <th scope="col">Class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{user.name}}</td>
+        <td>{{user.lastname}}</td>
+        <td>{{user.dni}}</td>
+        <td>{{user.address}}</td>
+        <td>{{user.mail}}</td>
+        <td>{{user.telephone}}</td>
+        <td>{{user.class.name}}</td>
+        
+
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Volver</button>
+</div>
