@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ApiServiceService } from '../../services/api-service.service.js';
 import { CommonModule } from '@angular/common';
+import { isArray } from 'node:util';
 
 @Component({
   selector: 'app-users',
@@ -13,6 +14,7 @@ export class UsersComponent implements OnInit{
 
   mostrar: Boolean = false
 
+
   transformarMostrar(){
 
     this.mostrar = !this.mostrar
@@ -21,11 +23,21 @@ export class UsersComponent implements OnInit{
 
   userList: any[] = []
 
+  vehicless : any[] = []
+
  private _apiservice = inject(ApiServiceService)
 
  ngOnInit(): void {
   this._apiservice.getUsers().subscribe((data: any[])=>{
-    this.userList = data;
+
+    if(Array.isArray(data)){
+      this.userList = data 
+
+    } else{
+
+      this.userList = [data]
+    }
+
     console.log(data)
   })
  }
