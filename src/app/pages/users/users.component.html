@@ -1,13 +1,20 @@
-<div *ngIf="!mostrar">
+@if (mostrar == false && mostrar3 == true) {
   <div class="container">
     <label for="boton">Obtener todos los usuarios de CocherasUTN</label>
-    <br>
-    <br>
     <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Get</button>
   </div>
-</div>
+ }
 
-<div *ngIf="mostrar" class="container">
+
+@if (mostrar2 == false && mostrar3 == true) {
+  <div class="container">
+    <label for="boton">Crear usuario</label>
+    <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar2()">Get</button>
+  </div>
+}
+
+
+@if (mostrar == true && mostrar3 == false) {
   <table class="table">
     <thead>
       <tr>
@@ -43,4 +50,42 @@
   <br>
   <br>
   <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Volver</button>
-</div>
+}
+
+@if (mostrar2) {
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+  </div>
+  
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="DNI" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="address" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="email" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Phone Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Vehicles (este va a tener q cambiarse)" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
+  
+
+  <br>
+  <br>
+  <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar2()">Volver</button>
+
+}
+

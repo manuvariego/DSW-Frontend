@@ -13,12 +13,27 @@ import { isArray } from 'node:util';
 export class UsersComponent implements OnInit{
 
   mostrar: Boolean = false
+  mostrar2: Boolean = false
+  mostrar3: Boolean = true
+
+  transformarMostrar3(){
+
+    this.mostrar3 = !this.mostrar3
+
+  }
 
 
   transformarMostrar(){
 
     this.mostrar = !this.mostrar
+    this.mostrar3 = !this.mostrar3
 
+  }
+
+  transformarMostrar2(){
+
+    this.mostrar2 = !this.mostrar2
+    this.mostrar3 = !this.mostrar3
   }
 
   userList: any[] = []
@@ -41,8 +56,6 @@ export class UsersComponent implements OnInit{
     console.log(data)
   })
  }
-
-
 
  }
 
