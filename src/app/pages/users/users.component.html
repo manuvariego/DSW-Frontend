@@ -53,39 +53,43 @@
 }
 
 @if (mostrar2) {
-
+  <form (ngSubmit)="onSubmit()" #userForm="ngForm">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1">
+    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userData.name" required placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">
   </div>
   
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control"  id="lastname" name="lastname" [(ngModel)]="userData.lastname" required placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon2">
   </div>
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="DNI" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" id="dni"  name="dni" [(ngModel)]="userData.dni" required placeholder="DNI" aria-label="DNI" aria-describedby="basic-addon2">
   </div>
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="address" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" id="address" name="address"  [(ngModel)]="userData.address" required  placeholder="address" aria-label="address" aria-describedby="basic-addon2">
   </div>
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="email" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" id="email" name="email"  [(ngModel)]="userData.email" required placeholder="email" aria-label="email" aria-describedby="basic-addon2">
   </div>
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Phone Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"  [(ngModel)]="userData.phone_number" required placeholder="Phone Number" aria-label="phone number" aria-describedby="basic-addon2">
   </div>
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Vehicles (este va a tener q cambiarse)" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" id="vehicles" name="vehicles"  [(ngModel)]="userData.vehicles" required placeholder="Patente vehiculo (este va a tener q cambiarse)" aria-label="vehicles" aria-describedby="basic-addon2">
   </div>
   
 
   <br>
   <br>
-  <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar2()">Volver</button>
+  <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+  <br>
+  <br>
+  <button type="button" id="boton" class="btn btn-secondary" (click)="transformarMostrar2()">Volver</button>
 
 }
 

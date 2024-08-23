@@ -18,11 +18,8 @@ export class ApiServiceService {
     return this._http.get<any>(this.apiUrl)
   }
 
-  createUser(type: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json' });
-
-    return this._http.post<any>(this.apiUrl, type, { headers });
+  createUser(user: any): Observable<any> {
+    return this._http.post<any>(this.apiUrl, user);
   }  
 
   } 
