@@ -93,3 +93,39 @@
 
 }
 
+
+<!-- Sección de Eliminación -->
+<div *ngIf="currentSection === 'delete'">
+  <h2>Eliminar un Usuario</h2>
+  <div *ngFor="let user of userList">
+    <p>{{ user.name }} {{ user.lastname }}</p>
+    <button (click)="deleteUser(user.id)">Eliminar</button>
+  </div>
+</div>
+
+<div *ngFor="let user of userList">
+  <p>{{ user.name }} {{ user.lastname }} - {{ user.email }}</p>
+  <button (click)="deleteUser(user.id)">Eliminar</button>
+</div>
+
+<div *ngFor="let user of userList">
+  <p>{{ user.name }} {{ user.lastname }} - {{ user.email }}</p>
+  <button (click)="editUser(user)">Modificar</button>
+  <button (click)="deleteUser(user.id)">Eliminar</button>
+</div>
+
+<!-- Formulario de edición de usuario -->
+<div *ngIf="editingUser">
+  <h2>Modificar Usuario</h2>
+  <form (ngSubmit)="updateUser()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" [(ngModel)]="editingUser.name" name="name">
+    
+    <label for="lastname">Lastname:</label>
+    <input type="text" id="lastname" [(ngModel)]="editingUser.lastname" name="lastname">
+    
+    <!-- Otros campos para los detalles del usuario -->
+    
+    <button type="submit">Guardar cambios</button>
+  </form>
+</div>

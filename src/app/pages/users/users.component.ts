@@ -49,6 +49,9 @@ export class UsersComponent {
     this.mostrar3 = !this.mostrar3
   }
 
+
+  currentSection: string = 'get'; // Inicializa en la sección de "get"
+
   userList: any[] = []
 
   vehicless : any[] = []
@@ -82,4 +85,38 @@ export class UsersComponent {
     console.log(data)
   })
  }
+
+ deleteUser(userId: string) {
+  this._apiservice.delete(userId).subscribe(response => {
+    console.log('Usuario eliminado exitosamente', response);
+    // Actualiza la lista de usuarios después de la eliminación
+    this.getUsers(); // Llama a este método para refrescar la lista de usuarios
+  }, error => {
+    console.error('Error al eliminar el usuario', error);
+  });
+
+ }
+
+  editingUser: any = null;
+
+  editUser(user: any) {
+    this.editingUser = { ...user }; // Copia del usuario para editar
+  }
+  
+  updateUser() {
+    this._apiservice.update(this.editingUser).subscribe(response => {
+      console.log('Usuario actualizado exitosamente', response);
+      this.editingUser = null; // Limpia la variable de edición
+      this.getUsers(); // Refresca la lista de usuarios
+    }, error => {
+      console.error('Error al actualizar el usuario', error);
+    });
+  }
+
+    // Método para actualizar la sección actual mostrada
+    showSection(section: string) {
+      this.currentSection = section;
+    }
+
 }
+

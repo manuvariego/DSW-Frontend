@@ -20,7 +20,17 @@ export class ApiServiceService {
 
   createUser(user: any): Observable<any> {
     return this._http.post<any>(this.apiUrl, user);
-  }  
+  } 
+  
+  delete(userId: string): Observable<any> {
+    return this._http.delete(`${this.apiUrl}/${userId}`);
+  }
+
+  update(user: any): Observable<any> {
+    return this._http.put(`${this.apiUrl}/${user.id}`, user);
+  }
+
+  
 
   } 
 

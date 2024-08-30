@@ -1,0 +1,14 @@
+.navigation-buttons {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    margin-top: 10px;
+  }
+  
+  div {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
