@@ -1,20 +1,20 @@
-@if (mostrar == false && mostrar3 == true) {
+@if (currentSection == 'initial') {
   <div class="container">
     <label for="boton">Obtener todos los usuarios de CocherasUTN</label>
-    <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Get</button>
+    <button type="button" id="boton" class="btn btn-primary" (click)="showSection('getUser')">Get</button>
   </div>
  }
 
 
-@if (mostrar2 == false && mostrar3 == true) {
+@if (currentSection == 'initial') {
   <div class="container">
     <label for="boton">Crear usuario</label>
-    <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar2()">Get</button>
+    <button type="button" id="boton" class="btn btn-primary" (click)="showSection('createUser')">Get</button>
   </div>
 }
 
 
-@if (mostrar == true && mostrar3 == false) {
+@if (currentSection == 'getUser') {
   <table class="table">
     <thead>
       <tr>
@@ -44,16 +44,20 @@
             </li>
           </ul>
         </td>
+        <td>
+          <button type="button" id="boton" class="btn btn-danger" (click)="deleteUser(user.id)">Eliminar</button>
+          <button type="button" id="boton" class="btn btn-secondary" (click)="modificarUsuario(user)">Modificar</button>
+        </td>
       </tr>
     </tbody>
   </table>
   <br>
   <br>
-  <button type="button" id="boton" class="btn btn-primary" (click)="transformarMostrar()">Volver</button>
+  <button type="button" id="boton" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
 }
 
-@if (mostrar2) {
-  <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+@if (currentSection == 'createUser') {
+  <form (ngSubmit)="createUserr()" #userForm="ngForm">
   <div class="input-group mb-3">
     <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userData.name" required placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">
   </div>
@@ -81,41 +85,19 @@
   <div class="input-group mb-3">
     <input type="text" class="form-control" id="vehicles" name="vehicles"  [(ngModel)]="userData.vehicles" required placeholder="Patente vehiculo (este va a tener q cambiarse)" aria-label="vehicles" aria-describedby="basic-addon2">
   </div>
-  
-
   <br>
   <br>
-  <button type="submit" class="btn btn-primary">Enviar</button>
+  <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Enviar</button>
 </form>
   <br>
   <br>
-  <button type="button" id="boton" class="btn btn-secondary" (click)="transformarMostrar2()">Volver</button>
+  <button type="button" id="boton" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
 
 }
 
-
-<!-- Sección de Eliminación -->
-<div *ngIf="currentSection === 'delete'">
-  <h2>Eliminar un Usuario</h2>
-  <div *ngFor="let user of userList">
-    <p>{{ user.name }} {{ user.lastname }}</p>
-    <button (click)="deleteUser(user.id)">Eliminar</button>
-  </div>
-</div>
-
-<div *ngFor="let user of userList">
-  <p>{{ user.name }} {{ user.lastname }} - {{ user.email }}</p>
-  <button (click)="deleteUser(user.id)">Eliminar</button>
-</div>
-
-<div *ngFor="let user of userList">
-  <p>{{ user.name }} {{ user.lastname }} - {{ user.email }}</p>
-  <button (click)="editUser(user)">Modificar</button>
-  <button (click)="deleteUser(user.id)">Eliminar</button>
-</div>
-
+@if(currentSection == 'editUser'){
 <!-- Formulario de edición de usuario -->
-<div *ngIf="editingUser">
+<div>
   <h2>Modificar Usuario</h2>
   <form (ngSubmit)="updateUser()">
     <label for="name">Name:</label>
@@ -124,8 +106,7 @@
     <label for="lastname">Lastname:</label>
     <input type="text" id="lastname" [(ngModel)]="editingUser.lastname" name="lastname">
     
-    <!-- Otros campos para los detalles del usuario -->
-    
-    <button type="submit">Guardar cambios</button>
+    <button type="submit" class="btn btn-primary" (click)="showSection('initial')" >Guardar cambios</button>
   </form>
 </div>
+}
