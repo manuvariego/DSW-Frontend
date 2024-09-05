@@ -1,0 +1,10 @@
+.nav-link {
+  display: flex
+}
+
+
+#login {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
