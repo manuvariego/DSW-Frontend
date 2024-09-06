@@ -1,0 +1,50 @@
+/* Reseteo general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* html y body ocupan toda la altura del navegador */
+html, body {
+    height: 100%;
+}
+
+
+.hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)), 
+                      url('https://img.freepik.com/foto-gratis/estacionamiento_1127-2914.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Hace que esta sección cubra la altura de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+
+.contenido {
+    padding: 50px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.contenido h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.contenido p {
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+p {
+    font-size: 1.2em;
+}
