@@ -17,6 +17,20 @@ export class VehiclesComponent {
 
   vehiclesList: any[] = []
 
+  licensePlate: string =''
+
+  aVehicle: any = null
+
+  getAvehicle(){
+    this._apiservice.getVehicle((this.licensePlate)).subscribe((vehicle: any)=>{
+
+      console.log(vehicle)
+      this.aVehicle = vehicle
+      this.licensePlate =''
+    }
+    )}
+  
+
   getVehicles(){
 
     this._apiservice.getVehicles().subscribe((data: any[]) =>{
@@ -39,9 +53,9 @@ export class VehiclesComponent {
 
   vehicleData = {
 
-    license_plate: " ",
-    owner: " ",
-    type: " "
+    license_plate: "",
+    owner: "",
+    type: ""
 
   }
 
@@ -72,7 +86,7 @@ export class VehiclesComponent {
   });
   }
 
-  deleteVehicle(license_plate: string) {
+  deleteVehicle(license_plate: string, type:boolean) {
     const confirmation = confirm('¿Está seguro de que desea eliminar este vehiculo?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
@@ -87,6 +101,9 @@ export class VehiclesComponent {
         console.error('Error al eliminar el vehiculo', error);
       }
     });
+
+
+    if(type == true){this.currentSection = 'initVehicles'}
   }
 
 

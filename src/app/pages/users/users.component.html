@@ -18,11 +18,33 @@
         <i class="fas fa-user-plus"></i> Crear Usuario
       </button>
     </div>
+
+    <div class="card shadow-sm p-3">
+      <label class="h5 mb-3">Obtener un usuario por ID</label>
+      <button type="button" class="btn btn-primary" (click)="showSection('geTaUser')">
+        <i class="fas fa-user-plus"></i> Obtener un usuario
+      </button>
+    </div>
   </div>
 }
 
+@if (currentSection == 'geTaUser') {
 
-@if (currentSection == 'getUser') {
+  <form (ngSubmit)="geTaUser()" #userForm="ngForm" class="needs-validation" novalidate>
+    <!-- Campo Nombre -->
+    <div class="form-group mb-3">
+      <label for="name">ID</label>
+      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="userID" required placeholder="ID">
+      <div class="invalid-feedback">El ID es obligatorio.</div>
+    </div>
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary" (click)="showSection('geTaUserTable')">Encontrar</button>
+      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+    </div>
+    </form>
+}
+
+@if (currentSection == 'geTaUserTable') {
   <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
     <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
       <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
@@ -39,8 +61,56 @@
         </tr>
       </thead>
       <tbody>
+        <th>{{aUser.id}}</th>
+          <td>{{aUser.name}}</td>
+          <td>{{aUser.lastname}}</td>
+          <td>{{aUser.dni}}</td>
+          <td>{{aUser.address}}</td>
+          <td>{{aUser.email}}</td>
+          <td>{{aUser.phone_number}}</td>
+          <td>
+            <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
+              <li *ngFor="let vehicle of aUser.vehicles">
+                <i class="fas fa-car"></i> {{vehicle.license_plate}} <!-- Ícono decorativo de un coche -->
+              </li>
+            </ul>
+          </td>
+          <td>
+            <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(aUser.id, true)">Eliminar</button>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(aUser)">Modificar</button>
+            </div>
+          </td>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-grid gap-2">
+    <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+  </div>
+
+}
+
+
+@if (currentSection == 'getUser') {
+  <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
+    <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
+      <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">DNI</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Email</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Vehículos</th>
+          <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+        </tr>
+      </thead>
+      <tbody>
         <tr *ngFor="let user of userList; let i = index">
-          <th scope="row">{{i + 1}}</th>
+          <th>{{user.id}}</th>
           <td>{{user.name}}</td>
           <td>{{user.lastname}}</td>
           <td>{{user.dni}}</td>
@@ -56,7 +126,7 @@
           </td>
           <td>
             <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Eliminar</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.id, false)">Eliminar</button>
               <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(user)">Modificar</button>
             </div>
           </td>
@@ -116,13 +186,6 @@
         <label for="phoneNumber">Número de Teléfono:</label>
         <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="userData.phone_number" required placeholder="Número de Teléfono">
         <div class="invalid-feedback">El número de teléfono es obligatorio.</div>
-      </div>
-      
-      <!-- Campo Vehículos -->
-      <div class="form-group mb-3">
-        <label for="vehicles">Vehículos (Patente):</label>
-        <input type="text" class="form-control" id="vehicles" name="vehicles" [(ngModel)]="userData.vehicles" required placeholder="Patente de Vehículo">
-        <div class="invalid-feedback">La patente es obligatoria.</div>
       </div>
       
       <!-- Botones -->

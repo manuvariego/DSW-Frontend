@@ -33,7 +33,7 @@ export class UsersComponent {
     address: '',
     email:'',
     phone_number: '',
-    vehicles: ''
+    vehicles: ['']
 
   }
 
@@ -49,9 +49,22 @@ export class UsersComponent {
 
   userList: any[] = []
 
+  aUser: any = null
+
   vehicless : any[] = []
 
  private _apiservice = inject(ApiServiceService)
+
+  userID: string = ''
+
+ geTaUser(){
+  this._apiservice.getUser((this.userID)).subscribe((user: any)=>{
+
+    console.log(user)
+    this.aUser = user
+    this.userID = ''
+  })
+}
 
 
  createUserr() {
@@ -81,7 +94,8 @@ export class UsersComponent {
   })
  }
 
- deleteUser(userId: string) {
+
+ deleteUser(userId: string, tipo: boolean) {
   const confirmation = confirm('¿Está seguro de que desea eliminar este usuario?');
   if (!confirmation) {
     return; // Si el usuario cancela, no hacemos nada
@@ -96,10 +110,16 @@ export class UsersComponent {
       console.error('Error al eliminar el usuario', error);
     }
   });
+
+  if(tipo == true){this.currentSection = 'initial'}
+
 }
 
   editingUser: any = null;
   
+
+
+
   updateUser() {
     const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
     if (!confirmation) {

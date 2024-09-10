@@ -26,5 +26,9 @@ export class VehiclesService {
     return this._http.put(`${this.apiUrl}/${vehicle.license_plate}`, vehicle);
   }
 
+  getVehicle(licensePlate: string): Observable<any>{
+    return this._http.get<any>(`${this.apiUrl}/${licensePlate}`)
+  }
+
 
 }
