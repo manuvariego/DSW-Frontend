@@ -1,0 +1,108 @@
+<!-- Sección Inicial -->
+<div *ngIf="currentSection == 'initial'" class="container text-center mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <label for="boton" class="form-label">Obtener todas las cocheras de ParkEase</label>
+      <button type="button" class="btn btn-primary w-100" (click)="showSection('getGarage')">Get</button>
+    </div>
+    <div class="col-md-6">
+      <label for="boton" class="form-label">Crear Cochera</label>
+      <button type="button" class="btn btn-success w-100" (click)="showSection('createGarage')">Crear</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sección de Listado de Cocheras -->
+<div *ngIf="currentSection == 'getGarage'" class="container mt-5">
+  <h3 class="text-center mb-4">Listado de Cocheras</h3>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Cuit</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Email</th>
+        <th scope="col">Telephone</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let garage of garageList; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ garage.cuit }}</td>
+        <td>{{ garage.name }}</td>
+        <td>{{ garage.address }}</td>
+        <td>{{ garage.email }}</td>
+        <td>{{ garage.phone_number }}</td>
+        <td>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteGarage(garage.cuit)">Eliminar</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="modificarGarage(garage)">Modificar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+</div>
+
+<!-- Crear Nueva Cochera -->
+<div *ngIf="currentSection == 'createGarage'" class="container mt-5">
+  <h3 class="text-center mb-4">Crear Nueva Cochera</h3>
+  <form (ngSubmit)="createGarage()" #garageForm="ngForm" class="needs-validation" novalidate>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="garageData.cuit" required placeholder="Cuit">
+        <div class="invalid-feedback">El cuit es obligatorio.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="garageData.name" required placeholder="Name">
+        <div class="invalid-feedback">El nombre es obligatorio.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="address" name="address" [(ngModel)]="garageData.address" required placeholder="Address">
+        <div class="invalid-feedback">La dirección es obligatoria.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="garageData.email" required placeholder="Email">
+        <div class="invalid-feedback">El email es obligatorio.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="garageData.phone_number" required placeholder="phone_number">
+        <div class="invalid-feedback">El teléfono es obligatorio.</div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success w-100">Enviar</button>
+  </form>
+  <button type="button" class="btn btn-secondary mt-3" (click)="showSection('initial')">Volver</button>
+</div>
+
+<!-- Editar Cochera -->
+<div *ngIf="currentSection == 'editGarage'" class="container mt-5">
+  <h2 class="text-center mb-4">Modificar Cochera</h2>
+  <form (ngSubmit)="updateGarage()" class="needs-validation" novalidate>
+
+    <div class="form-group mb-3">
+      <label for="cuit">Cuit:</label>
+      <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="editingGarage.cuit" required placeholder="Cuit">
+      <div class="invalid-feedback">El cuit es obligatorio.</div>
+    </div>
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="garageData.name" required placeholder="Name">
+      <div class="invalid-feedback">El nombre es obligatorio.</div>
+    </div>
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" id="address" name="address" [(ngModel)]="garageData.address" required placeholder="Address">
+      <div class="invalid-feedback">La dirección es obligatoria.</div>
+    </div>
+    <div class="form-group mb-3">
+      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="garageData.email" required placeholder="Email">
+      <div class="invalid-feedback">El email es obligatorio.</div>
+    </div>
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="garageData.phone_number" required placeholder="phone_number">
+      <div class="invalid-feedback">El teléfono es obligatorio.</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
+  </form>
+</div>

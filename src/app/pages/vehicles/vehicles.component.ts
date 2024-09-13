@@ -94,7 +94,7 @@ export class VehiclesComponent {
   
     this._apiservice.deleteVehicle(license_plate).subscribe({
       next: (response) => {
-        console.log('Usuario eliminado exitosamente', response);
+        console.log('Vehiculo eliminado exitosamente', response);
         this.getVehicles(); // Refrescar la lista de usuarios
       },
       error: (error) => {
