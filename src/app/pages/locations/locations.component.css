@@ -1,0 +1,100 @@
+.navigation-buttons {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    margin-top: 10px;
+  }
+  
+  div {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+
+    margin-left: 7px;
+
+    
+  }
+
+  button {
+
+    margin-left: 7px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    transform: scale(1.05); /* Pequeño efecto de aumento */
+}
+
+/* Ajuste del tamaño de los botones */
+.btn-sm {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+}
+
+/* Personalizar el encabezado de la tabla */
+.table thead th {
+  background-color: #64696e; /* Color oscuro */
+  color: white; /* Texto en blanco */
+}
+
+/* Espaciado adicional para el botón "Volver" */
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+/* Mejora de la apariencia de los inputs */
+input.form-control {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+/* Espaciado extra entre los campos del formulario */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo personalizado para los botones */
+
+
+/* Mejora de la validación */
+.invalid-feedback {
+  color: red;
+  font-size: 0.9rem;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* Sombra ligera para darle profundidad a las tarjetas */
+.card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+

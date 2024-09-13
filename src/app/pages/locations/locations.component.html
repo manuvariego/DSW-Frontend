@@ -1,0 +1,80 @@
+<!-- Sección Inicial -->
+<div *ngIf="currentSection == 'initial'" class="container text-center mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="boton" class="form-label">Obtener todas las localidades donde podes estacionarte </label>
+        <button type="button" class="btn btn-primary w-100" (click)="showSection('getLocation')">Get</button>
+      </div>
+      <div class="col-md-6">
+        <label for="boton" class="form-label">Dar de alta una localidad</label>
+        <button type="button" class="btn btn-success w-100" (click)="showSection('createLocation')">Crear</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sección de Listado de Localidades -->
+  <div *ngIf="currentSection == 'getLocation'" class="container mt-5">
+    <h3 class="text-center mb-4">Listado de Localidades</h3>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Province</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let location of locationList; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ location.name }}</td>
+          <td>{{ location.province }}</td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteLocation(location.id)">Eliminar</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="modificarLocation(location)">Modificar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+  </div>
+  
+  <!-- Crear Nueva Localidad -->
+  <div *ngIf="currentSection == 'createLocation'" class="container mt-5">
+    <h3 class="text-center mb-4">Dar de alta una Localidad</h3>
+    <form (ngSubmit)="createLocation()" #locationForm="ngForm" class="needs-validation" novalidate>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" id="name" name="name" [(ngModel)]="locationData.name" required placeholder="Name">
+          <div class="invalid-feedback">El nombre es obligatorio.</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" id="province" name="province" [(ngModel)]="locationData.province" required placeholder="Province">
+          <div class="invalid-feedback">La provincia es obligatoria.</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Enviar</button>
+    </form>
+    <button type="button" class="btn btn-secondary mt-3" (click)="showSection('initial')">Volver</button>
+  </div>
+  
+  <!-- Editar Localidad -->
+  <div *ngIf="currentSection == 'editLocation'" class="container mt-5">
+    <h2 class="text-center mb-4">Modificar Localidad</h2>
+    <form (ngSubmit)="updateLocation()" class="needs-validation" novalidate>
+
+      <div class="form-group mb-3">
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="locationData.name" required placeholder="Name">
+        <div class="invalid-feedback">El nombre es obligatorio.</div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="province" name="province" [(ngModel)]="locationData.province" required placeholder="Province">
+        <div class="invalid-feedback">La provincia es obligatoria.</div>
+      </div>
+    
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
+    </form>
+  </div>
+  
