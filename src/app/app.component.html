@@ -7,9 +7,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+          <a class="nav-link" routerLink="login" id="login" [ngClass]="{active: menuOption == 'login'}" 
+            (click)="onOption('login')">Login</a>
+       </li>
+        <li class="nav-item">
            <a class="nav-link" routerLink="users" [ngClass]="{active: menuOption == 'users'}" 
              (click)="onOption('users')">Users</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="vehicles" [ngClass]="{active: menuOption == 'vehicles'}" 
+            (click)="onOption('vehicles')">Vehicles</a>
+       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="garages" [ngClass]="{active: menuOption == 'garages'}" 
+          (click)="onOption('garages')">Garages</a>
+     </li>
+
       </ul>
     </div>
   </div>

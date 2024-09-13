@@ -16,6 +16,8 @@ export class UsersComponent {
   mostrar: Boolean = false
   mostrar2: Boolean = false
   mostrar3: Boolean = true
+  modificarUsu: Boolean = false
+
 
   transformarMostrar3(){
 
@@ -31,32 +33,41 @@ export class UsersComponent {
     address: '',
     email:'',
     phone_number: '',
-    vehicles: ''
+    vehicles: ['']
 
   }
 
 
-  transformarMostrar(){
+  modificarUsuario(user:any){
 
-    this.mostrar = !this.mostrar
-    this.mostrar3 = !this.mostrar3
-    this.getUsers()
+   this.currentSection = 'editUser';
+   this.editingUser = { ...user };
+
   }
 
-  transformarMostrar2(){
-
-    this.mostrar2 = !this.mostrar2
-    this.mostrar3 = !this.mostrar3
-  }
+  currentSection: string = 'initial'
 
   userList: any[] = []
+
+  aUser: any = null
 
   vehicless : any[] = []
 
  private _apiservice = inject(ApiServiceService)
 
+  userID: string = ''
 
- onSubmit() {
+ geTaUser(){
+  this._apiservice.getUser((this.userID)).subscribe((user: any)=>{
+
+    console.log(user)
+    this.aUser = user
+    this.userID = ''
+  })
+}
+
+
+ createUserr() {
   this._apiservice.createUser(this.userData).subscribe({
     next: (response) => {
       console.log('Usuario creado exitosamente:', response);
@@ -82,4 +93,62 @@ export class UsersComponent {
     console.log(data)
   })
  }
+
+
+ deleteUser(userId: string, tipo: boolean) {
+  const confirmation = confirm('¿Está seguro de que desea eliminar este usuario?');
+  if (!confirmation) {
+    return; // Si el usuario cancela, no hacemos nada
+  }
+
+  this._apiservice.delete(userId).subscribe({
+    next: (response) => {
+      console.log('Usuario eliminado exitosamente', response);
+      this.getUsers(); // Refrescar la lista de usuarios
+    },
+    error: (error) => {
+      console.error('Error al eliminar el usuario', error);
+    }
+  });
+
+  if(tipo == true){this.currentSection = 'initial'}
+
 }
+
+  editingUser: any = null;
+  
+
+
+
+  updateUser() {
+    const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
+    if (!confirmation) {
+      return; // Si el usuario cancela, no hacemos nada
+    }
+
+    this._apiservice.update(this.editingUser).subscribe({
+      next: (response) =>{
+      console.log('Usuario actualizado exitosamente', response);
+      this.editingUser = null; // Limpia la variable de edición
+      this.getUsers(); // Refresca la lista de usuarios
+      },
+    error: (error) => {
+      console.error('Error al actualizar el usuario', error);
+    }
+  });
+  }
+
+    // Método para actualizar la sección actual mostrada
+    showSection(section: string) {
+      this.currentSection = section;
+
+      if(section == 'getUser'){
+
+        this.getUsers()
+
+      }
+
+    }
+
+}
+
