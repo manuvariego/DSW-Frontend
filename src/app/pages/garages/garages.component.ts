@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ApiServiceService } from '../../services/api-service.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { isArray } from 'node:util';
@@ -13,18 +12,6 @@ import { GaragesService } from '../../services/garages.service.js';
   styleUrl: './garages.component.css'
 })
 export class GaragesComponent {
-
- /* mostrar: Boolean = false
-  mostrar2: Boolean = false
-  mostrar3: Boolean = true
-  modificarUsu: Boolean = false
-
-
-  transformarMostrar3(){
-
-    this.mostrar3 = !this.mostrar3
-
-  }*/
 
   garageData = {
 
@@ -89,7 +76,7 @@ export class GaragesComponent {
   this._apiservice.deleteGarage(garageCuit).subscribe({
     next: (response) => {
       console.log('Cochera eliminada exitosamente', response);
-      this.getGarages(); // Refrescar la lista de usuarios
+      this.getGarages(); // Refrescar la lista de cocheras
     },
     error: (error) => {
       console.error('Error al eliminar la cochera', error);
