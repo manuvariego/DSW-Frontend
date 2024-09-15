@@ -4,6 +4,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { VehiclesComponent } from './pages/vehicles/vehicles.component';
 import { GaragesComponent } from './pages/garages/garages.component';
 import { LocationsComponent } from './pages/locations/locations.component';
+//import { ReservationTypesComponent } from './pages/reservationTypes/reservationTypes.component';
 import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'vehicles', component: VehiclesComponent },
     { path: 'garages', component: GaragesComponent },
     { path: 'locations', component: LocationsComponent },
+    //{ path: 'reservationType', component: ReservationTypesComponent },
     { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
