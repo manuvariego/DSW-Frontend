@@ -13,17 +13,6 @@ import { isArray } from 'node:util';
 })
 export class UsersComponent {
 
-  mostrar: Boolean = false
-  mostrar2: Boolean = false
-  mostrar3: Boolean = true
-  modificarUsu: Boolean = false
-
-
-  transformarMostrar3(){
-
-    this.mostrar3 = !this.mostrar3
-
-  }
 
   userData = {
 

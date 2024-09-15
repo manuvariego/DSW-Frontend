@@ -20,9 +20,12 @@ export class GaragesComponent {
     address: '',
     phone_number: '',
     email:'',
+    priceHour: '',
+    location: '',
 
   }
 
+  garageCuit: any = ''
 
   modificarGarage(garage:any){
 
@@ -51,6 +54,17 @@ export class GaragesComponent {
   });
 }
 
+aGarage: any = null
+
+getGarage(){
+  this._apiservice.getGarage((this.garageCuit)).subscribe((garage: any)=>{
+
+    console.log(garage)
+    this.aGarage = garage
+    this.garageCuit = ''
+  })
+}
+
  getGarages(){
   this._apiservice.getGarages().subscribe((data: any[])=>{
 
@@ -67,7 +81,7 @@ export class GaragesComponent {
   })
  }
 
- deleteGarage(garageCuit: string) {
+ deleteGarage(garageCuit: string , tipo: boolean) {
   const confirmation = confirm('¿Está seguro de que desea eliminar esta cochera?');
   if (!confirmation) {
     return; // Si el usuario cancela, no hacemos nada
@@ -82,6 +96,8 @@ export class GaragesComponent {
       console.error('Error al eliminar la cochera', error);
     }
   });
+  
+  if(tipo = true){this.currentSection = 'initial'}
 }
 
   editingGarage: any = null;
