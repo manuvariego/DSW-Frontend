@@ -37,6 +37,22 @@ export class LocationsComponent {
 
  private _apiservice = inject(LocationsService)
 
+  locationID: string = ''
+
+  aLocation: any = null
+
+  getLocation(){
+
+    this._apiservice.getLocation(this.locationID).subscribe((location: any) =>{
+
+      console.log(location)
+      this.aLocation = location
+      this.locationID = ''
+
+    })
+
+  }
+
 
  createLocation() {
   this._apiservice.createLocation(this.locationData).subscribe({
@@ -65,7 +81,7 @@ export class LocationsComponent {
   })
  }
 
- deleteLocation(locationId: string) {
+ deleteLocation(locationId: string, tipo:boolean) {
   const confirmation = confirm('¿Está seguro de que desea eliminar esta localidad?');
   if (!confirmation) {
     return; // Si el usuario cancela, no hacemos nada
@@ -80,6 +96,9 @@ export class LocationsComponent {
       console.error('Error al eliminar la localidad', error);
     }
   });
+
+  if(tipo){this.currentSection = 'initial'}
+
 }
 
   editingLocation: any = null;

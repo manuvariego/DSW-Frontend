@@ -1,0 +1,174 @@
+@if (currentSection == 'initial') {
+    <div class="container mt-5 text-center">
+      <!-- Título general -->
+      <h2 class="mb-4">Gestión de Tipo de Vehículos</h2>
+      
+      <!-- Listado de vehículos -->
+      <div class="card mb-4 shadow-sm p-3"> <!-- Caja con sombra para mejor apariencia -->
+        <label class="h5 mb-3">Listado de todos los tipos de vehículos</label>
+        <button type="button" class="btn btn-primary" (click)="showSection('getTypeVehicles')">
+          <i class="fas fa-list"></i> Ver Listado
+        </button>
+      </div>
+  
+      <!-- Crear un vehículo -->
+      <div class="card shadow-sm p-3"> <!-- Caja con sombra -->
+        <label class="h5 mb-3">Crear un nuevo tipo de vehículo</label>
+        <button type="button" class="btn btn-primary" (click)="showSection('createTypeVehicle')">
+          <i class="fas fa-plus-circle"></i> Crear tipo de Vehículo
+        </button>
+      </div>
+  
+      <div class="card shadow-sm p-3">
+        <label class="h5 mb-3">Obtener un tipo de vehiculo por ID</label>
+        <button type="button" class="btn btn-primary" (click)="showSection('geTaTypeVehicle')">
+          <i class="fas fa-user-plus"></i> Obtener un tipo de vehiculo
+        </button>
+      </div>
+    </div>
+  }
+    
+ @if (currentSection == 'geTaTypeVehicle') {
+  
+    <form (ngSubmit)="getATypevehicle()" #userForm="ngForm" class="needs-validation" novalidate>
+      <!-- Campo Nombre -->
+
+     <div class="form-group mb-3">
+            <label for="name">Numero de Tipo:</label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="idType" required placeholder="Numero de Tipo">
+            <div class="invalid-feedback">El numero del tipo es obligatorio.</div>
+     </div>
+      <div class="d-grid gap-2">
+         <button type="submit" class="btn btn-primary" (click)="showSection('geTaTypeVehicleTable')">Encontrar</button>
+         <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+      </div>
+    </form>
+  }
+  
+  @if (currentSection == 'geTaTypeVehicleTable') {
+    <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
+      <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
+        <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Vehiculos</th>
+            <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+          </tr>
+        </thead>
+        <tbody>
+          <th>{{aTypeVehicle.id}}</th>
+            <td>{{aTypeVehicle.name}}</td>
+            <td>
+                <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
+                  <li *ngFor="let Vehicle of aTypeVehicle.vehicles">
+                    <i class="fas fa-car"></i> {{Vehicle.license_plate}} <!-- Ícono decorativo de un coche -->
+                  </li>
+                </ul>
+              </td>
+  
+            <td>
+              <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteTypeVehicle(aTypeVehicle.id, true)">Eliminar</button>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="modificarTipoVehiculo(aTypeVehicle)">Modificar</button>
+              </div>
+            </td>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+    </div>
+  
+  }
+  
+  
+    @if (currentSection == 'getTypeVehicles') {
+      <div class="container mt-4"> <!-- Espaciado superior para la tabla -->
+        <div class="table-responsive"> <!-- Hace la tabla adaptable a pantallas pequeñas -->
+          <table class="table table-striped table-hover table-bordered"> <!-- Mejora la apariencia de la tabla -->
+            <thead class="thead-dark"> <!-- Encabezado oscuro -->
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Vehiculos</th>
+                <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let typeVehicle of typeVehiclesList; let i = index">
+                <th>{{typeVehicle.id}}</th>
+                <td>{{typeVehicle.name}}</td>
+                <td>
+                    <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
+                      <li *ngFor="let Vehicle of typeVehicle.vehicles">
+                        <i class="fas fa-car"></i> {{Vehicle.license_plate}} <!-- Ícono decorativo de un coche -->
+                      </li>
+                    </ul>
+                  </td>
+                <td>
+                  <div class="d-flex justify-content-around"> <!-- Flex para alinear botones -->
+                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteTypeVehicle(typeVehicle.id, false)">Eliminar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="modificarTipoVehiculo(typeVehicle)">Modificar</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    
+        <!-- Botón de Volver con margen superior para separación -->
+        <div class="mt-3">
+          <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+        </div>
+      </div>
+    }
+  
+    @if (currentSection == 'createTypeVehicle') {
+      <div class="container mt-5">
+        <h2 class="text-center mb-4">Crear Nuevo Tipo de Vehículo</h2>
+        
+        <form (ngSubmit)="createVehicle()" #userForm="ngForm" class="needs-validation" novalidate>
+            
+          <!-- Campo Owner -->
+          <div class="form-group mb-3">
+            <label for="owner">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="typeVehicleData.name" required placeholder="Nombre">
+            <div class="invalid-feedback">El nombre del tipo es obligatorio.</div>
+          </div>
+          
+          
+          <!-- Botones -->
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary"  (click)="showSection('initial')">Enviar</button>
+            <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+          </div>
+          
+        </form>
+      </div>
+    }
+  
+  
+  @if(currentSection == 'editTypeVehicle') {
+    <!-- Formulario de edición de vehículo -->
+    <div class="container mt-4"> <!-- Contenedor con espaciado superior -->
+      <h2 class="mb-4 text-center">Modificar Tipo de Vehículo</h2> <!-- Encabezado centrado y con margen inferior -->
+      <form (ngSubmit)="updateTypeVehicle()" class="needs-validation" novalidate>
+        
+
+        <div class="form-group">
+          <label for="type">Nombre:</label>
+          <input type="text" id="name" class="form-control" [(ngModel)]="editingTypeVehicle.name" name="name" required>
+          <div class="invalid-feedback">Este campo es obligatorio</div>
+        </div>
+
+        <div class="d-grid gap-2">
+
+        <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initial')">Guardar cambios</button>
+
+        <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
+      </div>
+      </form>
+    </div>
+  }

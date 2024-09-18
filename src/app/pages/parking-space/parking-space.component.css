@@ -12,46 +12,50 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
+
   button {
-  
+
     margin-left: 7px;
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
-  
+
   button:hover {
     transform: scale(1.05); /* Pequeño efecto de aumento */
-  }
-  
-  /* Ajuste del tamaño de los botones */
-  .btn-sm {
+}
+
+/* Ajuste del tamaño de los botones */
+.btn-sm {
   font-size: 0.9rem;
   padding: 5px 10px;
-  }
-  
-  /* Personalizar el encabezado de la tabla */
-  .table thead th {
+}
+
+/* Personalizar el encabezado de la tabla */
+.table thead th {
   background-color: #64696e; /* Color oscuro */
   color: white; /* Texto en blanco */
-  }
-  
-  /* Espaciado adicional para el botón "Volver" */
-  .mt-3 {
+}
+
+/* Espaciado adicional para el botón "Volver" */
+.mt-3 {
   margin-top: 1.5rem;
-  }
-  
-  .form-group {
+}
+
+.form-group {
   margin-bottom: 1.5rem;
-  }
-  
-  .form-control {
+}
+
+.form-control {
   border-radius: 8px;
   padding: 10px;
   border: 1px solid #ced4da;
-  }
-  
-  /* Mensajes de validación */
-  .invalid-feedback {
+}
+
+/* Mensajes de validación */
+.invalid-feedback {
   font-size: 0.85rem;
   color: red;
+}
+
+.input {
+    width: 50px; /* Ajusta el ancho según tu preferencia */
   }

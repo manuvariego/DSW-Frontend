@@ -27,9 +27,17 @@
         (click)="onOption('locations')">Locations</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="reservationTypes" [ngClass]="{active: menuOption == 'reservationTypes'}" 
-          (click)="onOption('reservationTypes')">ReservationTypes</a>
-        </li>
+        <a class="nav-link" routerLink="typeVehicles" [ngClass]="{active: menuOption == 'typeVehicles'}" 
+          (click)="onOption('typeVehicles')">TypeVehicles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="parkingSpace" [ngClass]="{active: menuOption == 'parkingSpace'}" 
+          (click)="onOption('parkingSpace')">ParkingSpace</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="reservationType" [ngClass]="{active: menuOption == 'reservationType'}" 
+          (click)="onOption('reservationType')">ReservationType</a>
+      </li>
       </ul>
     </div>
   </div>
