@@ -106,7 +106,6 @@ export class ReservationTypesComponent {
   }
 
 
-
   createReservationType() {
     this._apiservice.createReservationType(this.reservationTypeData).subscribe({
       next: (response) => {
