@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservationTypesService } from '../../services/reservationTypes.service.js';
-// import { runInThisContext } from 'vm'; ver si es necesario esto 
+import { runInThisContext } from 'vm'; 
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ReservationTypesComponent {
 
-  private _apiservice = inject(ReservationTypesService) //ver si esta bien el servivio apiservice
+  private _apiservice = inject(ReservationTypesService) 
 
   reservationTypeList: any[] = [] 
 

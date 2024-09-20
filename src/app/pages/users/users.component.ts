@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ApiServiceService } from '../../services/api-service.service.js';
+import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { isArray } from 'node:util';
@@ -42,7 +42,7 @@ export class UsersComponent {
 
   vehicless : any[] = []
 
- private _apiservice = inject(ApiServiceService)
+ private _apiservice = inject(UsersService)
 
   userID: string = ''
 
