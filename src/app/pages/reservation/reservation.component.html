@@ -1,1 +1,13 @@
-<p>reservation works!</p>
+  <div class="form-reservation"></div>
+    <h3>Reserva tu Estacionamiento</h3>
+    <!--<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">-->
+        <input type="text" formControlName="vehiculoId" class="form-control" placeholder="ID del Vehículo">
+        <select formControlName="tipoEstadiaId" class="form-control">
+            <option value="">Selecciona Tipo de Estadía</option>
+            <!-- Opciones del select aquí -->
+        </select>
+        <input type="datetime-local" formControlName="fechaHoraInicio" class="form-control">
+        <input type="datetime-local" formControlName="fechaHoraFin" class="form-control">
+        <button type="submit" class="btn btn-primary">Reservar</button>
+   <!-- </form> 
+</div> -->

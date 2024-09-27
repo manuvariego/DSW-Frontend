@@ -8,6 +8,7 @@ import { ReservationTypesComponent } from './pages/reservationTypes/reservationT
 import { LoginComponent } from './pages/login/login.component';
 import { VehicleTypeComponent } from './pages/vehicle-type/vehicle-type.component.js';
 import { ParkingSpaceComponent } from './pages/parking-space/parking-space.component.js';
+import { ReservationComponent } from './pages/reservation/reservation.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -17,7 +18,8 @@ export const routes: Routes = [
     { path: 'locations', component: LocationsComponent },
     { path: 'typeVehicles', component: VehicleTypeComponent },
     { path: 'parkingSpace', component: ParkingSpaceComponent },
-    { path: 'reservationTypes', component: ReservationTypesComponent },
+    { path: 'reservationTypes', component: ReservationComponent },
+    { path: 'reservation', component: ReservationTypesComponent },
     { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

@@ -1,0 +1,31 @@
+/* Contenedor principal del formulario */
+.form-reservation {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los inputs y selectores */
+.form-reservation .form-control {
+    margin-bottom: 10px;
+}
+
+/* Botón de envío */
+.form-reservation .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Título del formulario */
+.form-reservation h3 {
+    margin-bottom: 15px;
+    color: #0d6efd;
+    text-align: center;
+}
+
+/* Pequeños ajustes en los márgenes para alineación visual */
+.form-reservation .form-group {
+    margin-bottom: 15px;
+}
