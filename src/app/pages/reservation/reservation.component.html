@@ -2,16 +2,16 @@
 <div class="form-reservation">
   <h3>Reserva tu Estacionamiento</h3>
   <form>
-    <select class="form-control" [(ngModel)]="reservationData.vehicle" name="vehicle" required>
+    <select class="form-control" [(ngModel)]="reservationData.vehicle" [(ngModel)]="filters.license_plate"   name="vehicle" required>
       <option value="">Selecciona tu Vehículo</option>
       <!-- Recorre los vehículos y genera una opción por cada uno -->
-      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.id"> <!-- Asegúrate de usar la propiedad correcta aquí -->
+      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate" > <!-- Asegúrate de usar la propiedad correcta aquí -->
         {{ vehicle.license_plate }} <!-- Muestra la propiedad que desees (por ejemplo, patente) -->
       </option>
     </select>
 
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" />
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at" name="checkOut" required placeholder="Hora de Salida" />
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at" [(ngModel)]="filters.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" />
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at" [(ngModel)]="filters.check_out_at" name="checkOut" required placeholder="Hora de Salida" />
 
     <button type = "button" class= "btn btn-primary" (click)="showSection('garages')">Buscar cocheras disponibles</button>
   </form> 
@@ -44,7 +44,7 @@
           <td>{{garage.location}}</td>
           <td>{{garage.priceHour}}</td>
           <td>
-            <button type="button" class="btn btn-info">Seleccionar</button>
+            <button type="button" class="btn btn-primary" (click)="saveGarage(garage)">Seleccionar</button>
           </td>
         </tr>
       </tbody>
@@ -53,3 +53,12 @@
   </div>
 
 }
+
+@if (currentSection == 'confirmar'){
+
+
+
+
+}
+
+

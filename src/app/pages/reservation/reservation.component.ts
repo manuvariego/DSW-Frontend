@@ -31,11 +31,18 @@ export class ReservationComponent implements OnInit {
     parkingSpace: '' 
   }
 
+  filters = {
+    check_in_at: '' ,
+    check_out_at: '', 
+    license_plate: '',
+
+  }
+
   constructor(private fb: FormBuilder, private reservationService: ReservationService) { }
 
   private _apiservice = inject(UsersService)
   private _apiserviceGarage = inject(GaragesService)
-  userID:string= '4'
+  userID:string= '1'
 
   ngOnInit() {
 
@@ -57,9 +64,9 @@ export class ReservationComponent implements OnInit {
 
 Garages: any[] = []
 
-getGarages(){
+getGaragesAvailables(){
 
-  this._apiserviceGarage.getGarages().subscribe((data: any[])=>{
+  this.reservationService.getGaragesAvailables(this.filters).subscribe((data: any[])=>{
 
     if(Array.isArray(data)){
       this.Garages = data 
@@ -77,9 +84,18 @@ getGarages(){
 
 }
 
+saveGarage(aGarage:any){
+
+this.reservationData.amount = aGarage.amount
+this.reservationData.estado = 'ACTIVE'
+this.reservationData.garage = aGarage.cuit
+this.reservationData.parkingSpace = ''
+
+}
+
 
 userVehicles: any[] = []
-
+/*
   onSubmit() {
       this.reservationService.createReservation(this.reservationData).subscribe({
         next: (res) => {
@@ -90,6 +106,7 @@ userVehicles: any[] = []
         }
       });
   }
+  */
 
   currentSection : any = 'initial'
 
@@ -98,7 +115,7 @@ userVehicles: any[] = []
 
 
     if (this.currentSection == 'garages'){
-      this.getGarages()
+      this.getGaragesAvailables()
     }
   }
 }
