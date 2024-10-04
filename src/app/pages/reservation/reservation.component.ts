@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit , inject} from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service.js';
+import { UsersService } from '../../services/users.service.js';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { GaragesService } from '../../services/garages.service.js';
+
+
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
@@ -13,20 +19,69 @@ export class ReservationComponent implements OnInit {
   
   reservationForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private reservationService: ReservationService) { }
+  reservationData = {
 
-  ngOnInit() {
-    this.reservationForm = this.fb.group({
-      license_plate: ['', Validators.required],
-      tipoEstadiaId: ['', Validators.required],
-      fechaHoraInicio: ['', Validators.required],
-      fechaHoraFin: ['', Validators.required]
-    });
+    date_time_reservation: new Date().toISOString() ,
+    check_in_at: '' ,
+    check_out_at: '', 
+    estado: '', 
+    amount: 0,
+    vehicle: '',
+    garage: '',
+    parkingSpace: '' 
   }
 
+  constructor(private fb: FormBuilder, private reservationService: ReservationService) { }
+
+  private _apiservice = inject(UsersService)
+  private _apiserviceGarage = inject(GaragesService)
+  userID:string= '4'
+
+  ngOnInit() {
+
+  this.getVehicles()
+
+  }
+
+  getVehicles() { 
+  
+    this._apiservice.getUser((this.userID)).subscribe((user: any)=>{
+  
+      console.log(user) 
+
+      this.userVehicles = user.vehicles
+    })
+  
+
+}
+
+Garages: any[] = []
+
+getGarages(){
+
+  this._apiserviceGarage.getGarages().subscribe((data: any[])=>{
+
+    if(Array.isArray(data)){
+      this.Garages = data 
+
+    } else{
+
+      this.Garages = [data]
+    }
+
+    
+    console.log(data)
+  })
+
+
+
+}
+
+
+userVehicles: any[] = []
+
   onSubmit() {
-    if (this.reservationForm.valid) {
-      this.reservationService.createReservation(this.reservationForm.value).subscribe({
+      this.reservationService.createReservation(this.reservationData).subscribe({
         next: (res) => {
           console.log('Reserva creada!', res);
         },
@@ -34,10 +89,16 @@ export class ReservationComponent implements OnInit {
           console.error('Error creando reserva', err);
         }
       });
-    } else {
-      console.log('Formulario no es válido');
+  }
+
+  currentSection : any = 'initial'
+
+  showSection(section: string) {
+    this.currentSection = section;
+
+
+    if (this.currentSection == 'garages'){
+      this.getGarages()
     }
   }
-}{
-
 }

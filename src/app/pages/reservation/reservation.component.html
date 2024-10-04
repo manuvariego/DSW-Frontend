@@ -1,13 +1,55 @@
-  <div class="form-reservation"></div>
-    <h3>Reserva tu Estacionamiento</h3>
-    <!--<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">-->
-        <input type="text" formControlName="vehiculoId" class="form-control" placeholder="ID del Vehículo">
-        <select formControlName="tipoEstadiaId" class="form-control">
-            <option value="">Selecciona Tipo de Estadía</option>
-            <!-- Opciones del select aquí -->
-        </select>
-        <input type="datetime-local" formControlName="fechaHoraInicio" class="form-control">
-        <input type="datetime-local" formControlName="fechaHoraFin" class="form-control">
-        <button type="submit" class="btn btn-primary">Reservar</button>
-   <!-- </form> 
-</div> -->
+@if (currentSection == 'initial'){
+<div class="form-reservation">
+  <h3>Reserva tu Estacionamiento</h3>
+  <form>
+    <select class="form-control" [(ngModel)]="reservationData.vehicle" name="vehicle" required>
+      <option value="">Selecciona tu Vehículo</option>
+      <!-- Recorre los vehículos y genera una opción por cada uno -->
+      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.id"> <!-- Asegúrate de usar la propiedad correcta aquí -->
+        {{ vehicle.license_plate }} <!-- Muestra la propiedad que desees (por ejemplo, patente) -->
+      </option>
+    </select>
+
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" />
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at" name="checkOut" required placeholder="Hora de Salida" />
+
+    <button type = "button" class= "btn btn-primary" (click)="showSection('garages')">Buscar cocheras disponibles</button>
+  </form> 
+</div>
+}
+
+@if (currentSection == 'garages'){
+  <div class="container mt-5">
+    <h3 class="text-center mb-4">Listado de Cocheras</h3>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">CUIT</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Direccion</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefono</th>
+          <th scope="col">Locacion</th>
+          <th scope="col">PrecioxHora</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let garage of Garages; let i = index">
+          <td>{{ garage.cuit }}</td>
+          <td>{{ garage.name }}</td>
+          <td>{{ garage.address }}</td>
+          <td>{{ garage.email }}</td>
+          <td>{{ garage.phone_number }}</td>
+          <td>{{garage.location}}</td>
+          <td>{{garage.priceHour}}</td>
+          <td>
+            <button type="button" class="btn btn-info">Seleccionar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+  </div>
+
+}

@@ -45,6 +45,14 @@ h1 {
     font-size: 3em;
 }
 
-p {
-    font-size: 1.2em;
+
+.contacto p {
+    font-size: 1em;
+    line-height: 1;
+}
+
+.contacto {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: left;
 }

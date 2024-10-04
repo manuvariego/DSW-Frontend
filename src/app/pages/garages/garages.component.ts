@@ -120,6 +120,7 @@ getGarage(){
   });
   }
 
+
     // Método para actualizar la sección actual mostrada
     showSection(section: string) {
       this.currentSection = section;

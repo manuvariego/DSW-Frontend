@@ -18,8 +18,8 @@ export const routes: Routes = [
     { path: 'locations', component: LocationsComponent },
     { path: 'typeVehicles', component: VehicleTypeComponent },
     { path: 'parkingSpace', component: ParkingSpaceComponent },
-    { path: 'reservationTypes', component: ReservationComponent },
-    { path: 'reservation', component: ReservationTypesComponent },
+    { path: 'reservationTypes', component: ReservationTypesComponent },
+    { path: 'reservation', component: ReservationComponent },
     { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

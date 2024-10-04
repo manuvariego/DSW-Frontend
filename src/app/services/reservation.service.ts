@@ -16,9 +16,5 @@ export class ReservationService {
     return this.http.post(this.apiUrl, reservationData);
   }
 
-  getTiposEstadia(): Observable<any[]> {
-    return this.http.get<any[]>('/api/tipos-estadia');
-  }
-
   
 }
