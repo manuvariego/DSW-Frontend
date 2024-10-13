@@ -9,6 +9,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { VehicleTypeComponent } from './pages/vehicle-type/vehicle-type.component.js';
 import { ParkingSpaceComponent } from './pages/parking-space/parking-space.component.js';
 import { ReservationComponent } from './pages/reservation/reservation.component';
+import { ReservationCancelComponent } from './pages/reservation-cancel/reservation-cancel.component.js';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'reservationTypes', component: ReservationTypesComponent },
     { path: 'reservation', component: ReservationComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'cancelReservation', component: ReservationCancelComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

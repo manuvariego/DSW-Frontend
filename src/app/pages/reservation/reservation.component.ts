@@ -21,14 +21,11 @@ export class ReservationComponent implements OnInit {
 
   reservationData = {
 
-    date_time_reservation: new Date().toISOString() ,
     check_in_at: '' ,
     check_out_at: '', 
-    estado: '', 
-    amount: 0,
-    vehicle: '',
-    garage: '',
-    parkingSpace: '' 
+    license_plate: '',
+    cuitGarage: '',
+
   }
 
   filters = {
@@ -85,13 +82,29 @@ getGaragesAvailables(){
 }
 
 saveGarage(aGarage:any){
+this.reservationData.cuitGarage = aGarage.cuit
 
-this.reservationData.amount = aGarage.amount
-this.reservationData.estado = 'ACTIVE'
-this.reservationData.garage = aGarage.cuit
-this.reservationData.parkingSpace = ''
+this.createReservation()
+
+this.currentSection = 'realizada'
+
 
 }
+
+theReservation: any = null
+
+createReservation() {
+  this.reservationService.createReservation(this.reservationData).subscribe({
+    next: (response) => {
+      console.log('Tipo de reserva creado exitosamente:', response);
+      this.theReservation = response
+    },
+    error: (error) => {
+      console.error('Error al crear el tipo de reserva:', error);
+    }
+  });
+}
+
 
 
 userVehicles: any[] = []

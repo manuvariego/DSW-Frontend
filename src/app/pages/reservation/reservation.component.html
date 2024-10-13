@@ -2,7 +2,7 @@
 <div class="form-reservation">
   <h3>Reserva tu Estacionamiento</h3>
   <form>
-    <select class="form-control" [(ngModel)]="reservationData.vehicle" [(ngModel)]="filters.license_plate"   name="vehicle" required>
+    <select class="form-control" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate"   name="vehicle" required>
       <option value="">Selecciona tu Vehículo</option>
       <!-- Recorre los vehículos y genera una opción por cada uno -->
       <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate" > <!-- Asegúrate de usar la propiedad correcta aquí -->
@@ -54,9 +54,36 @@
 
 }
 
-@if (currentSection == 'confirmar'){
+@if (currentSection == 'realizada'){
 
-
+  <div class="container mt-5">
+    <h3 class="text-center mb-4">Reserva</h3>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Hora realizada</th>
+          <th scope="col">Hora de ingreso</th>
+          <th scope="col">Hora de salida</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Vehiculo</th>
+          <th scope="col">Garage</th>
+          <th scope="col">Parking Space</th>
+        </tr>
+      </thead>
+      <tbody>
+          <td>{{ theReservation.date_time_reservation | date: 'dd/MM/yyyy, h:mm a' }}</td>
+          <td>{{ theReservation.check_in_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
+          <td>{{ theReservation.check_out_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
+          <td>{{theReservation.estado }}</td>
+          <td>{{theReservation.amount }}</td>
+          <td>{{theReservation.vehicle.license_plate}}</td>
+          <td>{{theReservation.garage}}</td>
+          <td>{{theReservation.parkingSpace.number}}</td>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+  </div>
 
 
 }

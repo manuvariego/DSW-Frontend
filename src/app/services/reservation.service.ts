@@ -17,6 +17,7 @@ export class ReservationService {
     return this.http.post(this.apiUrl, reservationData);
   }
 
+  
   getGaragesAvailables(filters: any): Observable<any[]>{
 
     let params = new HttpParams()
@@ -27,4 +28,12 @@ export class ReservationService {
     return this.http.get<any[]>(this.apiAvailables, { params });
 
 }
+
+updateReservation(reservationData: any): Observable<any> {
+  return this._http.put(`${this.apiUrl}/${reservationData.id}`, reservationData);
+}
+
+
+
+
 }
