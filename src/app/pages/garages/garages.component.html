@@ -56,7 +56,6 @@
           <th scope="col">Email</th>
           <th scope="col">Telefono</th>
           <th scope="col">Locacion</th>
-          <th scope="col">PrecioxHora</th>
           <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
         </tr>
       </thead>
@@ -67,7 +66,6 @@
           <td>{{aGarage.email}}</td>
           <td>{{aGarage.phone_number}}</td>
           <td>{{aGarage.location}}</td>
-          <td>{{aGarage.priceHour}}</td>
           <td>
             <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
               <button type="button" class="btn btn-danger btn-sm" (click)="deleteGarage(aGarage.cuit, true)">Eliminar</button>
@@ -97,7 +95,6 @@
         <th scope="col">Email</th>
         <th scope="col">Telefono</th>
         <th scope="col">Locacion</th>
-        <th scope="col">PrecioxHora</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -109,7 +106,6 @@
         <td>{{ garage.email }}</td>
         <td>{{ garage.phone_number }}</td>
         <td>{{garage.location}}</td>
-        <td>{{garage.priceHour}}</td>
         <td>
           <button type="button" class="btn btn-danger btn-sm" (click)="deleteGarage(garage.cuit, false)">Eliminar</button>
           <button type="button" class="btn btn-secondary btn-sm" (click)="modificarGarage(garage)">Modificar</button>
@@ -144,10 +140,6 @@
       <div class="col-md-6 mb-3">
         <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="garageData.phone_number" required placeholder="Telefono">
         <div class="invalid-feedback">El teléfono es obligatorio.</div>
-      </div>
-      <div class="col-md-6 mb-3">
-        <input type="text" class="form-control" id="priceHour" name="priceHour" [(ngModel)]="garageData.priceHour" required placeholder="Precio de la hora">
-        <div class="invalid-feedback">El precio es obligatorio.</div>
       </div>
       <div class="col-md-6 mb-3">
         <input type="text" class="form-control" id="location" name="location" [(ngModel)]="garageData.location" required placeholder="Locacion">
