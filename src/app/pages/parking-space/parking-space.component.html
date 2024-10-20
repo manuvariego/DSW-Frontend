@@ -35,10 +35,15 @@
       <div class="form-group mb-3">
         <label for="name">Numero</label>
         <input type="text" class="form-control" id="number" name="number" [(ngModel)]="numberParkingSpace" required placeholder="Numero">
-        <div class="invalid-feedback">El ID es obligatorio.</div>
+        <div class="invalid-feedback">El numero es obligatorio.</div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="name">Cuit de Cochera</label>
+        <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="cuitGarage" required placeholder="Cuit">
+        <div class="invalid-feedback">El cuit es obligatorio.</div>
       </div>
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary" (click)="showSection('geTaParkingSpaceTable')">Encontrar</button>
+        <button type="submit" class="btn btn-primary">Encontrar</button>
         <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
       </div>
       </form>
@@ -51,7 +56,6 @@
           <tr>
             <th scope="col">Numero</th>
             <th scope="col">Garage</th>
-            <th scope="col">Reservas</th>
             <th scope="col">Tipo de vehiculo</th>
             <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
           </tr>
@@ -59,17 +63,10 @@
         <tbody>
           <th>{{aParkingSpace.number}}</th>
             <td>{{aParkingSpace.garage}}</td>
-            <td>{{aParkingSpace.vehicleType}}</td>
-            <td>
-              <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
-                <li *ngFor="let reservation of aParkingSpace.reservation">
-                  <i class="fas fa-car"></i> {{reservation.number}} <!-- Ícono decorativo de un coche -->
-                </li>
-              </ul>
-            </td>
+            <td>{{aParkingSpace.TypeVehicle}}</td>
             <td>
               <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteParkingSpace(aParkingSpace.number, true)">Eliminar</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteParkingSpace(aParkingSpace.number,aParkingSpace.garage, true)">Eliminar</button>
                 <button type="button" class="btn btn-secondary btn-sm" (click)="modificarParkingSpace(aParkingSpace)">Modificar</button>
               </div>
             </td>
@@ -91,7 +88,6 @@
           <tr>
             <th scope="col">Numero</th>
             <th scope="col">Garage</th>
-            <th scope="col">Reservas</th>
             <th scope="col">Tipo de vehiculo</th>
             <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
           </tr>
@@ -100,17 +96,10 @@
           <tr *ngFor="let ParkingSpace of ParkingSpaceList; let i = index">
             <th>{{ParkingSpace.number}}</th>
             <td>{{ParkingSpace.garage}}</td>
-            <td>{{ParkingSpace.vehicleType}}</td>
-            <td>
-              <ul class="list-unstyled"> 
-                <li *ngFor="let reservation of ParkingSpace.reservation">
-                  <i class="fas fa-car"></i> {{reservation.number}} 
-                </li>
-              </ul>
-            </td>
+            <td>{{ParkingSpace.TypeVehicle}}</td>
             <td>
               <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteParkingSpace(ParkingSpace.number, true)">Eliminar</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteParkingSpace(ParkingSpace.number, ParkingSpace.garage , true)">Eliminar</button>
                 <button type="button" class="btn btn-secondary btn-sm" (click)="modificarParkingSpace(ParkingSpace)">Modificar</button>
               </div>
             </td>
@@ -180,7 +169,7 @@
 
         <div class="form-group">
           <label for="lastname">Tipo de vehiculo:</label>
-          <input type="text" id="Garage" class="form-control" [(ngModel)]="editingParkingSpace.garage" name="Garage" required>
+          <input type="text" id="Garage" class="form-control" [(ngModel)]="editingParkingSpace.TypeVehicle" name="TypeVehicle" required>
           <div class="invalid-feedback">El tipo de vehiculo es obligatorio.</div>
         </div>
       

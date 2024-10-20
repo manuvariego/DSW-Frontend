@@ -14,20 +14,20 @@ export class ParkingSpaceService {
       return this._http.get<any[]>(this.apiUrl);
     }
   
-    getParkingSpace(numberParkingSpace: string): Observable<any>{
-      return this._http.get<any>(`${this.apiUrl}/${numberParkingSpace}`)
+    getParkingSpace(numberParkingSpace: string, cuitGarage: string): Observable<any>{
+      return this._http.get<any>(`${this.apiUrl}/${numberParkingSpace}/${cuitGarage}`)
     }
   
     createParkingSpace(parkingSpace: any): Observable<any> {
       return this._http.post<any>(this.apiUrl, parkingSpace);
     } 
     
-    deleteParkingSpace(numberParkingSpace: string): Observable<any> {
-      return this._http.delete(`${this.apiUrl}/${numberParkingSpace}`);
+    deleteParkingSpace(numberParkingSpace: string, cuitGarage:String): Observable<any> {
+      return this._http.delete(`${this.apiUrl}/${numberParkingSpace}/${cuitGarage}`);
     }
   
     updateParkingSpace(parkingSpace: any): Observable<any> {
-      return this._http.put(`${this.apiUrl}/${parkingSpace.number}`, parkingSpace);
+      return this._http.put(`${this.apiUrl}/${parkingSpace.number}/${parkingSpace.garage}`, parkingSpace);
     }
   
     

@@ -39,7 +39,7 @@
       <div class="invalid-feedback">El CUIT es obligatorio.</div>
     </div>
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary" (click)="showSection('geTaGarageTable')">Encontrar</button>
+      <button type="submit" class="btn btn-primary">Encontrar</button>
       <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
     </div>
     </form>
@@ -130,6 +130,10 @@
         <div class="invalid-feedback">El nombre es obligatorio.</div>
       </div>
       <div class="col-md-6 mb-3">
+        <input type="text" class="form-control" id="password" name="password" [(ngModel)]="garageData.password" required placeholder="Contraseña">
+        <div class="invalid-feedback">La contraseña es obligatoria.</div>
+      </div>
+      <div class="col-md-6 mb-3">
         <input type="text" class="form-control" id="address" name="address" [(ngModel)]="garageData.address" required placeholder="Direccion">
         <div class="invalid-feedback">La dirección es obligatoria.</div>
       </div>
@@ -160,27 +164,22 @@
   <form (ngSubmit)="updateGarage()" class="needs-validation" novalidate>
 
     <div class="form-group mb-3">
-      <label for="cuit">Cuit:</label>
-      <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="editingGarage.cuit" required placeholder="Cuit">
-      <div class="invalid-feedback">El cuit es obligatorio.</div>
-    </div>
-    <div class="form-group mb-3">
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="garageData.name" required placeholder="Name">
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingGarage.name" required placeholder="Name">
       <div class="invalid-feedback">El nombre es obligatorio.</div>
     </div>
     <div class="form-group mb-3">
-      <input type="text" class="form-control" id="address" name="address" [(ngModel)]="garageData.address" required placeholder="Address">
+      <input type="text" class="form-control" id="address" name="address" [(ngModel)]="editingGarage.address" required placeholder="Address">
       <div class="invalid-feedback">La dirección es obligatoria.</div>
     </div>
     <div class="form-group mb-3">
-      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="garageData.email" required placeholder="Email">
+      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editingGarage.email" required placeholder="Email">
       <div class="invalid-feedback">El email es obligatorio.</div>
     </div>
     <div class="form-group mb-3">
-      <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="garageData.phone_number" required placeholder="phone_number">
+      <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="editingGarage.phone_number" required placeholder="phone_number">
       <div class="invalid-feedback">El teléfono es obligatorio.</div>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <button type="submit" class="btn btn-primary"(click)="showSection('initial')">Guardar Cambios</button>
     <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
   </form>
 </div>

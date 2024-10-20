@@ -16,9 +16,10 @@ export class UsersComponent {
 
   userData = {
 
+    dni: '', 
     name: '',
     lastname: '',
-    dni: '', 
+    password: '',
     address: '',
     email:'',
     phone_number: '',
@@ -46,14 +47,21 @@ export class UsersComponent {
 
   userID: string = ''
 
- geTaUser(){
-  this._apiservice.getUser((this.userID)).subscribe((user: any)=>{
-
-    console.log(user)
-    this.aUser = user
-    this.userID = ''
-  })
-}
+  geTaUser() {
+    this._apiservice.getUser(this.userID).subscribe(
+      (user: any) => {
+        this.currentSection = 'geTaUserTable';
+        console.log(user);
+        this.aUser = user;
+        this.userID = '';
+      },
+      (error) => {
+        console.error('Error al obtener el usuario', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('El usuario no existe o ocurrió un error al obtener la información.');
+      }
+    );
+  }
 
 
  createUserr() {

@@ -43,13 +43,19 @@ export class LocationsComponent {
 
   getLocation(){
 
-    this._apiservice.getLocation(this.locationID).subscribe((location: any) =>{
-
-      console.log(location)
-      this.aLocation = location
-      this.locationID = ''
-
-    })
+    this._apiservice.getLocation(this.locationID).subscribe(
+      (location: any) => {
+        this.currentSection = "geTaLocationTable"
+        console.log(location)
+        this.aLocation = location
+        this.locationID = ''
+      },
+      (error) => {
+        console.error('Error al obtener un Location', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('La Localidad no existe o ocurrió un error al obtener la información.');
+      }
+    );
 
   }
 

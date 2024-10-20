@@ -17,9 +17,11 @@ export class GaragesComponent {
 
     cuit: '',
     name: '',
+    password: '',
     address: '',
     phone_number: '',
     email:'',
+    priceHour: 0,
     location: '',
 
   }
@@ -55,13 +57,21 @@ export class GaragesComponent {
 
 aGarage: any = null
 
-getGarage(){
-  this._apiservice.getGarage((this.garageCuit)).subscribe((garage: any)=>{
 
-    console.log(garage)
-    this.aGarage = garage
-    this.garageCuit = ''
-  })
+getGarage(){
+  this._apiservice.getGarage(this.garageCuit).subscribe(
+    (garage: any) => {
+      this.currentSection = "geTaGarageTable"
+      console.log(garage)
+      this.aGarage = garage
+      this.garageCuit = ''
+    },
+    (error) => {
+      console.error('Error al obtener un Garage', error);
+      // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+      alert('El garage no existe o ocurrió un error al obtener la información.');
+    }
+  );
 }
 
  getGarages(){

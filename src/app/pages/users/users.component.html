@@ -38,7 +38,7 @@
       <div class="invalid-feedback">El ID es obligatorio.</div>
     </div>
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary" (click)="showSection('geTaUserTable')">Encontrar</button>
+      <button type="submit" class="btn btn-primary">Encontrar</button>
       <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
     </div>
     </form>
@@ -158,6 +158,12 @@
         <label for="lastname">Apellido:</label>
         <input type="text" class="form-control" id="lastname" name="lastname" [(ngModel)]="userData.lastname" required placeholder="Apellido">
         <div class="invalid-feedback">El apellido es obligatorio.</div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="lastname">Contraseña:</label>
+        <input type="text" class="form-control" id="password" name="password" [(ngModel)]="userData.password" required placeholder="Contraseña">
+        <div class="invalid-feedback">El password es obligatorio.</div>
       </div>
       
       <!-- Campo DNI -->

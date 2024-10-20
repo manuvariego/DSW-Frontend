@@ -21,14 +21,22 @@ export class VehiclesComponent {
 
   aVehicle: any = null
 
-  getAvehicle(){
-    this._apiservice.getVehicle((this.licensePlate)).subscribe((vehicle: any)=>{
 
-      console.log(vehicle)
-      this.aVehicle = vehicle
-      this.licensePlate =''
-    }
-    )}
+  getAvehicle(){
+    this._apiservice.getVehicle(this.licensePlate).subscribe(
+      (vehicle: any) => {
+        this.currentSection = "geTaVehicleTable"
+        console.log(vehicle)
+        this.aVehicle = vehicle
+        this.licensePlate =''
+      },
+      (error) => {
+        console.error('Error al obtener un Vehicle', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('El Vehiculo no existe o ocurrió un error al obtener la información.');
+      }
+    );
+  }
   
 
   getVehicles(){
