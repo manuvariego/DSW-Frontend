@@ -13,8 +13,8 @@ export class ReservationTypesService {
     return this._http.get<any[]>(this.apiUrl);
   }
 
-  getReservationType(resId: string): Observable<any>{
-    return this._http.get<any>(`${this.apiUrl}/${resId}`)
+  getReservationType(desc: string, cuit:string): Observable<any>{
+    return this._http.get<any>(`${this.apiUrl}/${desc}/${cuit}`)
 }
 
   createReservationType(reservationType: any): Observable<any> {
@@ -22,12 +22,12 @@ export class ReservationTypesService {
   } 
   
 
-  deleteReservationType(resId: string): Observable<any> {
-    return this._http.delete(`${this.apiUrl}/${resId}`);
+  deleteReservationType(desc: string, cuit:string): Observable<any> {
+    return this._http.delete(`${this.apiUrl}/${desc}/${cuit}`);
   }
 
   updateReservationType(reservationType: any): Observable<any> {
-    return this._http.put(`${this.apiUrl}/${reservationType.id}`, reservationType);
+    return this._http.put(`${this.apiUrl}/${reservationType.description}/${reservationType.garage}`, reservationType);
   }
 
 
