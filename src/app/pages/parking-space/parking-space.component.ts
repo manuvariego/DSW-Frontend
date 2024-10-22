@@ -16,7 +16,7 @@ export class ParkingSpaceComponent {
 
     number:'',
     garage: '',
-    vehicleType: '', 
+    TypeVehicle: '', 
     
 
   }

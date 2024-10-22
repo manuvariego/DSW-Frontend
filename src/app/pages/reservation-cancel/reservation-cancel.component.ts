@@ -25,7 +25,7 @@ export class ReservationCancelComponent implements OnInit {
     }
 
 
-  userID : any = 1
+  userID : any = 19
 
   userReservations: any[] = []
 
@@ -63,7 +63,7 @@ updateReservation(reservation:any , type:boolean) {
   this.reservationData.date_time_reservation = reservation.date_time_reservation
   this.reservationData.check_in_at = reservation.check_in_at
   this.reservationData.check_out_at = reservation.check_out_at
-  this.reservationData.estado = 'BAJA'
+  this.reservationData.estado = 'cancelada'
   this.reservationData.amount = reservation.amount
   this.reservationData.vehicle = reservation.vehicle
   this.reservationData.garage = reservation.garage
