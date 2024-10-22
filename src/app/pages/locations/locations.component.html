@@ -40,7 +40,7 @@
       <div class="invalid-feedback">El id es obligatorio.</div>
     </div>
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary" (click)="showSection('geTaLocationTable')">Encontrar</button>
+      <button type="submit" class="btn btn-primary">Encontrar</button>
       <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
     </div>
     </form>
@@ -131,16 +131,16 @@
     <form (ngSubmit)="updateLocation()" class="needs-validation" novalidate>
 
       <div class="form-group mb-3">
-        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="locationData.name" required placeholder="Name">
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingLocation.name" required placeholder="Name">
         <div class="invalid-feedback">El nombre es obligatorio.</div>
       </div>
 
       <div class="col-md-6 mb-3">
-        <input type="text" class="form-control" id="province" name="province" [(ngModel)]="locationData.province" required placeholder="Province">
+        <input type="text" class="form-control" id="province" name="province" [(ngModel)]="editingLocation.province" required placeholder="Province">
         <div class="invalid-feedback">La provincia es obligatoria.</div>
       </div>
     
-      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Guardar Cambios</button>
       <br>
       <button type="button" class="btn btn-secondary w-100" (click)="showSection('initial')">Cancelar</button>
     </form>

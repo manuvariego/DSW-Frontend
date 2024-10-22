@@ -16,6 +16,8 @@ export class ParkingSpaceComponent {
 
     number:'',
     garage: '',
+    TypeVehicle: '', 
+    
 
   }
 
@@ -36,14 +38,22 @@ export class ParkingSpaceComponent {
  private _apiservice = inject(ParkingSpaceService)
 
   numberParkingSpace: string = ''
+  cuitGarage: string = ''
 
  geTaParkingSpace(){
-  this._apiservice.getParkingSpace((this.numberParkingSpace)).subscribe((ParkingSpace: any)=>{
-
-    console.log(ParkingSpace)
-    this.aParkingSpace = ParkingSpace
-    this.numberParkingSpace = ''
-  })
+    this._apiservice.getParkingSpace(this.numberParkingSpace,this.cuitGarage).subscribe(
+      (ParkingSpace: any) => {
+        this.currentSection = "geTaParkingSpaceTable"
+        console.log(ParkingSpace)
+        this.aParkingSpace = ParkingSpace
+        this.numberParkingSpace = ''
+      },
+      (error) => {
+        console.error('Error al obtener un ParkingSpace', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('El ParkingSpace no existe o ocurrió un error al obtener la información.');
+      }
+    );
 }
 
 
@@ -75,13 +85,13 @@ export class ParkingSpaceComponent {
  }
 
 
- deleteParkingSpace(numberParkingSpace: string, tipo: boolean) {
+ deleteParkingSpace(numberParkingSpace: string, cuitGarage: String, tipo: boolean) {
   const confirmation = confirm('¿Está seguro de que desea eliminar este Lugar de Estacionamiento?');
   if (!confirmation) {
     return; // Si el Lugar de Estacionamiento cancela, no hacemos nada
   }
 
-  this._apiservice.deleteParkingSpace(numberParkingSpace).subscribe({
+  this._apiservice.deleteParkingSpace(numberParkingSpace, cuitGarage ).subscribe({
     next: (response) => {
       console.log('Lugar de Estacionamiento eliminado exitosamente', response);
       this.getParkingSpace(); // Refrescar la lista de Lugar de Estacionamientos

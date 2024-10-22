@@ -5,10 +5,11 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiServiceService {
+export class UsersService {
 
   private _http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/api/users';
+
 
   getUsers(): Observable<any[]>{
     return this._http.get<any[]>(this.apiUrl);
@@ -30,6 +31,9 @@ export class ApiServiceService {
     return this._http.put(`${this.apiUrl}/${user.id}`, user);
   }
 
+  getUserReservations(userId: string): Observable<any>{
+    return this._http.get<any>(`${this.apiUrl}/${userId}/reservations`)
+  }
   
 
   } 

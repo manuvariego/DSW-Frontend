@@ -22,14 +22,22 @@ export class VehicleTypeComponent {
 
   aTypeVehicle: any = null
 
-  getATypevehicle(){
-    this._apiservice.getTypeVehicle((this.idType)).subscribe((typeVehicle: any)=>{
 
-      console.log(typeVehicle)
-      this.aTypeVehicle = typeVehicle
-      this.idType =''
-    }
-    )}
+  getATypevehicle(){
+    this._apiservice.getTypeVehicle(this.idType).subscribe(
+      (typeVehicle: any) => {
+        this.currentSection = "geTaTypeVehicleTable"
+        console.log(typeVehicle)
+        this.aTypeVehicle = typeVehicle
+        this.idType =''
+      },
+      (error) => {
+        console.error('Error al obtener un typeVehicle', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('El tipo de Vehiculo no existe o ocurrió un error al obtener la información.');
+      }
+    );
+}
   
 
   getTypeVehicles(){

@@ -34,6 +34,18 @@
         <a class="nav-link" routerLink="parkingSpace" [ngClass]="{active: menuOption == 'parkingSpace'}" 
           (click)="onOption('parkingSpace')">ParkingSpace</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="reservationTypes" [ngClass]="{active: menuOption == 'reservationTypes'}" 
+          (click)="onOption('reservationTypes')">ReservationTypes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="reservation" [ngClass]="{active: menuOption == 'reservation'}" 
+          (click)="onOption('reservation')">Hacer una reserva</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="cancelReservation" [ngClass]="{active: menuOption == 'cancelReservation'}" 
+          (click)="onOption('cancelReservation')">Dar de Baja una Reserva</a>
+      </li>
       </ul>
     </div>
   </div>

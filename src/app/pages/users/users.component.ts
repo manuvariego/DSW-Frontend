@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ApiServiceService } from '../../services/api-service.service.js';
+import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { isArray } from 'node:util';
@@ -16,9 +16,10 @@ export class UsersComponent {
 
   userData = {
 
+    dni: '', 
     name: '',
     lastname: '',
-    dni: '', 
+    password: '',
     address: '',
     email:'',
     phone_number: '',
@@ -42,18 +43,25 @@ export class UsersComponent {
 
   vehicless : any[] = []
 
- private _apiservice = inject(ApiServiceService)
+ private _apiservice = inject(UsersService)
 
   userID: string = ''
 
- geTaUser(){
-  this._apiservice.getUser((this.userID)).subscribe((user: any)=>{
-
-    console.log(user)
-    this.aUser = user
-    this.userID = ''
-  })
-}
+  geTaUser() {
+    this._apiservice.getUser(this.userID).subscribe(
+      (user: any) => {
+        this.currentSection = 'geTaUserTable';
+        console.log(user);
+        this.aUser = user;
+        this.userID = '';
+      },
+      (error) => {
+        console.error('Error al obtener el usuario', error);
+        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        alert('El usuario no existe o ocurrió un error al obtener la información.');
+      }
+    );
+  }
 
 
  createUserr() {
