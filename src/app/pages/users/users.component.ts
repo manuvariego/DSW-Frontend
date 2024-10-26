@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { isArray } from 'node:util';
 
 @Component({
@@ -13,44 +13,37 @@ import { isArray } from 'node:util';
 })
 export class UsersComponent {
 
+  currentSection: string = 'initial';
+  userList: any[] = [];
+  aUser: any = null;
+  vehicless : any[] = [];
+  private _apiservice = inject(UsersService);
+  userID: string = '';
+  editingUser: any = null;
 
   userData = {
-
     dni: '', 
     name: '',
     lastname: '',
     password: '',
     address: '',
     email:'',
-    phone_number: '',
+    phoneNumber: '',
     vehicles: ['']
-
   }
 
-
   modificarUsuario(user:any){
-
+   console.log('modificarUsuario');
    this.currentSection = 'editUser';
    this.editingUser = { ...user };
 
   }
 
-  currentSection: string = 'initial'
-
-  userList: any[] = []
-
-  aUser: any = null
-
-  vehicless : any[] = []
-
- private _apiservice = inject(UsersService)
-
-  userID: string = ''
-
-  geTaUser() {
+  getUser() {
+    console.log('getUser');
     this._apiservice.getUser(this.userID).subscribe(
       (user: any) => {
-        this.currentSection = 'geTaUserTable';
+        this.currentSection = 'getUserTable';
         console.log(user);
         this.aUser = user;
         this.userID = '';
@@ -64,10 +57,19 @@ export class UsersComponent {
   }
 
 
- createUserr() {
+ createUser(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return;
+  }
+
   this._apiservice.createUser(this.userData).subscribe({
     next: (response) => {
       console.log('Usuario creado exitosamente:', response);
+      this.showSection('initial');
     },
     error: (error) => {
       console.error('Error al crear usuario:', error);
@@ -108,16 +110,11 @@ export class UsersComponent {
     }
   });
 
-  if(tipo == true){this.currentSection = 'initial'}
+  if(tipo == true){console.log('deleteUser'); this.currentSection = 'initial'}
 
 }
-
-  editingUser: any = null;
   
-
-
-
-  updateUser() {
+   updateUser() {
     const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
@@ -137,6 +134,7 @@ export class UsersComponent {
 
     // Método para actualizar la sección actual mostrada
     showSection(section: string) {
+      console.log('showSection',section);
       this.currentSection = section;
 
       if(section == 'getUser'){
