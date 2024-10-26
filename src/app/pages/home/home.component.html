@@ -10,14 +10,65 @@
         <p>Es una aplicacion que va a facilitarte el estacionar tu vehiculo con un solo click.</p>
     </section>
 
-    <section class="contacto">
+
+    <section class="info-seccion py-5">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <i class="bi bi-calculator display-4 mb-3"></i>
+              <h4>Cotización en 1'</h4>
+              <p>Use nuestro cotizador y sepa el precio en 1 minuto</p>
+            </div>
+            <div class="col-md-3">
+              <i class="bi bi-car-front display-4 mb-3"></i>
+              <h4>Opciones</h4>
+              <p>Deje su auto aqui (aca podemos agregar lo del lavado)</p>
+            </div>
+            <div class="col-md-3">
+              <i class="bi bi-warehouse display-4 mb-3"></i>
+              <h4>+ 200 cocheras</h4>
+              <p>Más de 200 plazas techadas y seguras disponibles</p>
+            </div>
+            <div class="col-md-3">
+              <i class="bi bi-airplane display-4 mb-3"></i>
+              <h4>Park to Fly</h4>
+              <p>Cocheras disponibles a solo 10' del Aeropuertto</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contacto">
         <h6>contactanos!</h6>
         <p>parkeasy&#64;gmail.com</p>
     </section>
-
-
-
-
-
+      
+      <section class="ubicacion py-5">
+        <div class="container">
+          <h3 class="text-center mb-4">Estamos bien ubicados</h3>
+          <p class="text-center">
+            Estamos ubicados en (ver de poner el mapa)
+          </p>
+          <div id="map" style="height: 400px; margin-top: 20px;"></div>
+        </div>
+      </section>
+      
 
 </body>
+
+
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+<script>
+  var map = L.map('map').setView([-34.8222, -58.535], 13); // Coordenadas
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  L.marker([-34.8222, -58.535]).addTo(map)
+    .bindPopup('Ubicación de ParkEasy')
+    .openPopup();
+</script>
