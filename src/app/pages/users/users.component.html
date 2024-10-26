@@ -1,4 +1,7 @@
 @if (currentSection == 'initial') {
+  <div *ngIf="usuarioCreado" class="container alert alert-success mt-3 text-center">
+    Usuario creado exitosamente.
+  </div>
   <div class="container mt-5 text-center">
     <!-- Título general -->
     <h2 class="mb-4">Gestión de Usuarios</h2>
@@ -6,7 +9,7 @@
     <!-- Obtener Todos los Usuarios -->
     <div class="card mb-4 shadow-sm p-3">
       <label class="h5 mb-3">Obtener Todos los Usuarios</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('getUser')">
+      <button type="button" class="btn btn-primary" (click)="showSection('getUsers')">
         <i class="fas fa-users"></i> Obtener Usuarios
       </button>
     </div>
@@ -19,23 +22,34 @@
       </button>
     </div>
 
+    <!-- Obtener un Usuario -->
     <div class="card shadow-sm p-3">
       <label class="h5 mb-3">Obtener un usuario por ID</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('getUser')">
+      <button type="button" class="btn btn-primary" (click)="showSection('getOneUser')">
         <i class="fas fa-user-plus"></i> Obtener un usuario
       </button>
     </div>
   </div>
 }
 
-@if (currentSection == 'getUser') {
+@if (currentSection == 'getOneUser') {
 
-  <form (ngSubmit)="getUser()" #userForm="ngForm" class="needs-validation" novalidate>
-    <!-- Campo Nombre -->
+  <form (ngSubmit)="getOneUser(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
+    <!-- Campo ID -->
     <div class="form-group mb-3">
-      <label for="name">ID</label>
-      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="userID" required placeholder="ID">
-      <div class="invalid-feedback">El ID es obligatorio.</div>
+      <label for="id">ID</label>
+      <input 
+        type="number" 
+        class="form-control" 
+        id="ID" 
+        name="ID" 
+        [(ngModel)]="userID" 
+        required 
+        placeholder="ID"
+        #userIDField="ngModel"
+        [class.is-invalid]="userIDField.invalid && (userIDField.dirty || userIDField.touched)"
+        />
+      <div class="invalid-feedback">Debe ingresar un ID.</div>
     </div>
     <div class="d-grid gap-2">
       <button type="submit" class="btn btn-primary">Encontrar</button>
@@ -92,7 +106,7 @@
 }
 
 
-@if (currentSection == 'getUser') {
+@if (currentSection == 'getUsers') {
   <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
     <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
       <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->

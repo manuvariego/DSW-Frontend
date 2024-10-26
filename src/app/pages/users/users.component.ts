@@ -12,7 +12,7 @@ import { isArray } from 'node:util';
   styleUrl: './users.component.css'
 })
 export class UsersComponent {
-
+  usuarioCreado = false;
   currentSection: string = 'initial';
   userList: any[] = [];
   aUser: any = null;
@@ -39,23 +39,30 @@ export class UsersComponent {
 
   }
 
-  getUser() {
-    console.log('getUser');
-    this._apiservice.getUser(this.userID).subscribe(
-      (user: any) => {
-        this.currentSection = 'getUserTable';
-        console.log(user);
-        this.aUser = user;
-        this.userID = '';
-      },
-      (error) => {
-        console.error('Error al obtener el usuario', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
-        alert('El usuario no existe o ocurrió un error al obtener la información.');
-      }
-    );
+  getOneUser(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return; // Detiene el envío si el formulario no es válido
   }
 
+  console.log('getOneUser');
+
+  this._apiservice.getUser(this.userID).subscribe(
+    (user: any) => {
+      this.currentSection = 'getUserTable';
+      console.log(user);
+      this.aUser = user;
+      this.userID = '';
+    },
+    (error) => {
+      console.error('Error al obtener el usuario', error);
+      alert('Usuario no encontrado.');
+    }
+  );
+  }
 
  createUser(form: NgForm) {
   if (form.invalid) {
@@ -69,7 +76,14 @@ export class UsersComponent {
   this._apiservice.createUser(this.userData).subscribe({
     next: (response) => {
       console.log('Usuario creado exitosamente:', response);
+      this.usuarioCreado = true;
       this.showSection('initial');
+      form.resetForm();
+
+    // Oculta el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.usuarioCreado = false;
+    }, 3000);
     },
     error: (error) => {
       console.error('Error al crear usuario:', error);
@@ -137,7 +151,7 @@ export class UsersComponent {
       console.log('showSection',section);
       this.currentSection = section;
 
-      if(section == 'getUser'){
+      if(section == 'getUsers'){
 
         this.getUsers()
 
