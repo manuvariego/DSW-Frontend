@@ -64,7 +64,7 @@
           <td>{{aGarage.name}}</td>
           <td>{{aGarage.address}}</td>
           <td>{{aGarage.email}}</td>
-          <td>{{aGarage.phone_number}}</td>
+          <td>{{aGarage.phoneNumber}}</td>
           <td>{{aGarage.location}}</td>
           <td>
             <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
@@ -104,7 +104,7 @@
         <td>{{ garage.name }}</td>
         <td>{{ garage.address }}</td>
         <td>{{ garage.email }}</td>
-        <td>{{ garage.phone_number }}</td>
+        <td>{{ garage.phoneNumber }}</td>
         <td>{{garage.location}}</td>
         <td>
           <button type="button" class="btn btn-danger btn-sm" (click)="deleteGarage(garage.cuit, false)">Eliminar</button>
@@ -142,7 +142,7 @@
         <div class="invalid-feedback">El email es obligatorio.</div>
       </div>
       <div class="col-md-6 mb-3">
-        <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="garageData.phone_number" required placeholder="Telefono">
+        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="garageData.phoneNumber" required placeholder="Telefono">
         <div class="invalid-feedback">El teléfono es obligatorio.</div>
       </div>
       <div class="col-md-6 mb-3">
@@ -179,7 +179,7 @@
       <div class="invalid-feedback">El email es obligatorio.</div>
     </div>
     <div class="form-group mb-3">
-      <input type="text" class="form-control" id="phone_number" name="phone_number" [(ngModel)]="editingGarage.phone_number" required placeholder="phone_number">
+      <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="editingGarage.phoneNumber" required placeholder="phoneNumber">
       <div class="invalid-feedback">El teléfono es obligatorio.</div>
     </div>
     <button type="submit" class="btn btn-primary"(click)="showSection('initial')">Guardar Cambios</button>

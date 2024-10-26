@@ -19,7 +19,7 @@ export class GaragesComponent {
     name: '',
     password: '',
     address: '',
-    phone_number: '',
+    phoneNumber: '',
     email:'',
     priceHour: 0,
     location: '',
