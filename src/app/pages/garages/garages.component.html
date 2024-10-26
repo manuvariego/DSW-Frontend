@@ -146,8 +146,11 @@
         <div class="invalid-feedback">El teléfono es obligatorio.</div>
       </div>
       <div class="col-md-6 mb-3">
-        <input type="text" class="form-control" id="location" name="location" [(ngModel)]="garageData.location" required placeholder="Locacion">
-        <div class="invalid-feedback">La locacion es obligatoria.</div>
+        <label for="location" class="form-label">Localidad</label>
+        <select class="form-select" id="location" name="location" [(ngModel)]="garageData.location" required placeholder="Localidad">
+          <option *ngFor="let location of locations" [value]="location.name">{{ location.name }}</option>
+        </select>
+        <div class="invalid-feedback">La localidad es obligatoria.</div>
       </div>
     </div>
 
@@ -183,3 +186,4 @@
     <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
   </form>
 </div>
+

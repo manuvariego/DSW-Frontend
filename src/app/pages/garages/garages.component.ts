@@ -142,4 +142,21 @@ getGarage(){
 
     }
 
+    locations: Array<any> = []; // Array para almacenar las localidades
+
+    ngOnInit() {
+      this.loadLocations(); // Cargar las localidades al iniciar
+    }
+
+    loadLocations() {
+      // Simular llamada a un servicio para obtener las localidades
+      this.locations = [
+        { name: 'Buenos Aires' },
+        { name: 'Córdoba' },
+        { name: 'Santa Fe' },
+        { name: 'Mendoza' }
+      ];
+    }
+  
+
 }
