@@ -13,9 +13,9 @@
 
     <!-- Crear un vehículo -->
     <div class="card shadow-sm p-3"> <!-- Caja con sombra -->
-      <label class="h5 mb-3">Crear un nuevo vehículo</label>
+      <label class="h5 mb-3">Dar de alta un vehículo</label>
       <button type="button" class="btn btn-primary" (click)="showSection('createVehicle')">
-        <i class="fas fa-plus-circle"></i> Crear Vehículo
+        <i class="fas fa-plus-circle"></i> Dar de alta un Vehículo
       </button>
     </div>
 
@@ -133,11 +133,15 @@
           <input type="text" class="form-control" id="owner" name="owner" [(ngModel)]="vehicleData.owner" required placeholder="Propietario">
           <div class="invalid-feedback">El nombre del propietario es obligatorio.</div>
         </div>
-        
         <!-- Campo Tipo -->
+          
         <div class="form-group mb-3">
-          <label for="type">Tipo de Vehículo: 'Ingrese 1 para camioneta o 2 para auto'</label>
-          <input type="text" class="form-control" id="type" name="type" [(ngModel)]="vehicleData.type" required placeholder="Tipo de Vehículo">
+          <label for="type">Tipo de Vehículo:</label>
+          <select class="form-control" id="type" name="type" [(ngModel)]="vehicleData.type" required>
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option value="4">Auto</option>
+            <option value="3">Camioneta</option>
+          </select>
           <div class="invalid-feedback">El tipo de vehículo es obligatorio.</div>
         </div>
         
@@ -159,11 +163,17 @@
     <form (ngSubmit)="updateUser()" class="needs-validation" novalidate>
       
       <!-- Campo Tipo -->
-      <div class="form-group">
+     
+      <div class="form-group mb-3">
         <label for="type">Tipo de Vehículo:</label>
-        <input type="text" id="type" class="form-control" [(ngModel)]="editingVehicle.type" name="type" required>
-        <div class="invalid-feedback">Este campo es obligatorio</div>
+        <select class="form-control" id="type" name="type" [(ngModel)]="vehicleData.type" required>
+          <option value="" disabled selected>Seleccione un tipo</option>
+          <option value="4">Auto</option>
+          <option value="3">Camioneta</option>
+        </select>
+        <div class="invalid-feedback">El tipo de vehículo es obligatorio.</div>
       </div>
+      
   
       <!-- Campo Clase (DNI en este caso parece no tener sentido, lo renombré como "Clase") -->
       <div class="form-group">

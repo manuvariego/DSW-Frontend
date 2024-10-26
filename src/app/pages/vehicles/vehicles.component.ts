@@ -31,7 +31,7 @@ export class VehiclesComponent {
         this.licensePlate =''
       },
       (error) => {
-        console.error('Error al obtener un Vehicle', error);
+        console.error('Error al obtener un Vehiculo', error);
         // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('El Vehiculo no existe o ocurrió un error al obtener la información.');
       }
@@ -77,19 +77,19 @@ export class VehiclesComponent {
    }
  
   updateUser() {
-    const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
+    const confirmation = confirm('¿Está seguro de que desea modificar este vehiculo?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
     }
 
     this._apiservice.updateVehicle(this.editingVehicle).subscribe({
       next: (response) =>{
-      console.log('Usuario actualizado exitosamente', response);
+      console.log('Vehiculo actualizado exitosamente', response);
       this.editingVehicle = null; // Limpia la variable de edición
       this.getVehicles(); // Refresca la lista de usuarios
       },
     error: (error) => {
-      console.error('Error al actualizar el usuario', error);
+      console.error('Error al actualizar el Vehiculo', error);
     }
   });
   }
