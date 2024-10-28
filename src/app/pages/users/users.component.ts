@@ -83,7 +83,7 @@ export class UsersComponent {
     // Oculta el mensaje después de 3 segundos
     setTimeout(() => {
       this.usuarioCreado = false;
-    }, 3000);
+    }, 3000); 
     },
     error: (error) => {
       console.error('Error al crear usuario:', error);

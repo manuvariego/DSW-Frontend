@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservationTypesService } from '../../services/reservationTypes.service.js';
 import { runInThisContext } from 'vm'; 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-reservationTypes',
@@ -13,17 +13,26 @@ import { FormsModule } from '@angular/forms';
 })
 export class ReservationTypesComponent {
 
+  resTypeCreado = false
   private _apiservice = inject(ReservationTypesService) 
-
   reservationTypeList: any[] = [] 
 
   desc: string =''
   Cuit: string = ''
   aReservationType: any = null
-
   reservationType: any = null 
 
-    getReservationType(){
+    getReservationType(form: NgForm){
+      if (form.invalid) {
+        Object.keys(form.controls).forEach(field => {
+          const control = form.controls[field];
+          control.markAsTouched({ onlySelf: true });
+        });
+        return; // Detiene el envío si el formulario no es válido
+      }
+    
+      console.log('getReservationType');
+
       this._apiservice.getReservationType(this.desc, this.Cuit).subscribe(
         (reservationType: any) => {
           this.currentSection = "geTaReservationTypeTable"
@@ -34,7 +43,6 @@ export class ReservationTypesComponent {
         },
         (error) => {
           console.error('Error al obtener un tipo de Reserva', error);
-          // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
           alert('El tipo de Reserva no existe o ocurrió un error al obtener la información.');
         }
       );
@@ -116,17 +124,31 @@ export class ReservationTypesComponent {
   }
 
 
-  createReservationType() {
+  createReservationType(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+
     this._apiservice.createReservationType(this.reservationTypeData).subscribe({
       next: (response) => {
         console.log('Tipo de reserva creado exitosamente:', response);
+        this.resTypeCreado = true;
+        this.showSection('initial');
+        form.resetForm();
+      // Oculta el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.resTypeCreado = false;
+    }, 3000); 
       },
       error: (error) => {
         console.error('Error al crear el tipo de reserva:', error);
       }
     });
   }
-
 
 
   currentSection: String = 'initReservationType'

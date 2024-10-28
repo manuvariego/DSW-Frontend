@@ -96,11 +96,11 @@ theReservation: any = null
 createReservation() {
   this.reservationService.createReservation(this.reservationData).subscribe({
     next: (response) => {
-      console.log('Tipo de reserva creado exitosamente:', response);
+      console.log('Reserva creada exitosamente:', response);
       this.theReservation = response
     },
     error: (error) => {
-      console.error('Error al crear el tipo de reserva:', error);
+      console.error('Error al crear la reserva:', error);
     }
   });
 }

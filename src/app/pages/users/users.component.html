@@ -173,10 +173,10 @@
       </div>
     </div>
 
-    <!-- Campo contraseña (se le puede poner que sea de tipo contraseña para que muestre los puntitos)-->
+    <!-- Campo contraseña -->
     <div class="form-group mb-3">
       <label for="password">Contraseña</label>
-      <input id="password" name="password" placeholder="Contraseña" type="text" class="form-control"
+      <input id="password" name="password" placeholder="Contraseña" type="password" class="form-control"
         [(ngModel)]="userData.password" #password="ngModel" required
         [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />
       <div *ngIf="password.errors?.['required'] && (password.dirty || password.touched)" class="invalid-feedback">

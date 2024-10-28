@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm} from '@angular/forms';
 
 
 @Component({
@@ -13,17 +13,33 @@ import { FormsModule } from '@angular/forms';
 })
 export class VehicleTypeComponent {
 
-
+  tipoVehiculoCreado = false
+  currentSection: String = 'initial'
   private _apiservice = inject(TypeVehicleService)
-
   typeVehiclesList: any[] = []
-
   idType: string =''
-
   aTypeVehicle: any = null
+  editingTypeVehicle: any = null
+
+  typeVehicleData = {
+
+    id: '',
+    name:'',
+
+  }
 
 
-  getATypevehicle(){
+  getATypevehicle(form: NgForm){
+      if (form.invalid) {
+        Object.keys(form.controls).forEach(field => {
+          const control = form.controls[field];
+          control.markAsTouched({ onlySelf: true });
+        });
+        return; // Detiene el envío si el formulario no es válido
+      }
+    
+      console.log('getATypevehicle');
+    
     this._apiservice.getTypeVehicle(this.idType).subscribe(
       (typeVehicle: any) => {
         this.currentSection = "geTaTypeVehicleTable"
@@ -33,7 +49,6 @@ export class VehicleTypeComponent {
       },
       (error) => {
         console.error('Error al obtener un typeVehicle', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('El tipo de Vehiculo no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -60,14 +75,6 @@ export class VehicleTypeComponent {
 
   }
 
-  typeVehicleData = {
-
-    id: '',
-    name:'',
-
-  }
-
-  editingTypeVehicle: any = null
 
   modificarTipoVehiculo(typeVehicle:any){
 
@@ -114,21 +121,34 @@ export class VehicleTypeComponent {
   }
 
 
-
-  createVehicle() {
-    this._apiservice.createTypeVehicle(this.typeVehicleData).subscribe({
+  createTypeVehicle(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+   this._apiservice.createTypeVehicle(this.typeVehicleData).subscribe({
       next: (response) => {
         console.log('Tipo de Vehiculo creado exitosamente:', response);
+        this.tipoVehiculoCreado = true;
+        this.showSection('initial');
+        form.resetForm();
+
+      // Oculta el mensaje después de 3 segundos
+        setTimeout(() => {
+        this.tipoVehiculoCreado = false;
+      }, 3000);
       },
       error: (error) => {
-        console.error('Error al crear tipo de vehiculo:', error);
+        console.error('Error al crear el tipo de vehículo:', error);
       }
     });
   }
+    
 
 
-
-  currentSection: String = 'initial'
 
   showSection(section: string) {
     this.currentSection = section;

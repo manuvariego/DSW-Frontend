@@ -102,7 +102,6 @@ export class GaragesComponent {
       },
       (error) => {
         console.error('Error al obtener un Garage', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('El garage no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -133,7 +132,7 @@ export class GaragesComponent {
     this._apiservice.deleteGarage(garageCuit).subscribe({
       next: (response) => {
         console.log('Cochera eliminada exitosamente', response);
-        this.getGarages(); // Refrescar la lista de cocheras
+        this.getGarages(); // Refresca la lista de cocheras
       },
       error: (error) => {
         console.error('Error al eliminar la cochera', error);

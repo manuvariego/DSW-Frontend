@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ParkingSpaceService } from '../../services/parking-space.service.js';
 
 @Component({
@@ -11,6 +11,15 @@ import { ParkingSpaceService } from '../../services/parking-space.service.js';
   styleUrl: './parking-space.component.css'
 })
 export class ParkingSpaceComponent {
+
+  parkingCreado = false;
+  currentSection: string = 'initial'
+
+  ParkingSpaceList: any[] = []
+  aParkingSpace: any = null
+  private _apiservice = inject(ParkingSpaceService)
+  numberParkingSpace: string = ''
+  cuitGarage: string = ''
 
   ParkingSpaceData = {
 
@@ -28,19 +37,18 @@ export class ParkingSpaceComponent {
    this.editingParkingSpace = { ...ParkingSpace };
 
   }
+ 
 
-  currentSection: string = 'initial'
+ geTaParkingSpace(form: NgForm){
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return; // Detiene el envío si el formulario no es válido
+  }
 
-  ParkingSpaceList: any[] = []
-
-  aParkingSpace: any = null
-
- private _apiservice = inject(ParkingSpaceService)
-
-  numberParkingSpace: string = ''
-  cuitGarage: string = ''
-
- geTaParkingSpace(){
+  console.log('geTaParkingSpace');
     this._apiservice.getParkingSpace(this.numberParkingSpace,this.cuitGarage).subscribe(
       (ParkingSpace: any) => {
         this.currentSection = "geTaParkingSpaceTable"
@@ -50,17 +58,30 @@ export class ParkingSpaceComponent {
       },
       (error) => {
         console.error('Error al obtener un ParkingSpace', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('El ParkingSpace no existe o ocurrió un error al obtener la información.');
       }
     );
 }
 
 
- createParkingSpace() {
+ createParkingSpace(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return;
+  }
   this._apiservice.createParkingSpace(this.ParkingSpaceData).subscribe({
     next: (response) => {
       console.log('Lugar de Estacionamiento creado exitosamente:', response);
+      this.parkingCreado = true;
+      this.showSection('initial');
+      form.resetForm();
+      // Oculta el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.parkingCreado = false;
+    }, 3000); 
     },
     error: (error) => {
       console.error('Error al crear Lugar de Estacionamiento:', error);

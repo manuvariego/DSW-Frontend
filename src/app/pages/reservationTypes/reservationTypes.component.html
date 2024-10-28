@@ -1,4 +1,7 @@
 @if (currentSection == 'initReservationType' ) {
+  <div *ngIf="resTypeCreado" class="container alert alert-success mt-3 text-center">
+    Tipo de estadía creado exitosamente.
+  </div>
     <div class="container mt-5 text-center">
       <!-- Título general -->
       <h2 class="mb-4">Gestión de tipos de reserva</h2>
@@ -32,7 +35,7 @@
     
   @if (currentSection == 'geTaReservationType') {
   
-    <form (ngSubmit)="getReservationType()" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
+    <form (ngSubmit)="getReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
       <!-- Campos -->
       <div class="form-group mb-3">
         <label for="name"> Descripcion </label>
@@ -120,13 +123,16 @@
       <div class="container mt-5">
         <h2 class="text-center mb-4">Crear Nuevo Tipo de Reserva</h2>
         
-        <form (ngSubmit)="createReservationType()" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
+        <form (ngSubmit)="createReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
           
           <!-- Campo descripcion-->
           <div class="form-group mb-3">
             <label for="description">Descripcion:</label>
-            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="reservationTypeData.description" required placeholder="Descripcion">
-            <div class="invalid-feedback">La descripcion es obligatoria.</div>
+            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="reservationTypeData.description" required placeholder="Descripcion"
+            #description="ngModel" required [class.is-invalid]="description.invalid && (description.dirty || description.touched)" />
+            <div *ngIf="description.errors?.['required'] && (description.dirty || description.touched)" class="invalid-feedback">
+              Este campo es requerido.
+            </div>
           </div>
     
           
@@ -137,10 +143,14 @@
             <div class="invalid-feedback">El precio del tipo de reserva es obligatorio.</div>
           </div>
 
+         <!-- Campo CUIT -->
           <div class="form-group mb-3">
-            <label for="price">Cuit</label>
-            <input type="text" class="form-control" id="price" name="price" [(ngModel)]="reservationTypeData.garage" required placeholder="Precio">
-            <div class="invalid-feedback">El cuit es obligatorio.</div>
+            <label for="price">Cuit:</label>
+            <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="reservationTypeData.garage" required placeholder="CUIT"
+            #CUIT="ngModel" required [class.is-invalid]="CUIT.invalid && (CUIT.dirty || CUIT.touched)" />
+            <div *ngIf="CUIT.errors?.['required'] && (CUIT.dirty || CUIT.touched)" class="invalid-feedback">
+              Este campo es requerido.
+            </div>
           </div>
           
           <!-- Botones -->

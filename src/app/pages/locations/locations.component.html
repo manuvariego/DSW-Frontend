@@ -1,5 +1,8 @@
 
 @if (currentSection == 'initial') {
+  <div *ngIf="localidadCreada" class="container alert alert-success mt-3 text-center">
+    Localidad creada exitosamente.
+  </div>
   <div class="container mt-5 text-center">
     <!-- Título general -->
     <h2 class="mb-4">Gestión de Localidades</h2>
@@ -32,12 +35,13 @@
 
 @if (currentSection == 'geTaLocation') {
 
-  <form (ngSubmit)="getLocation()" #userForm="ngForm" class="needs-validation" novalidate>
-    <!-- Campo Nombre -->
+  <form (ngSubmit)="getLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
+    <!-- Campo ID -->
     <div class="form-group mb-3">
       <label for="name">ID</label>
-      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="locationID" required placeholder="ID">
-      <div class="invalid-feedback">El id es obligatorio.</div>
+      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="locationID" required placeholder="ID"
+      #IDField="ngModel" [class.is-invalid]="IDField.invalid && (IDField.dirty || IDField.touched)" />
+      <div class="invalid-feedback">Debe ingresar un ID.</div>
     </div>
     <div class="d-grid gap-2">
       <button type="submit" class="btn btn-primary">Encontrar</button>
@@ -107,17 +111,11 @@
   <!-- Crear Nueva Localidad -->
 <div *ngIf="currentSection == 'createLocation'" class="container mt-5">
   <h3 class="text-center mb-4">Dar de alta una Localidad</h3>
-  <form (ngSubmit)="createLocation()" #locationForm="ngForm" class="needs-validation" novalidate>
+  <form (ngSubmit)="createLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <input 
-          type="text" 
-          class="form-control" 
-          id="name" 
-          name="name" 
-          [(ngModel)]="locationData.name" 
-          required 
-          placeholder="Nombre">
+        <input type="text" class="form-control" id="name" name="name"  [(ngModel)]="locationData.name" required placeholder="Nombre"
+        #nameField="ngModel" [class.is-invalid]="nameField.invalid && (nameField.dirty || nameField.touched)" />
         <div class="invalid-feedback">El nombre es obligatorio.</div>
       </div>
 

@@ -1,4 +1,7 @@
 @if (currentSection == 'initial') {
+  <div *ngIf="parkingCreado" class="container alert alert-success mt-3 text-center">
+    Parking creado exitosamente.
+  </div>
     <div class="container mt-5 text-center">
       <!-- Título general -->
       <h2 class="mb-4">Gestión de Lugar de Estacionamientos</h2>
@@ -30,18 +33,23 @@
   
   @if (currentSection == 'geTaParkingSpace') {
   
-    <form (ngSubmit)="geTaParkingSpace()" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
-      <!-- Campo Nombre -->
+    <form (ngSubmit)="geTaParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
+      <!-- Campo Numero -->
       <div class="form-group mb-3">
-        <label for="name">Numero</label>
-        <input type="text" class="form-control" id="number" name="number" [(ngModel)]="numberParkingSpace" required placeholder="Numero">
-        <div class="invalid-feedback">El numero es obligatorio.</div>
+        <label for="number">Numero</label>
+        <input type="text" class="form-control" id="number" name="number" [(ngModel)]="numberParkingSpace" required placeholder="Numero"
+        #numberParkingSpaceField="ngModel" [class.is-invalid]="numberParkingSpaceField.invalid && (numberParkingSpaceField.dirty || numberParkingSpaceField.touched)" />
+        <div class="invalid-feedback">Debe ingresar un número de parking.</div>
       </div>
+  
+       <!-- Campo Cuit -->
       <div class="form-group mb-3">
-        <label for="name">Cuit de Cochera</label>
-        <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="cuitGarage" required placeholder="Cuit">
-        <div class="invalid-feedback">El cuit es obligatorio.</div>
+        <label for="cuitGarage">Cuit de Cochera</label>
+        <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="cuitGarage" required placeholder="Cuit"
+        #garageField="ngModel" [class.is-invalid]="garageField.invalid && (garageField.dirty || garageField.touched)" />
+        <div class="invalid-feedback">Debe ingresar un CUIT.</div>
       </div>
+
       <div class="d-grid gap-2">
         <button type="submit" class="btn btn-primary">Encontrar</button>
         <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
@@ -118,30 +126,39 @@
     <div class="container mt-5">
       <h2 class="text-center mb-4">Crear Nuevo Lugar de Estacionamiento</h2>
       
-      <form (ngSubmit)="createParkingSpace()" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
+      <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
 
         <div class="form-group mb-3">
-          <label for="name">Numero de Parking:</label>
-          <input type="text" class="form-control" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required placeholder="Numero de Parking">
-          <div class="invalid-feedback">El numero es obligatorio.</div>
+          <label for="number">Numero de Parking:</label>
+          <input type="text" class="form-control" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required placeholder="Numero de Parking"
+          #numberParkingSpace="ngModel" required [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
+          <div *ngIf="numberParkingSpace.errors?.['required'] && (numberParkingSpace.dirty || numberParkingSpace.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
         </div>
         
 
         <div class="form-group mb-3">
-          <label for="lastname">Garage:</label>
-          <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="ParkingSpaceData.garage" required placeholder="Numero de Garage">
-          <div class="invalid-feedback">El Garage es obligatorio.</div>
+          <label for="garage">Garage:</label>
+          <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="ParkingSpaceData.garage" required placeholder="Numero de Garage"
+          #cuitGarage="ngModel" required [class.is-invalid]="cuitGarage.invalid && (cuitGarage.dirty || cuitGarage.touched)" />
+          <div *ngIf="cuitGarage.errors?.['required'] && (cuitGarage.dirty || cuitGarage.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
         </div>
 
         <div class="form-group mb-3">
-          <label for="lastname">Tipo de vehiculo:</label>
-          <input type="text" class="form-control" id="typeVehicle" name="typeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" required placeholder="Tipo de Vehiculo">
-          <div class="invalid-feedback">El tipo de vehiculo es obligatorio.</div>
+          <label for="typeVehicle">Tipo de vehiculo:</label>
+          <input type="text" class="form-control" id="typeVehicle" name="typeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" required placeholder="Tipo de Vehiculo"
+          #typeVehicle="ngModel" required [class.is-invalid]="typeVehicle.invalid && (typeVehicle.dirty || typeVehicle.touched)" />
+          <div *ngIf="typeVehicle.errors?.['required'] && (typeVehicle.dirty || typeVehicle.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
         </div>
         
         <!-- Botones -->
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Enviar</button>
+          <button type="submit" class="btn btn-primary" >Enviar</button>
           <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
         </div>
       </form>
@@ -156,27 +173,27 @@
       <form (ngSubmit)="updateParkingSpace()" class="needs-validation" novalidate>
       
         <div class="form-group">
-          <label for="name">Numero de Parking:</label>
+          <label for="number">Numero de Parking:</label>
           <input type="text" id="number" class="form-control" [(ngModel)]="editingParkingSpace.number" name="number" required>
           <div class="invalid-feedback">El numero es obligatorio.</div>
         </div>
   
         <div class="form-group">
-          <label for="lastname">Garage:</label>
+          <label for="garage">Garage:</label>
           <input type="text" id="Garage" class="form-control" [(ngModel)]="editingParkingSpace.garage" name="Garage" required>
           <div class="invalid-feedback">El garage es obligatorio.</div>
         </div>
 
         <div class="form-group">
-          <label for="lastname">Tipo de vehiculo:</label>
+          <label for="typeVehicle">Tipo de vehiculo:</label>
           <input type="text" id="Garage" class="form-control" [(ngModel)]="editingParkingSpace.TypeVehicle" name="TypeVehicle" required>
           <div class="invalid-feedback">El tipo de vehiculo es obligatorio.</div>
         </div>
       
         <!-- Botones -->
         <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initial')">Guardar Cambios</button>
-        <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
+        <button type="submit" class="btn btn-primary btn-block" >Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary btn-block mt-2" >Cancelar</button>
           </div>
       </form>
     </div>

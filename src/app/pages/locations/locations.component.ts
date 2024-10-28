@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, NgFor } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
 import { isArray } from 'node:util';
 import { LocationsService } from '../../services/locations.service.js';
 
@@ -12,6 +12,14 @@ import { LocationsService } from '../../services/locations.service.js';
   styleUrl: './locations.component.css'
 })
 export class LocationsComponent {
+
+  localidadCreada = false; 
+  currentSection: string = 'initial'
+  locationList: any[] = []
+  garages : any[] = []
+  private _apiservice = inject(LocationsService)
+  locationID: string = ''
+  aLocation: any = null
 
   locationData = {
 
@@ -29,19 +37,18 @@ export class LocationsComponent {
 
   }
 
-  currentSection: string = 'initial'
 
-  locationList: any[] = []
-
-  garages : any[] = []
-
- private _apiservice = inject(LocationsService)
-
-  locationID: string = ''
-
-  aLocation: any = null
-
-  getLocation(){
+  getLocation(form: NgForm){
+      if (form.invalid) {
+        Object.keys(form.controls).forEach(field => {
+          const control = form.controls[field];
+          control.markAsTouched({ onlySelf: true });
+        });
+        return; // Detiene el envío si el formulario no es válido
+      }
+    
+      console.log('getLocation');
+    
 
     this._apiservice.getLocation(this.locationID).subscribe(
       (location: any) => {
@@ -52,7 +59,6 @@ export class LocationsComponent {
       },
       (error) => {
         console.error('Error al obtener un Location', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('La Localidad no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -60,10 +66,26 @@ export class LocationsComponent {
   }
 
 
- createLocation() {
+ createLocation(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return;
+  }
+
   this._apiservice.createLocation(this.locationData).subscribe({
     next: (response) => {
       console.log('Localidad dada de alta exitosamente:', response);
+      this.localidadCreada = true;
+      this.showSection('initial');
+      form.resetForm();
+
+    // Oculta el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.localidadCreada = false;
+    }, 3000); 
     },
     error: (error) => {
       console.error('Error al crear la localidad:', error);
@@ -96,7 +118,7 @@ export class LocationsComponent {
   this._apiservice.deleteLocation(locationId).subscribe({
     next: (response) => {
       console.log('Localidad eliminada exitosamente', response);
-      this.getLocations(); // Refrescar la lista de localidades
+      this.getLocations(); // Refresca la lista de localidades
     },
     error: (error) => {
       console.error('Error al eliminar la localidad', error);

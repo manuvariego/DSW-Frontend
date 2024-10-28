@@ -1,4 +1,7 @@
 @if (currentSection == 'initVehicles') {
+  <div *ngIf="vehiculoCreado" class="container alert alert-success mt-3 text-center">
+    Vehiculo creado exitosamente.
+  </div>
   <div class="container mt-5 text-center">
     <!-- Título general -->
     <h2 class="mb-4">Gestión de Vehículos</h2>
@@ -19,7 +22,7 @@
       </button>
     </div>
 
-
+   <!-- Obtener un vehículo por matricula -->
     <div class="card shadow-sm p-3">
       <label class="h5 mb-3">Obtener un vehiculo por Matricula</label>
       <button type="button" class="btn btn-primary" (click)="showSection('geTaVehicle')">
@@ -32,12 +35,13 @@
   
 @if (currentSection == 'geTaVehicle') {
 
-  <form (ngSubmit)="getAvehicle()" #userForm="ngForm" class="needs-validation" novalidate>
-    <!-- Campo Nombre -->
+  <form (ngSubmit)="getAvehicle(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
+    <!-- Campo Matricula -->
     <div class="form-group mb-3">
       <label for="name">Matricula</label>
-      <input type="text" class="form-control" id="licensePlate" name="licensePlate" [(ngModel)]="licensePlate" required placeholder="licensePlate">
-      <div class="invalid-feedback">La matricula es obligatoria.</div>
+      <input type="text" class="form-control" id="licensePlate" name="licensePlate" [(ngModel)]="licensePlate" required placeholder="licensePlate"
+      #license_plateField="ngModel" [class.is-invalid]="license_plateField.invalid && (license_plateField.dirty || license_plateField.touched)">
+      <div class="invalid-feedback">Debe ingresar una matricula.</div>
     </div>
     <div class="d-grid gap-2">
       <button type="submit" class="btn btn-primary">Encontrar</button>
@@ -118,22 +122,29 @@
     <div class="container mt-5">
       <h2 class="text-center mb-4">Crear Nuevo Vehículo</h2>
       
-      <form (ngSubmit)="createVehicle()" #userForm="ngForm" class="needs-validation" novalidate>
+      <form (ngSubmit)="createVehicle(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
         
         <!-- Campo License Plate -->
         <div class="form-group mb-3">
           <label for="license_plate">Matrícula:</label>
-          <input type="text" class="form-control" id="license_plate" name="license_plate" [(ngModel)]="vehicleData.license_plate" required placeholder="Matrícula">
-          <div class="invalid-feedback">La matrícula es obligatoria.</div>
+          <input type="text" class="form-control" id="license_plate" name="license_plate" [(ngModel)]="vehicleData.license_plate" required placeholder="Matrícula"
+          #license_plate="ngModel" required [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)" />
+          <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)" class="invalid-feedback">
+          Este campo es requerido.
+          </div>
         </div>
   
         <!-- Campo Owner -->
         <div class="form-group mb-3">
           <label for="owner">ID Propietario:</label>
-          <input type="text" class="form-control" id="owner" name="owner" [(ngModel)]="vehicleData.owner" required placeholder="Propietario">
-          <div class="invalid-feedback">El nombre del propietario es obligatorio.</div>
+          <input type="text" class="form-control" id="owner" name="owner" [(ngModel)]="vehicleData.owner" required placeholder="Propietario"
+          #id="ngModel" required [class.is-invalid]="id.invalid && (id.dirty || id.touched)" />
+          <div *ngIf="id.errors?.['required'] && (id.dirty || id.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
         </div>
-        <!-- Campo Tipo -->
+
+        <!-- Campo Tipo (falta poner lo del campo requerido)-->
           
         <div class="form-group mb-3">
           <label for="type">Tipo de Vehículo:</label>
@@ -144,6 +155,7 @@
           </select>
           <div class="invalid-feedback">El tipo de vehículo es obligatorio.</div>
         </div>
+      
         
         <!-- Botones -->
         <div class="d-grid gap-2">

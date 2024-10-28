@@ -34,11 +34,12 @@
 
 @if (currentSection == 'geTaGarage') {
 <form (ngSubmit)="getGarage()" #userForm="ngForm" class="needs-validation" novalidate>
-  <!-- Campo Nombre -->
+  <!-- Campo Cuit -->
   <div class="form-group mb-3">
     <label for="name">CUIT</label>
-    <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="garageCuit" required placeholder="CUIT">
-    <div class="invalid-feedback">El CUIT es obligatorio.</div>
+    <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="garageCuit" required placeholder="CUIT"
+    #cuitField="ngModel" [class.is-invalid]="cuitField.invalid && (cuitField.dirty || cuitField.touched)" />
+    <div class="invalid-feedback">Debe ingresar un CUIT.</div>
   </div>
   <div class="d-grid gap-2">
     <button type="submit" class="btn btn-primary">Encontrar</button>
@@ -150,7 +151,7 @@
       <!-- Campo password -->
       <div class="col-md-6 mb-3">
         <label for="password">Contraseña</label>
-        <input id="password" name="password" placeholder="Contraseña" type="text" class="form-control"
+        <input id="password" name="password" placeholder="Contraseña" type="password" class="form-control"
           [(ngModel)]="garageData.password" #password="ngModel" required
           [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />
         <div *ngIf="password.errors?.['required'] && (password.dirty || password.touched)" class="invalid-feedback">
