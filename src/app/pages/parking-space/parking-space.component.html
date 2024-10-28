@@ -149,8 +149,12 @@
 
         <div class="form-group mb-3">
           <label for="typeVehicle">Tipo de vehiculo:</label>
-          <input type="text" class="form-control" id="typeVehicle" name="typeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" required placeholder="Tipo de Vehiculo"
-          #typeVehicle="ngModel" required [class.is-invalid]="typeVehicle.invalid && (typeVehicle.dirty || typeVehicle.touched)" />
+          <select class="form-control" id="typeVehicle" name="typeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" required placeholder="Tipo de Vehiculo"
+          #typeVehicle="ngModel" required [class.is-invalid]="typeVehicle.invalid && (typeVehicle.dirty || typeVehicle.touched)">
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option value="4">Auto</option>
+            <option value="3">Camioneta</option>
+          </select>
           <div *ngIf="typeVehicle.errors?.['required'] && (typeVehicle.dirty || typeVehicle.touched)" class="invalid-feedback">
             Este campo es requerido.
           </div>

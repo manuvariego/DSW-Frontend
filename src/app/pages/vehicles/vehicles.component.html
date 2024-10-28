@@ -148,12 +148,15 @@
           
         <div class="form-group mb-3">
           <label for="type">Tipo de Vehículo:</label>
-          <select class="form-control" id="type" name="type" [(ngModel)]="vehicleData.type" required>
+          <select class="form-control" id="type" name="type" [(ngModel)]="vehicleData.type" required
+          #typeVehicle="ngModel" required [class.is-invalid]="typeVehicle.invalid && (typeVehicle.dirty || typeVehicle.touched)">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option value="4">Auto</option>
             <option value="3">Camioneta</option>
           </select>
-          <div class="invalid-feedback">El tipo de vehículo es obligatorio.</div>
+          <div *ngIf="typeVehicle.errors?.['required'] && (typeVehicle.dirty || typeVehicle.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
         </div>
       
         
