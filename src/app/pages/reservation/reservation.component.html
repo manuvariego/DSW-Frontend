@@ -2,89 +2,90 @@
 <div class="form-reservation">
   <h3>Reserva tu Estacionamiento</h3>
   <form>
-    <select class="form-control" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate"   name="vehicle" required>
+    <select class="form-control" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate"
+      name="vehicle" required>
       <option value="">Selecciona tu Vehículo</option>
       <!-- Recorre los vehículos y genera una opción por cada uno -->
-      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate" > <!-- Asegúrate de usar la propiedad correcta aquí -->
+      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate">
+        <!-- Asegúrate de usar la propiedad correcta aquí -->
         {{ vehicle.license_plate }} <!-- Muestra la propiedad que desees (por ejemplo, patente) -->
       </option>
     </select>
 
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at" [(ngModel)]="filters.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" />
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at" [(ngModel)]="filters.check_out_at" name="checkOut" required placeholder="Hora de Salida" />
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at"
+      [(ngModel)]="filters.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" />
+    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at"
+      [(ngModel)]="filters.check_out_at" name="checkOut" required placeholder="Hora de Salida" />
 
-    <button type = "button" class= "btn btn-primary" (click)="showSection('garages')">Buscar cocheras disponibles</button>
-  </form> 
+    <button type="button" class="btn btn-primary" (click)="showSection('garages')">Buscar cocheras disponibles</button>
+  </form>
 </div>
 }
 
 @if (currentSection == 'garages'){
-  <div class="container mt-5">
-    <h3 class="text-center mb-4">Listado de Cocheras</h3>
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">CUIT</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Direccion</th>
-          <th scope="col">Email</th>
-          <th scope="col">Telefono</th>
-          <th scope="col">Locacion</th>
-          <th scope="col">PrecioxHora</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let garage of Garages; let i = index">
-          <td>{{ garage.cuit }}</td>
-          <td>{{ garage.name }}</td>
-          <td>{{ garage.address }}</td>
-          <td>{{ garage.email }}</td>
-          <td>{{ garage.phoneNumber }}</td>
-          <td>{{garage.location}}</td>
-          <td>
-            <button type="button" class="btn btn-primary" (click)="saveGarage(garage)">Seleccionar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
-  </div>
+<div class="container mt-5">
+  <h3 class="text-center mb-4">Listado de Cocheras</h3>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">CUIT</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Email</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Locacion</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let garage of Garages; let i = index">
+        <td>{{ garage.cuit }}</td>
+        <td>{{ garage.name }}</td>
+        <td>{{ garage.address }}</td>
+        <td>{{ garage.email }}</td>
+        <td>{{ garage.phoneNumber }}</td>
+        <td>{{garage.location}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="saveGarage(garage)">Seleccionar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+</div>
 
 }
 
 @if (currentSection == 'realizada'){
 
-  <div class="container mt-5">
-    <h3 class="text-center mb-4">Reserva</h3>
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">Hora realizada</th>
-          <th scope="col">Hora de ingreso</th>
-          <th scope="col">Hora de salida</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Monto</th>
-          <th scope="col">Vehiculo</th>
-          <th scope="col">Garage</th>
-          <th scope="col">Parking Space</th>
-        </tr>
-      </thead>
-      <tbody>
-          <td>{{ theReservation.date_time_reservation | date: 'dd/MM/yyyy, h:mm a' }}</td>
-          <td>{{ theReservation.check_in_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
-          <td>{{ theReservation.check_out_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
-          <td>{{theReservation.estado }}</td>
-          <td>{{theReservation.amount }}</td>
-          <td>{{theReservation.vehicle.license_plate}}</td>
-          <td>{{theReservation.garage}}</td>
-          <td>{{theReservation.parkingSpace.number}}</td>
-      </tbody>
-    </table>
-    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
-  </div>
+<div class="container mt-5">
+  <h3 class="text-center mb-4">Reserva</h3>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Hora realizada</th>
+        <th scope="col">Hora de ingreso</th>
+        <th scope="col">Hora de salida</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Monto</th>
+        <th scope="col">Vehiculo</th>
+        <th scope="col">Garage</th>
+        <th scope="col">Parking Space</th>
+      </tr>
+    </thead>
+    <tbody>
+      <td>{{ theReservation.date_time_reservation | date: 'dd/MM/yyyy, h:mm a' }}</td>
+      <td>{{ theReservation.check_in_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
+      <td>{{ theReservation.check_out_at | date: 'dd/MM/yyyy, h:mm a' }}</td>
+      <td>{{theReservation.estado }}</td>
+      <td>{{theReservation.amount }}</td>
+      <td>{{theReservation.vehicle.license_plate}}</td>
+      <td>{{theReservation.garage}}</td>
+      <td>{{theReservation.parkingSpace.number}}</td>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+</div>
 
 
 }
-
-
