@@ -222,25 +222,45 @@
   <form (ngSubmit)="updateGarage()" class="needs-validation" novalidate>
 
     <div class="form-group mb-3">
+      <label for="Name">Nombre:</label>
       <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingGarage.name" required
-        placeholder="Name">
-      <div class="invalid-feedback">El nombre es obligatorio.</div>
+        placeholder="Name"
+        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+        <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+          Este campo es requerido.
+        </div>
     </div>
+
     <div class="form-group mb-3">
+      <label for="Address">Dirección:</label>
       <input type="text" class="form-control" id="address" name="address" [(ngModel)]="editingGarage.address" required
-        placeholder="Address">
-      <div class="invalid-feedback">La dirección es obligatoria.</div>
+        placeholder="Address"
+        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
+        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+          Este campo es requerido.
+        </div>
     </div>
+
     <div class="form-group mb-3">
+      <label for="Email">Email:</label>
       <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editingGarage.email" required
-        placeholder="Email">
-      <div class="invalid-feedback">El email es obligatorio.</div>
+        placeholder="Email"
+        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
+        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+          Este campo es requerido.
+        </div>
     </div>
+
     <div class="form-group mb-3">
+      <label for="phoneNumber">Teléfono:</label>
       <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-        [(ngModel)]="editingGarage.phoneNumber" required placeholder="phoneNumber">
-      <div class="invalid-feedback">El teléfono es obligatorio.</div>
+        [(ngModel)]="editingGarage.phoneNumber" required placeholder="phoneNumber"
+        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
+        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+          Este campo es requerido.
+        </div>
     </div>
+
     <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Guardar Cambios</button>
     <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
   </form>

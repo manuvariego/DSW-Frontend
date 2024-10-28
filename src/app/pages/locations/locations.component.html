@@ -154,8 +154,11 @@
         name="name" 
         [(ngModel)]="editingLocation.name" 
         required 
-        placeholder="Nombre">
-      <div class="invalid-feedback">El nombre es obligatorio.</div>
+        placeholder="Nombre"
+        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+        <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+          Este campo es requerido.
+        </div>
     </div>
 
     <div class="col-md-6 mb-3">

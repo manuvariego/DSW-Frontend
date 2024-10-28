@@ -120,7 +120,7 @@
 
   @if (currentSection == 'createVehicle') {
     <div class="container mt-5">
-      <h2 class="text-center mb-4">Crear Nuevo Vehículo</h2>
+      <h2 class="text-center mb-4">Dar de alta un Vehículo</h2>
       
       <form (ngSubmit)="createVehicle(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
         
@@ -144,7 +144,7 @@
           </div>
         </div>
 
-        <!-- Campo Tipo (falta poner lo del campo requerido)-->
+        <!-- Campo Tipo -->
           
         <div class="form-group mb-3">
           <label for="type">Tipo de Vehículo:</label>
@@ -193,8 +193,11 @@
       <!-- Campo Clase (DNI en este caso parece no tener sentido, lo renombré como "Clase") -->
       <div class="form-group">
         <label for="class">Dueño:</label>
-        <input type="text" id="class" class="form-control" [(ngModel)]="editingVehicle.owner" name="owner" required>
-        <div class="invalid-feedback">Este campo es obligatorio</div>
+        <input type="text" id="class" class="form-control" [(ngModel)]="editingVehicle.owner" name="owner" required
+        #id="ngModel" required [class.is-invalid]="id.invalid && (id.dirty || id.touched)" />
+          <div *ngIf="id.errors?.['required'] && (id.dirty || id.touched)" class="invalid-feedback">
+            Este campo es requerido.
+          </div>
       </div>
   
       <div class="d-grid gap-2">
