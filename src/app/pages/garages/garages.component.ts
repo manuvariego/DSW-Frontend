@@ -180,7 +180,6 @@ export class GaragesComponent {
 
 
   loadLocations() {
-    // Simular llamada a un servicio para obtener las localidades
     this._locationService.getLocations().subscribe(data => {
       this.locations = data;
     });

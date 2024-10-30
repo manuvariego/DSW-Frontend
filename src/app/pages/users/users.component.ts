@@ -32,8 +32,8 @@ export class UsersComponent {
     vehicles: ['']
   }
 
-  modificarUsuario(user:any){
-   console.log('modificarUsuario');
+  changeUser(user:any){
+   console.log('changeUser');
    this.currentSection = 'editUser';
    this.editingUser = { ...user };
 

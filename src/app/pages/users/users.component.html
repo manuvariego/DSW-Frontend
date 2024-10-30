@@ -83,7 +83,7 @@
       <td>
         <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
           <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(aUser.id, true)">Eliminar</button>
-          <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(aUser)">Modificar</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="changeUser(aUser)">Modificar</button>
         </div>
       </td>
     </tbody>
@@ -132,7 +132,7 @@
         <td>
           <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
             <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.id, false)">Eliminar</button>
-            <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(user)">Modificar</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="changeUser(user)">Modificar</button>
           </div>
         </td>
       </tr>

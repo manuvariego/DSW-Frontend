@@ -1,137 +1,141 @@
-
 @if (currentSection == 'initial') {
-  <div *ngIf="localidadCreada" class="container alert alert-success mt-3 text-center">
-    Localidad creada exitosamente.
+<div *ngIf="localidadCreada" class="container alert alert-success mt-3 text-center">
+  Localidad creada exitosamente.
+</div>
+<div class="container mt-5 text-center">
+  <!-- Título general -->
+  <h2 class="mb-4">Gestión de Localidades</h2>
+
+  <!-- Obtener todas las localidades -->
+  <div class="card mb-4 shadow-sm p-3">
+    <label class="h5 mb-3">Obtener todas las localidades donde podes estacionarte</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('getLocation')">
+      <i class="fas fa-map-marker-alt"></i> Obtener Localidades
+    </button>
   </div>
-  <div class="container mt-5 text-center">
-    <!-- Título general -->
-    <h2 class="mb-4">Gestión de Localidades</h2>
 
-    <!-- Obtener todas las localidades -->
-    <div class="card mb-4 shadow-sm p-3">
-      <label class="h5 mb-3">Obtener todas las localidades donde podes estacionarte</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('getLocation')">
-        <i class="fas fa-map-marker-alt"></i> Obtener Localidades
-      </button>
-    </div>
-
-    <!-- Crear nueva localidad -->
-    <div class="card shadow-sm p-3">
-      <label class="h5 mb-3">Dar de alta una localidad</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('createLocation')">
-        <i class="fas fa-plus-circle"></i> Crear Localidad
-      </button>
-    </div>
-
-    <div class="card shadow-sm p-3">
-      <label class="h5 mb-3">Obtener una Locacion por ID</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('geTaLocation')">
-        <i class="fas fa-user-plus"></i> Obtener una Locacion
-      </button>
-    </div>
-
+  <!-- Crear nueva localidad -->
+  <div class="card shadow-sm p-3">
+    <label class="h5 mb-3">Dar de alta una localidad</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('createLocation')">
+      <i class="fas fa-plus-circle"></i> Crear Localidad
+    </button>
   </div>
+
+  <div class="card shadow-sm p-3">
+    <label class="h5 mb-3">Obtener una Locacion por ID</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('geTaLocation')">
+      <i class="fas fa-user-plus"></i> Obtener una Locacion
+    </button>
+  </div>
+
+</div>
 }
 
 @if (currentSection == 'geTaLocation') {
 
-  <form (ngSubmit)="getLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
-    <!-- Campo ID -->
-    <div class="form-group mb-3">
-      <label for="name">ID</label>
-      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="locationID" required placeholder="ID"
+<form (ngSubmit)="getLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
+  <!-- Campo ID -->
+  <div class="form-group mb-3">
+    <label for="name">ID</label>
+    <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="locationID" required placeholder="ID"
       #IDField="ngModel" [class.is-invalid]="IDField.invalid && (IDField.dirty || IDField.touched)" />
-      <div class="invalid-feedback">Debe ingresar un ID.</div>
-    </div>
-    <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary">Encontrar</button>
-      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-    </div>
-    </form>
+    <div class="invalid-feedback">Debe ingresar un ID.</div>
+  </div>
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary">Encontrar</button>
+    <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+  </div>
+</form>
 }
 
 @if (currentSection == 'geTaLocationTable') {
-  <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-    <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-      <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Province</th>
-          <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-        </tr>
-      </thead>
-      <tbody>
-        <th>{{aLocation.name}}</th>
-          <td>{{aLocation.province}}</td>
-          <td>
-            <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteLocation(aLocation.name, true)">Eliminar</button>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="modificarLocation(aLocation)">Modificar</button>
-            </div>
-          </td>
-      </tbody>
-    </table>
-  </div>
+<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
+  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
+    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Province</th>
+        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+      </tr>
+    </thead>
+    <tbody>
+      <th>{{aLocation.name}}</th>
+      <td>{{aLocation.province}}</td>
+      <td>
+        <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
+          <button type="button" class="btn btn-danger btn-sm"
+            (click)="deleteLocation(aLocation.name, true)">Eliminar</button>
+          <button type="button" class="btn btn-secondary btn-sm"
+            (click)="modificarLocation(aLocation)">Modificar</button>
+        </div>
+      </td>
+    </tbody>
+  </table>
+</div>
 
-  <div class="d-grid gap-2">
-    <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-  </div>
+<div class="d-grid gap-2">
+  <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+</div>
 
 }
 
 
-  
-  <!-- Sección de Listado de Localidades -->
-  <div *ngIf="currentSection == 'getLocation'" class="container mt-5">
-    <h3 class="text-center mb-4">Listado de Localidades</h3>
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Province</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let location of locationList; let i = index">
-          <th scope="row">{{ i + 1 }}</th>
-          <td>{{ location.name }}</td>
-          <td>{{ location.province }}</td>
-          <td>
-            <button type="button" class="btn btn-danger btn-sm" (click)="deleteLocation(location.id, false)">Eliminar</button>
-            <button type="button" class="btn btn-secondary btn-sm" (click)="modificarLocation(location)">Modificar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
-  </div>
-  
-  <!-- Crear Nueva Localidad -->
+
+<!-- Sección de Listado de Localidades -->
+<div *ngIf="currentSection == 'getLocation'" class="container mt-5">
+  <h3 class="text-center mb-4">Listado de Localidades</h3>
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Province</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let location of locationList; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ location.name }}</td>
+        <td>{{ location.province }}</td>
+        <td>
+          <button type="button" class="btn btn-danger btn-sm"
+            (click)="deleteLocation(location.id, false)">Eliminar</button>
+          <button type="button" class="btn btn-secondary btn-sm"
+            (click)="modificarLocation(location)">Modificar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+</div>
+
+<!-- Crear Nueva Localidad -->
 <div *ngIf="currentSection == 'createLocation'" class="container mt-5">
   <h3 class="text-center mb-4">Dar de alta una Localidad</h3>
   <form (ngSubmit)="createLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <input type="text" class="form-control" id="name" name="name"  [(ngModel)]="locationData.name" required placeholder="Nombre"
-        #nameField="ngModel" [class.is-invalid]="nameField.invalid && (nameField.dirty || nameField.touched)" />
+        <label for="name" class="form-label">Nombre de la localidad</label>
+        <input id="name" name="name" placeholder="Nombre" type="text" class="form-control"
+          [(ngModel)]="locationData.name" required #name="ngModel"
+          [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
         <div class="invalid-feedback">El nombre es obligatorio.</div>
       </div>
 
       <div class="col-md-6 mb-3">
-        <select 
-          class="form-select" 
-          id="province" 
-          name="province" 
-          [(ngModel)]="locationData.province" 
-          required>
-          <option value="" disabled selected>Seleccione una provincia</option>
+        <label for="province" class="form-label">Seleccione una porvincia</label>
+        <select id="province" name="province" placeholder="Provincia" class="form-select"
+          [(ngModel)]="locationData.province" #province="ngModel" required
+          [class.is-invalid]="province.invalid && (province.dirty || province.touched)">
           <option *ngFor="let province of provincias" [value]="province">
             {{ province }}
           </option>
         </select>
-        <div class="invalid-feedback">La provincia es obligatoria.</div>
+        <div *ngIf="province.errors?.['required'] && (province.dirty || province.touched)" class="invalid-feedback">
+          Seleccione una provincia.
+        </div>
       </div>
     </div>
 
@@ -147,27 +151,13 @@
   <h2 class="text-center mb-4">Modificar Localidad</h2>
   <form (ngSubmit)="updateLocation()" class="needs-validation" novalidate>
     <div class="form-group mb-3">
-      <input 
-        type="text" 
-        class="form-control" 
-        id="name" 
-        name="name" 
-        [(ngModel)]="editingLocation.name" 
-        required 
-        placeholder="Nombre"
-        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
-        <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
-          Este campo es requerido.
-        </div>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingLocation.name" required
+        placeholder="Nombre">
+      <div class="invalid-feedback">El nombre es obligatorio.</div>
     </div>
 
     <div class="col-md-6 mb-3">
-      <select 
-        class="form-select" 
-        id="province" 
-        name="province" 
-        [(ngModel)]="editingLocation.province" 
-        required
+      <select class="form-select" id="province" name="province" [(ngModel)]="editingLocation.province" required
         placeholder="Seleccione una provincia">
         <option value="" disabled selected>Seleccione una provincia</option>
         <option *ngFor="let province of provincias" [value]="province">
