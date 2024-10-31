@@ -128,7 +128,15 @@ export class UsersComponent {
 
 }
   
-   updateUser() {
+   updateUser(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+    
     const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
@@ -139,6 +147,8 @@ export class UsersComponent {
       console.log('Usuario actualizado exitosamente', response);
       this.editingUser = null; // Limpia la variable de edición
       this.getUsers(); // Refresca la lista de usuarios
+      this.showSection('initial');
+      form.resetForm();
       },
     error: (error) => {
       console.error('Error al actualizar el usuario', error);
