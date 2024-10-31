@@ -48,8 +48,6 @@ export class GaragesComponent {
   }
 
 
-
-
   createGarage(form: NgForm) {
     if (form.invalid) {
       Object.keys(form.controls).forEach(field => {
@@ -75,22 +73,7 @@ export class GaragesComponent {
         console.error('Error al crear usuario:', error);
       }
     });
-
-
-
-
-    this._apiservice.createGarage(this.garageData).subscribe({
-      next: (response) => {
-        console.log('Cochera creada exitosamente:', response);
-      },
-      error: (error) => {
-        console.error('Error al crear la chochera:', error);
-      }
-    });
   }
-
-
-
 
   getGarage() {
     this._apiservice.getGarage(this.garageCuit).subscribe(

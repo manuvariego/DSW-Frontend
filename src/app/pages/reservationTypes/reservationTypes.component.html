@@ -51,9 +51,9 @@
 
   <div class="form-group mb-3">
     <label for="price">Cuit:</label>
-    <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="reservationTypeData.garage" required
-      placeholder="CUIT" #CUIT="ngModel" required [class.is-invalid]="CUIT.invalid && (CUIT.dirty || CUIT.touched)" />
-    <div *ngIf="CUIT.errors?.['required'] && (CUIT.dirty || CUIT.touched)" class="invalid-feedback">
+    <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="reservationTypeData.garage" required
+      placeholder="CUIT" #garage="ngModel" required [class.is-invalid]="garage.invalid && (garage.dirty || garage.touched)" />
+    <div *ngIf="garage.errors?.['required'] && (garage.dirty || garage.touched)" class="invalid-feedback">
       Este campo es requerido.
     </div>
   </div>
@@ -84,7 +84,7 @@
           <button type="button" class="btn btn-danger btn-sm"
             (click)="deleteReservationType(aReservationType.description,aReservationType.garage, true)">Eliminar</button>
           <button type="button" class="btn btn-secondary btn-sm"
-            (click)="modificarTipodeReserva(aReservationType)">Modificar</button>
+            (click)="changeTipodeReserva(aReservationType)">Modificar</button>
         </div>
       </td>
     </tbody>
@@ -116,7 +116,7 @@
         <td>
           <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
             <button type="button" class="btn btn-secondary btn-sm"
-              (click)="modificarTipodeReserva(reservation)">Modificar</button>
+              (click)="changeTipodeReserva(reservation)">Modificar</button>
             <button type="button" class="btn btn-danger btn-sm"
               (click)="deleteReservationType(reservation.description, reservation.garage, true)">Eliminar</button>
           </div>

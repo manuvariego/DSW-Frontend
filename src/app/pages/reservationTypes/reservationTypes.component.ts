@@ -21,6 +21,15 @@ export class ReservationTypesComponent {
   Cuit: string = ''
   aReservationType: any = null
   reservationType: any = null 
+  editingReservationType: any = null
+  
+  reservationTypeData = {
+
+    description: "",
+    price: "",
+    garage: ""
+
+  }
 
     getReservationType(form: NgForm){
       if (form.invalid) {
@@ -33,7 +42,7 @@ export class ReservationTypesComponent {
     
       console.log('getReservationType');
 
-      this._apiservice.getReservationType(this.desc, this.Cuit).subscribe(
+      this._apiservice.getReservationType(this.reservationTypeData.description, this.reservationTypeData.garage).subscribe(
         (reservationType: any) => {
           this.currentSection = "geTaReservationTypeTable"
           console.log(reservationType)
@@ -68,17 +77,7 @@ export class ReservationTypesComponent {
 
   }
 
-  reservationTypeData = {
-
-    description: "",
-    price: "",
-    garage: ""
-
-  }
-
-  editingReservationType: any = null
-
-  modificarTipodeReserva(reservationType:any){
+  changeTipodeReserva(reservationType:any){
 
     this.currentSection = 'editReservationType';
     this.editingReservationType = { ...reservationType };
