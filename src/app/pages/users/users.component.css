@@ -1,57 +1,69 @@
 .navigation-buttons {
-    margin-bottom: 20px;
-  }
-  
-  form {
-    margin-top: 10px;
-  }
-  
-  div {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+  margin-bottom: 20px;
+}
 
-  button {
+form {
+  margin-top: 10px;
+}
 
-    margin-left: 7px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+div {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-  button:hover {
-    transform: scale(1.05); /* Pequeño efecto de aumento */
+button {
+
+  margin-left: 7px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05); /* Pequeño efecto de aumento */
 }
 
 /* Ajuste del tamaño de los botones */
 .btn-sm {
-  font-size: 0.9rem;
-  padding: 5px 10px;
+font-size: 0.9rem;
+padding: 5px 10px;
 }
 
 /* Personalizar el encabezado de la tabla */
 .table thead th {
-  background-color: #64696e; /* Color oscuro */
-  color: white; /* Texto en blanco */
+background-color: #64696e; /* Color oscuro */
+color: white; /* Texto en blanco */
 }
 
 /* Espaciado adicional para el botón "Volver" */
 .mt-3 {
-  margin-top: 1.5rem;
+margin-top: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+margin-bottom: 1.5rem;
 }
 
 .form-control {
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid #ced4da;
+border-radius: 8px;
+padding: 10px;
+border: 1px solid #ced4da;
 }
 
 /* Mensajes de validación */
 .invalid-feedback {
-  font-size: 0.85rem;
-  color: red;
+font-size: 0.85rem;
+color: red;
 }
+
+
+
+/* prueba de colores */
+button {
+  background-color: cadetblue;
+  transition: background-color 0.3s;
+}
+button:hover {
+  background-color: cadetblue;
+}
+
