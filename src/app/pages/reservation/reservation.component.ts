@@ -81,6 +81,15 @@ getGaragesAvailables(){
 
 }
 
+isDateInvalid: boolean = false;
+
+validateDates() {
+  const checkIn = new Date(this.reservationData.check_in_at);
+  const checkOut = new Date(this.reservationData.check_out_at);
+  this.isDateInvalid = checkIn > checkOut;
+}
+
+
 saveGarage(aGarage:any){
 this.reservationData.cuitGarage = aGarage.cuit
 

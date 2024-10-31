@@ -1,33 +1,67 @@
 @if (currentSection == 'initial'){
-<div class="form-reservation">
-  <h3>Reserva tu Estacionamiento</h3>
-  <form>
-    <select class="form-control" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate" name="vehicle" required
-    #license_plate="ngModel" required [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
-      <option value="">Selecciona tu Vehículo</option>
-      <!-- Recorre los vehículos y genera una opción por cada uno -->
-      <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate" > <!-- Asegúrate de usar la propiedad correcta aquí -->
-        {{ vehicle.license_plate }} <!-- Muestra la propiedad que desees (por ejemplo, patente) -->
-      </option>
-    </select>
-    <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)" class="invalid-feedback">
-      Seleccione un vehiculo.
-    </div>
-
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_in_at" [(ngModel)]="filters.check_in_at" name="checkIn" required placeholder="Hora de Ingreso" 
-    #check_in_at="ngModel" required [class.is-invalid]="check_in_at.invalid && (check_in_at.dirty || check_in_at.touched)"/>
-    <div *ngIf="check_in_at.errors?.['required'] && (check_in_at.dirty || check_in_at.touched)" class="invalid-feedback">
-      Seleccione una fecha.
-    </div>
-    <input type="datetime-local" class="form-control" [(ngModel)]="reservationData.check_out_at" [(ngModel)]="filters.check_out_at" name="checkOut" required placeholder="Hora de Salida" 
-    #check_out_at="ngModel" required [class.is-invalid]="check_out_at.invalid && (check_out_at.dirty || check_out_at.touched)"/>
-    <div *ngIf="check_out_at.errors?.['required'] && (check_out_at.dirty || check_out_at.touched)" class="invalid-feedback">
-      Seleccione una fecha.
-    </div>
-
-    <button type = "button" class= "btn btn-primary" (click)="showSection('garages')">Buscar cocheras disponibles</button>
-  </form> 
-</div>
+  <div class="form-reservation">
+    <h3>Reserva tu Estacionamiento</h3>
+    <form>
+      <!-- Selección de vehículo -->
+      <select class="form-control" 
+              [(ngModel)]="reservationData.license_plate" 
+              [(ngModel)]="filters.license_plate" 
+              name="vehicle" 
+              required
+              #license_plate="ngModel" 
+              [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
+        <option value="">Selecciona tu Vehículo</option>
+        <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate">
+          {{ vehicle.license_plate }}
+        </option>
+      </select>
+      <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)" class="invalid-feedback">
+        Seleccione un vehiculo.
+      </div>
+  
+      <!-- Fecha y hora de ingreso -->
+      <input type="datetime-local" 
+             class="form-control" 
+             [(ngModel)]="reservationData.check_in_at" 
+             [(ngModel)]="filters.check_in_at" 
+             name="checkIn" 
+             required 
+             placeholder="Hora de Ingreso" 
+             (change)="validateDates()"
+             #check_in_at="ngModel" 
+             [class.is-invalid]="check_in_at.invalid && (check_in_at.dirty || check_in_at.touched) || isDateInvalid"/>
+      <div *ngIf="check_in_at.errors?.['required'] && (check_in_at.dirty || check_in_at.touched)" class="invalid-feedback">
+        Seleccione una fecha.
+      </div>
+  
+      <!-- Fecha y hora de salida -->
+      <input type="datetime-local" 
+             class="form-control" 
+             [(ngModel)]="reservationData.check_out_at" 
+             [(ngModel)]="filters.check_out_at" 
+             name="checkOut" 
+             required 
+             placeholder="Hora de Salida" 
+             (change)="validateDates()"
+             #check_out_at="ngModel" 
+             [class.is-invalid]="check_out_at.invalid && (check_out_at.dirty || check_out_at.touched) || isDateInvalid"/>
+      <div *ngIf="check_out_at.errors?.['required'] && (check_out_at.dirty || check_out_at.touched)" class="invalid-feedback">
+        Seleccione una fecha.
+      </div>
+  
+      <!-- Mensaje de error para fechas inválidas -->
+      <div *ngIf="isDateInvalid" class="invalid-feedback d-block">
+        La fecha de ingreso no puede ser posterior a la fecha de salida.
+      </div>
+  
+      <!-- Botón para buscar cocheras disponibles (Deshabilitado si hay errores de validación o fecha inválida) -->
+      <button type="button" class="btn btn-primary" 
+              [disabled]="license_plate.invalid || check_in_at.invalid || check_out_at.invalid || isDateInvalid" 
+              (click)="showSection('garages')">
+        Buscar cocheras disponibles
+      </button>
+    </form> 
+  </div>
 }
 
 @if (currentSection == 'garages'){
