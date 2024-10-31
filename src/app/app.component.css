@@ -3,3 +3,15 @@
     top: 10px;
     right: 10px;
   }
+
+  #reservation {
+    color: black;
+  }
+
+  #cancelReservation {
+    color: black;
+  }
+
+  #vehicles {
+    color: black;
+  }

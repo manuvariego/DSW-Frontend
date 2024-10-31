@@ -57,3 +57,16 @@ color: red;
 }
 
 
+
+/* prueba de colores (ver) */
+button {
+  background-color: cadetblue;
+  transition: background-color 0.3s;
+}
+button:hover {
+  background-color: cadetblue;
+}
+
+
+
+

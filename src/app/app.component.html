@@ -15,7 +15,7 @@
              (click)="onOption('users')">Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="vehicles" [ngClass]="{active: menuOption == 'vehicles'}" 
+          <a class="nav-link" routerLink="vehicles" id="vehicles" [ngClass]="{active: menuOption == 'vehicles'}" 
             (click)="onOption('vehicles')">Vehículos</a>
        </li>
       <li class="nav-item">
@@ -39,11 +39,11 @@
           (click)="onOption('reservationTypes')">Tipos de Estadía</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="reservation" [ngClass]="{active: menuOption == 'reservation'}" 
+        <a class="nav-link" routerLink="reservation" id="reservation" [ngClass]="{active: menuOption == 'reservation'}" 
           (click)="onOption('reservation')">Reservar</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="cancelReservation" [ngClass]="{active: menuOption == 'cancelReservation'}" 
+        <a class="nav-link" routerLink="cancelReservation" id="cancelReservation"  [ngClass]="{active: menuOption == 'cancelReservation'}" 
           (click)="onOption('cancelReservation')">Dar de Baja una Reserva</a>
       </li>
       </ul>
