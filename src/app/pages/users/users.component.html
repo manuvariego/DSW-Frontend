@@ -35,7 +35,7 @@
 @if (currentSection == 'getOneUser') {
 
 <form (ngSubmit)="getOneUser(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
-  
+
   <!-- Campo ID -->
   <div class="form-group mb-3">
     <label for="id">ID</label>
@@ -249,7 +249,7 @@
     <div class="form-group">
       <label for="name">Nombre:</label>
       <input type="text" id="name" class="form-control" [(ngModel)]="editingUser.name" name="name" required
-      #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
       <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
         Este campo es requerido.
       </div>
@@ -259,7 +259,7 @@
     <div class="form-group">
       <label for="lastname">Apellido:</label>
       <input type="text" id="lastname" class="form-control" [(ngModel)]="editingUser.lastname" name="lastname" required
-      #lastname="ngModel" required [class.is-invalid]="lastname.invalid && (lastname.dirty || lastname.touched)" />
+        #lastname="ngModel" required [class.is-invalid]="lastname.invalid && (lastname.dirty || lastname.touched)" />
       <div *ngIf="lastname.errors?.['required'] && (lastname.dirty || lastname.touched)" class="invalid-feedback">
         Este campo es requerido.
       </div>
@@ -268,8 +268,8 @@
     <!-- Campo DNI -->
     <div class="form-group">
       <label for="dni">DNI:</label>
-      <input type="text" id="dni" class="form-control" [(ngModel)]="editingUser.dni" name="dni" required
-      #dni="ngModel" required [class.is-invalid]="dni.invalid && (dni.dirty || dni.touched)" />
+      <input type="text" id="dni" class="form-control" [(ngModel)]="editingUser.dni" name="dni" required #dni="ngModel"
+        required [class.is-invalid]="dni.invalid && (dni.dirty || dni.touched)" />
       <div *ngIf="dni.errors?.['required'] && (dni.dirty || dni.touched)" class="invalid-feedback">
         Este campo es requerido.
       </div>
@@ -279,7 +279,7 @@
     <div class="form-group">
       <label for="address">Dirección:</label>
       <input type="text" id="address" class="form-control" [(ngModel)]="editingUser.address" name="address" required
-      #address="ngModel" required [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
+        #address="ngModel" required [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
       <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
         Este campo es requerido.
       </div>
@@ -289,7 +289,7 @@
     <div class="form-group">
       <label for="email">Correo Electrónico:</label>
       <input type="email" id="email" class="form-control" [(ngModel)]="editingUser.email" name="email" required
-      #email="ngModel" required [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
+        #email="ngModel" required [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
       <div *ngIf="email.errors?.['required'] && (email.dirty || email.touched)" class="invalid-feedback">
         Este campo es requerido.
       </div>
@@ -299,9 +299,10 @@
     <div class="form-group">
       <label for="phoneNumber">Número de Teléfono:</label>
       <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="editingUser.phoneNumber" name="phoneNumber"
-        required
-        #phoneNumber="ngModel" required [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
-      <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
+        required #phoneNumber="ngModel" required
+        [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
+      <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)"
+        class="invalid-feedback">
         Este campo es requerido.
       </div>
     </div>

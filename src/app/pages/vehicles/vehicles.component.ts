@@ -22,6 +22,7 @@ export class VehiclesComponent {
   licensePlate: string = ''
   aVehicle: any = null
   editingVehicle: any = null
+  currentSection: String = 'initVehicles'
 
   vehicleData = {
 
@@ -91,7 +92,14 @@ export class VehiclesComponent {
 
   }
 
-  updateUser() {
+  updateVehicle(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
     const confirmation = confirm('¿Está seguro de que desea modificar este vehiculo?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
@@ -102,6 +110,8 @@ export class VehiclesComponent {
         console.log('Vehiculo actualizado exitosamente', response);
         this.editingVehicle = null; // Limpia la variable de edición
         this.getVehicles(); // Refresca la lista de vehiculos
+        this.showSection('initVehicles');
+        form.resetForm();
       },
       error: (error) => {
         console.error('Error al actualizar el Vehiculo', error);
@@ -157,8 +167,6 @@ export class VehiclesComponent {
     });
   }
 
-  currentSection: String = 'initVehicles'
-
   showSection(section: string) {
     this.currentSection = section;
 
@@ -172,7 +180,6 @@ export class VehiclesComponent {
 
 
   loadTypeVehicles() {
-    // Simular llamada a un servicio para obtener las localidades
     this._typeVehicleService.getTypeVehicles().subscribe(data => {
       this.typeVehicles = data;
     });

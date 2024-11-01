@@ -169,18 +169,22 @@
 <!-- Formulario de edición de vehículo -->
 <div class="container mt-4"> <!-- Contenedor con espaciado superior -->
   <h2 class="mb-4 text-center">Modificar Tipo de Vehículo</h2> <!-- Encabezado centrado y con margen inferior -->
-  <form (ngSubmit)="updateTypeVehicle()" class="needs-validation" novalidate>
+  <form (ngSubmit)="updateTypeVehicle(typeForm)" #typeForm="ngForm" class="needs-validation" novalidate>
 
 
     <div class="form-group">
-      <label for="type">Nombre:</label>
-      <input type="text" id="name" class="form-control" [(ngModel)]="editingTypeVehicle.name" name="name" required>
-      <div class="invalid-feedback">Este campo es obligatorio</div>
+      <label for="owner">Nombre</label>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingTypeVehicle.name" required
+        placeholder="Nombre" #name="ngModel" required
+        [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+      <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
 
     <div class="d-grid gap-2">
 
-      <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initial')">Guardar cambios</button>
+      <button type="submit" class="btn btn-primary btn-block">Guardar cambios</button>
 
       <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
     </div>

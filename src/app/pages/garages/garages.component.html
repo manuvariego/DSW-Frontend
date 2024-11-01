@@ -38,7 +38,7 @@
   <div class="form-group mb-3">
     <label for="name">CUIT</label>
     <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="garageCuit" required placeholder="CUIT"
-    #cuitField="ngModel" [class.is-invalid]="cuitField.invalid && (cuitField.dirty || cuitField.touched)" />
+      #cuitField="ngModel" [class.is-invalid]="cuitField.invalid && (cuitField.dirty || cuitField.touched)" />
     <div class="invalid-feedback">Debe ingresar un CUIT.</div>
   </div>
   <div class="d-grid gap-2">
@@ -219,49 +219,50 @@
 <!-- Editar Cochera -->
 <div *ngIf="currentSection == 'editGarage'" class="container mt-5">
   <h2 class="text-center mb-4">Modificar Cochera</h2>
-  <form (ngSubmit)="updateGarage()" class="needs-validation" novalidate>
+
+  <form (ngSubmit)="updateGarage(garageForm)" #garageForm="ngForm" class="needs-validation" novalidate>
 
     <div class="form-group mb-3">
       <label for="Name">Nombre:</label>
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingGarage.name" required
-        placeholder="Name"
-        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
-        <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
-          Este campo es requerido.
-        </div>
+      <input id="name" name="name" placeholder="Name" type="text" class="form-control" [(ngModel)]="editingGarage.name"
+        required #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+      <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
 
     <div class="form-group mb-3">
       <label for="Address">Dirección:</label>
       <input type="text" class="form-control" id="address" name="address" [(ngModel)]="editingGarage.address" required
-        placeholder="Address"
-        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
-        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
-          Este campo es requerido.
-        </div>
+        placeholder="Address" #address="ngModel" required
+        [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
+      <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
 
     <div class="form-group mb-3">
       <label for="Email">Email:</label>
       <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editingGarage.email" required
-        placeholder="Email"
-        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
-        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
-          Este campo es requerido.
-        </div>
+        placeholder="Email" #email="ngModel" required
+        [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
+      <div *ngIf="email.errors?.['required'] && (email.dirty || email.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
 
     <div class="form-group mb-3">
       <label for="phoneNumber">Teléfono:</label>
       <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-        [(ngModel)]="editingGarage.phoneNumber" required placeholder="phoneNumber"
-        #address="ngModel" required [class.is-invalid]="address.invalid && (name.dirty || name.touched)" />
-        <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
-          Este campo es requerido.
-        </div>
+        [(ngModel)]="editingGarage.phoneNumber" required placeholder="phoneNumber" #phoneNumber="ngModel" required
+        [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
+      <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)"
+        class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Guardar Cambios</button>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     <button type="button" class="btn btn-secondary mt-2" (click)="showSection('initial')">Cancelar</button>
   </form>
 </div>

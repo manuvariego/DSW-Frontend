@@ -71,8 +71,7 @@
         <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
           <button type="button" class="btn btn-danger btn-sm"
             (click)="deleteVehicle(aVehicle.license_plate, true)">Eliminar</button>
-          <button type="button" class="btn btn-secondary btn-sm"
-            (click)="changeVehicle(aVehicle)">Modificar</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="changeVehicle(aVehicle)">Modificar</button>
         </div>
       </td>
     </tbody>
@@ -107,8 +106,7 @@
             <div class="d-flex justify-content-around"> <!-- Flex para alinear botones -->
               <button type="button" class="btn btn-danger btn-sm"
                 (click)="deleteVehicle(vehicle.license_plate, false)">Eliminar</button>
-              <button type="button" class="btn btn-secondary btn-sm"
-                (click)="changeVehicle(vehicle)">Modificar</button>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="changeVehicle(vehicle)">Modificar</button>
             </div>
           </td>
         </tr>
@@ -179,12 +177,12 @@
 <!-- Formulario de edición de vehículo -->
 <div class="container mt-4"> <!-- Contenedor con espaciado superior -->
   <h2 class="mb-4 text-center">Modificar Vehículo</h2> <!-- Encabezado centrado y con margen inferior -->
-  <form (ngSubmit)="updateUser()" class="needs-validation" novalidate>
+  <form (ngSubmit)="updateVehicle(vehicleForm)" #vehicleForm="ngForm" class="needs-validation" novalidate>
 
     <!-- Campo Tipo -->
     <div class="col-md-6 mb-3">
       <label for="type" class="form-label">Seleccione el tipo de vehiculo:</label>
-      <select class="form-select" id="type" name="type" placeholder="Tipo" [(ngModel)]="vehicleData.type"
+      <select class="form-select" id="type" name="type" placeholder="Tipo" [(ngModel)]="editingVehicle.type"
         #type="ngModel" required [class.is-invalid]="type.invalid && (type.dirty || type.touched)">
         <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
       </select>
@@ -195,22 +193,23 @@
 
 
     <!-- Campo Owner -->
-    <div class="form-group">
-      <label for="class">Dueño:</label>
-      <input type="text" id="class" class="form-control" [(ngModel)]="editingVehicle.owner" name="owner" required>
-      <div class="invalid-feedback">Este campo es obligatorio</div>
+    <div class="form-group mb-3">
+      <label for="owner">ID Propietario:</label>
+      <input type="text" class="form-control" id="owner" name="owner" [(ngModel)]="editingVehicle.owner" required
+        #id="ngModel" required [class.is-invalid]="id.invalid && (id.dirty || id.touched)" />
+      <div *ngIf="id.errors?.['required'] && (id.dirty || id.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
     </div>
+
+
+
+    <!-- Botones -->
     <div class="d-grid gap-2">
-
-      <!-- Botón para guardar cambios -->
-      <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initVehicles')">Guardar
-        cambios</button>
-
-      <!-- Botón para regresar -->
+      <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
       <button type="button" class="btn btn-secondary btn-block mt-2"
         (click)="showSection('initVehicles')">Cancelar</button>
     </div>
   </form>
 </div>
 }
-  

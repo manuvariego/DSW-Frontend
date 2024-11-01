@@ -148,17 +148,21 @@
 
 <!-- Editar Localidad -->
 <div *ngIf="currentSection == 'editLocation'" class="container mt-5">
-  <h2 class="text-center mb-4">Modificar Localidad</h2>
-  <form (ngSubmit)="updateLocation()" class="needs-validation" novalidate>
-    <div class="form-group mb-3">
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editingLocation.name" required
-        placeholder="Nombre">
+  <h2 class="mb-4 text-center">Modificar Localidad</h2>
+  <form (ngSubmit)="updateLocation(locationForm)" #locationForm="ngForm" class="needs-validation" novalidate>
+
+
+    <div class="form-group">
+      <label for="name" class="form-label">Nombre de la localidad</label>
+      <input id="name" name="name" placeholder="Nombre" type="text" class="form-control"
+        [(ngModel)]="editingLocation.name" required #name="ngModel"
+        [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
       <div class="invalid-feedback">El nombre es obligatorio.</div>
     </div>
 
     <div class="col-md-6 mb-3">
-      <select class="form-select" id="province" name="province" [(ngModel)]="editingLocation.province" required
-        placeholder="Seleccione una provincia">
+      <select class="form-select" id="province" name="province" [(ngModel)]="editingLocation.province"
+        #province="ngModel" required placeholder="Seleccione una provincia">
         <option value="" disabled selected>Seleccione una provincia</option>
         <option *ngFor="let province of provincias" [value]="province">
           {{ province }}
@@ -167,8 +171,10 @@
       <div class="invalid-feedback">La provincia es obligatoria.</div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <br>
-    <button type="button" class="btn btn-secondary w-100" (click)="showSection('initial')">Cancelar</button>
+    <!-- Botones -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
+      <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
+    </div>
   </form>
 </div>
