@@ -33,7 +33,7 @@
 }
 
 @if (currentSection == 'geTaGarage') {
-<form (ngSubmit)="getGarage()" #userForm="ngForm" class="needs-validation" novalidate>
+<form (ngSubmit)="getGarage(garageForm)" #garageForm="ngForm" class="needs-validation" novalidate>
   <!-- Campo Cuit -->
   <div class="form-group mb-3">
     <label for="name">CUIT</label>

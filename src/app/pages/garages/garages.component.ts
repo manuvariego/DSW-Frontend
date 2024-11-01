@@ -75,7 +75,14 @@ export class GaragesComponent {
     });
   }
 
-  getGarage() {
+  getGarage(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return; // Detiene el envío si el formulario no es válido
+    }
     this._apiservice.getGarage(this.garageCuit).subscribe(
       (garage: any) => {
         this.currentSection = "geTaGarageTable"
