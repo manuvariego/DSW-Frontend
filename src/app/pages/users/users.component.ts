@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { isArray } from 'node:util';
 
 @Component({
@@ -12,62 +12,78 @@ import { isArray } from 'node:util';
   styleUrl: './users.component.css'
 })
 export class UsersComponent {
-
+  usuarioCreado = false;
+  currentSection: string = 'initial';
+  userList: any[] = [];
+  aUser: any = null;
+  vehicless : any[] = [];
+  private _apiservice = inject(UsersService);
+  userID: string = '';
+  editingUser: any = null;
 
   userData = {
-
     dni: '', 
     name: '',
     lastname: '',
     password: '',
     address: '',
     email:'',
-    phone_number: '',
+    phoneNumber: '',
     vehicles: ['']
-
   }
 
-
-  modificarUsuario(user:any){
-
+  changeUser(user:any){
+   console.log('changeUser');
    this.currentSection = 'editUser';
    this.editingUser = { ...user };
 
   }
 
-  currentSection: string = 'initial'
-
-  userList: any[] = []
-
-  aUser: any = null
-
-  vehicless : any[] = []
-
- private _apiservice = inject(UsersService)
-
-  userID: string = ''
-
-  geTaUser() {
-    this._apiservice.getUser(this.userID).subscribe(
-      (user: any) => {
-        this.currentSection = 'geTaUserTable';
-        console.log(user);
-        this.aUser = user;
-        this.userID = '';
-      },
-      (error) => {
-        console.error('Error al obtener el usuario', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
-        alert('El usuario no existe o ocurrió un error al obtener la información.');
-      }
-    );
+  getOneUser(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return; // Detiene el envío si el formulario no es válido
   }
 
+  console.log('getOneUser');
 
- createUserr() {
+  this._apiservice.getUser(this.userID).subscribe(
+    (user: any) => {
+      this.currentSection = 'getUserTable';
+      console.log(user);
+      this.aUser = user;
+      this.userID = '';
+    },
+    (error) => {
+      console.error('Error al obtener el usuario', error);
+      alert('Usuario no encontrado.');
+    }
+  );
+  }
+
+ createUser(form: NgForm) {
+  if (form.invalid) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    return;
+  }
+
   this._apiservice.createUser(this.userData).subscribe({
     next: (response) => {
       console.log('Usuario creado exitosamente:', response);
+      this.usuarioCreado = true;
+      this.showSection('initial');
+      form.resetForm();
+
+    // Oculta el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.usuarioCreado = false;
+    }, 3000); 
     },
     error: (error) => {
       console.error('Error al crear usuario:', error);
@@ -108,16 +124,19 @@ export class UsersComponent {
     }
   });
 
-  if(tipo == true){this.currentSection = 'initial'}
+  if(tipo == true){console.log('deleteUser'); this.currentSection = 'initial'}
 
 }
-
-  editingUser: any = null;
   
-
-
-
-  updateUser() {
+   updateUser(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+    
     const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
@@ -128,6 +147,8 @@ export class UsersComponent {
       console.log('Usuario actualizado exitosamente', response);
       this.editingUser = null; // Limpia la variable de edición
       this.getUsers(); // Refresca la lista de usuarios
+      this.showSection('initial');
+      form.resetForm();
       },
     error: (error) => {
       console.error('Error al actualizar el usuario', error);
@@ -137,9 +158,10 @@ export class UsersComponent {
 
     // Método para actualizar la sección actual mostrada
     showSection(section: string) {
+      console.log('showSection',section);
       this.currentSection = section;
 
-      if(section == 'getUser'){
+      if(section == 'getUsers'){
 
         this.getUsers()
 

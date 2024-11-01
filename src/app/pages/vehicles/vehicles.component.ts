@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VehiclesService } from '../../services/vehicles.service.js';
 import { runInThisContext } from 'vm';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 
 @Component({
   selector: 'app-vehicle',
@@ -13,42 +14,66 @@ import { FormsModule } from '@angular/forms';
 })
 export class VehiclesComponent {
 
+  vehiculoCreado = false;
   private _apiservice = inject(VehiclesService)
-
+  private _typeVehicleService = inject(TypeVehicleService)
   vehiclesList: any[] = []
-
-  licensePlate: string =''
-
+  typeVehicles: Array<any> = [];
+  licensePlate: string = ''
   aVehicle: any = null
+  editingVehicle: any = null
+  currentSection: String = 'initVehicles'
+
+  vehicleData = {
+
+    license_plate: "",
+    owner: "",
+    type: ""
+
+  }
+
+  ngOnInit() {
+    this.loadTypeVehicles(); // Cargar los tipos al iniciar
+  }
 
 
-  getAvehicle(){
+
+  getAvehicle(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return; // Detiene el envío si el formulario no es válido
+    }
+
+    console.log('getAvehicle');
+
     this._apiservice.getVehicle(this.licensePlate).subscribe(
       (vehicle: any) => {
         this.currentSection = "geTaVehicleTable"
         console.log(vehicle)
         this.aVehicle = vehicle
-        this.licensePlate =''
+        this.licensePlate = ''
       },
       (error) => {
-        console.error('Error al obtener un Vehicle', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
+        console.error('Error al obtener un Vehiculo', error);
         alert('El Vehiculo no existe o ocurrió un error al obtener la información.');
       }
     );
   }
-  
-
-  getVehicles(){
-
-    this._apiservice.getVehicles().subscribe((data: any[]) =>{
 
 
-      if(Array.isArray(data)){
-        this.vehiclesList = data 
-  
-      } else{
-  
+  getVehicles() {
+
+    this._apiservice.getVehicles().subscribe((data: any[]) => {
+
+
+      if (Array.isArray(data)) {
+        this.vehiclesList = data
+
+      } else {
+
         this.vehiclesList = [data]
       }
 
@@ -59,47 +84,47 @@ export class VehiclesComponent {
 
   }
 
-  vehicleData = {
 
-    license_plate: "",
-    owner: "",
-    type: ""
-
-  }
-
-  editingVehicle: any = null
-
-  modificarVehiculo(vehicle:any){
+  changeVehicle(vehicle: any) {
 
     this.currentSection = 'editVehicle';
     this.editingVehicle = { ...vehicle };
- 
-   }
- 
-  updateUser() {
-    const confirmation = confirm('¿Está seguro de que desea modificar este usuario?');
+
+  }
+
+  updateVehicle(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+    const confirmation = confirm('¿Está seguro de que desea modificar este vehiculo?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
     }
 
     this._apiservice.updateVehicle(this.editingVehicle).subscribe({
-      next: (response) =>{
-      console.log('Usuario actualizado exitosamente', response);
-      this.editingVehicle = null; // Limpia la variable de edición
-      this.getVehicles(); // Refresca la lista de usuarios
+      next: (response) => {
+        console.log('Vehiculo actualizado exitosamente', response);
+        this.editingVehicle = null; // Limpia la variable de edición
+        this.getVehicles(); // Refresca la lista de vehiculos
+        this.showSection('initVehicles');
+        form.resetForm();
       },
-    error: (error) => {
-      console.error('Error al actualizar el usuario', error);
-    }
-  });
+      error: (error) => {
+        console.error('Error al actualizar el Vehiculo', error);
+      }
+    });
   }
 
-  deleteVehicle(license_plate: string, type:boolean) {
+  deleteVehicle(license_plate: string, type: boolean) {
     const confirmation = confirm('¿Está seguro de que desea eliminar este vehiculo?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
     }
-  
+
     this._apiservice.deleteVehicle(license_plate).subscribe({
       next: (response) => {
         console.log('Vehiculo eliminado exitosamente', response);
@@ -111,15 +136,30 @@ export class VehiclesComponent {
     });
 
 
-    if(type == true){this.currentSection = 'initVehicles'}
+    if (type == true) { this.currentSection = 'initVehicles' }
   }
 
+  createVehicle(form: NgForm) {
 
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
 
-  createVehicle() {
     this._apiservice.createVehicle(this.vehicleData).subscribe({
       next: (response) => {
         console.log('Vehiculo creado exitosamente:', response);
+        this.vehiculoCreado = true;
+        this.showSection('initVehicles');
+        form.resetForm();
+
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => {
+          this.vehiculoCreado = false;
+        }, 3000);
       },
       error: (error) => {
         console.error('Error al crear vehiculo:', error);
@@ -127,20 +167,26 @@ export class VehiclesComponent {
     });
   }
 
-
-
-  currentSection: String = 'initVehicles'
-
   showSection(section: string) {
     this.currentSection = section;
 
-    if(section == 'getVehicles'){
+    if (section == 'getVehicles') {
 
       this.getVehicles()
 
     }
 
   }
+
+
+  loadTypeVehicles() {
+    this._typeVehicleService.getTypeVehicles().subscribe(data => {
+      this.typeVehicles = data;
+    });
+  }
+
+
+
 
 
 }

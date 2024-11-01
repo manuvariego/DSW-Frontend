@@ -1,30 +1,30 @@
 <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
     <div class="container mb-4 p-4 bg-light rounded shadow-sm">
-      <h2 class="text-center mb-4">Login</h2>
+      <h2 class="text-center mb-4">Iniciar sesión</h2>
       
       <div class="form-group">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" id="uname" class="form-control" placeholder="Enter Username" name="uname" [(ngModel)]="username" required>
+        <label for="uname"><b>Nombre de usuario</b></label>
+        <input type="text" id="uname" class="form-control" placeholder="Nombre de usuario" name="uname" [(ngModel)]="username" required>
       </div>
 
       <br>
       <div class="form-group">
-        <label for="psw"><b>Password</b></label>
-        <input type="password" id="psw" class="form-control" placeholder="Enter Password" name="psw" [(ngModel)]="password" required>
+        <label for="psw"><b>Contraseña</b></label>
+        <input type="password" id="psw" class="form-control" placeholder="Contraseña" name="psw" [(ngModel)]="password" required>
       </div>
 
       <br>
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="remember" name="remember" [(ngModel)]="remember" checked>
-        <label class="form-check-label" for="remember">Remember me</label>
+        <label class="form-check-label" for="remember">Recordar contraseña</label>
       </div>
 
 
       <br>
   
-      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
 
-      <span class="text-muted">Forgot <a href="#">password?</a></span>
+      <span class="text-muted">Olvidaste tu contraseña? Has click <a href="#">aqui</a></span>
     </div>
   
 

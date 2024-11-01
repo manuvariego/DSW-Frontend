@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, NgFor } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
 import { isArray } from 'node:util';
 import { LocationsService } from '../../services/locations.service.js';
 
@@ -13,6 +13,15 @@ import { LocationsService } from '../../services/locations.service.js';
 })
 export class LocationsComponent {
 
+  localidadCreada = false;
+  currentSection: string = 'initial'
+  locationList: any[] = []
+  garages: any[] = []
+  private _apiservice = inject(LocationsService)
+  locationID: string = ''
+  aLocation: any = null
+  editingLocation: any = null;
+
   locationData = {
 
     name: '',
@@ -22,26 +31,26 @@ export class LocationsComponent {
   }
 
 
-  modificarLocation(location:any){
+  modificarLocation(location: any) {
 
-   this.currentSection = 'editLocation';
-   this.editingLocation = { ...location };
+    this.currentSection = 'editLocation';
+    console.log(location);
+    this.editingLocation = { ...location };
 
   }
 
-  currentSection: string = 'initial'
 
-  locationList: any[] = []
+  getLocation(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return; // Detiene el envío si el formulario no es válido
+    }
 
-  garages : any[] = []
+    console.log('getLocation');
 
- private _apiservice = inject(LocationsService)
-
-  locationID: string = ''
-
-  aLocation: any = null
-
-  getLocation(){
 
     this._apiservice.getLocation(this.locationID).subscribe(
       (location: any) => {
@@ -52,7 +61,6 @@ export class LocationsComponent {
       },
       (error) => {
         console.error('Error al obtener un Location', error);
-        // Aquí podrías mostrar un mensaje de error, por ejemplo usando alert o alguna librería como Toastr
         alert('La Localidad no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -60,84 +68,108 @@ export class LocationsComponent {
   }
 
 
- createLocation() {
-  this._apiservice.createLocation(this.locationData).subscribe({
-    next: (response) => {
-      console.log('Localidad dada de alta exitosamente:', response);
-    },
-    error: (error) => {
-      console.error('Error al crear la localidad:', error);
-    }
-  });
-}
-
- getLocations(){
-  this._apiservice.getLocations().subscribe((data: any[])=>{
-
-    if(Array.isArray(data)){
-      this.locationList = data 
-
-    } else{
-
-      this.locationList = [data]
+  createLocation(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
     }
 
-    
-    console.log(data)
-  })
- }
+    this._apiservice.createLocation(this.locationData).subscribe({
+      next: (response) => {
+        console.log('Localidad dada de alta exitosamente:', response);
+        this.localidadCreada = true;
+        this.showSection('initial');
+        form.resetForm();
 
- deleteLocation(locationId: string, tipo:boolean) {
-  const confirmation = confirm('¿Está seguro de que desea eliminar esta localidad?');
-  if (!confirmation) {
-    return; // Si el usuario cancela, no hacemos nada
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => {
+          this.localidadCreada = false;
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error al crear la localidad:', error);
+      }
+    });
   }
 
-  this._apiservice.deleteLocation(locationId).subscribe({
-    next: (response) => {
-      console.log('Localidad eliminada exitosamente', response);
-      this.getLocations(); // Refrescar la lista de localidades
-    },
-    error: (error) => {
-      console.error('Error al eliminar la localidad', error);
+  getLocations() {
+    this._apiservice.getLocations().subscribe((data: any[]) => {
+
+      if (Array.isArray(data)) {
+        this.locationList = data
+
+      } else {
+
+        this.locationList = [data]
+      }
+
+
+      console.log(data)
+    })
+  }
+
+  deleteLocation(locationId: string, tipo: boolean) {
+    const confirmation = confirm('¿Está seguro de que desea eliminar esta localidad?');
+    if (!confirmation) {
+      return; // Si el usuario cancela, no hacemos nada
     }
-  });
 
-  if(tipo){this.currentSection = 'initial'}
+    this._apiservice.deleteLocation(locationId).subscribe({
+      next: (response) => {
+        console.log('Localidad eliminada exitosamente', response);
+        this.getLocations(); // Refresca la lista de localidades
+      },
+      error: (error) => {
+        console.error('Error al eliminar la localidad', error);
+      }
+    });
 
-}
+    if (tipo) { this.currentSection = 'initial' }
 
-  editingLocation: any = null;
-  
-  updateLocation() {
+  }
+
+  updateLocation(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
     const confirmation = confirm('¿Está seguro de que desea modificar esta localidad?');
     if (!confirmation) {
       return; // Si el usuario cancela, no hacemos nada
     }
 
+
     this._apiservice.updateLocation(this.editingLocation).subscribe({
-      next: (response) =>{
-      console.log('Localidad actualizada exitosamente', response);
-      this.editingLocation = null; // Limpia la variable de edición
-      this.getLocations(); // Refresca la lista de localidades
+      next: (response) => {
+        console.log('Localidad actualizada exitosamente', response);
+        this.editingLocation = null; // Limpia la variable de edición
+        this.getLocations(); // Refresca la lista de localidades
+        this.showSection('initial');
+        form.resetForm();
       },
-    error: (error) => {
-      console.error('Error al actualizar la localidad', error);
-    }
-  });
+      error: (error) => {
+        console.error('Error al actualizar la localidad', error);
+      }
+    });
   }
 
-    // Método para actualizar la sección actual mostrada
-    showSection(section: string) {
-      this.currentSection = section;
+  // Método para actualizar la sección actual mostrada
+  showSection(section: string) {
+    this.currentSection = section;
 
-      if(section == 'getLocation'){
+    if (section == 'getLocation') {
 
-        this.getLocations()
-
-      }
+      this.getLocations()
 
     }
+
+  }
 
   // Lista de provincias de Argentina
   provincias: string[] = [

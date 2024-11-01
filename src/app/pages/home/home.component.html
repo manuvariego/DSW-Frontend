@@ -2,11 +2,11 @@
 
     <section class="hero">
         <h1>¡Bienvenido a ParkEasy!</h1>
-        <p>Estacionamiento facil y rapido.</p>
+        <p>Estacionamiento fácil y rápido.</p>
     </section>
 
     <section class="contenido">
-        <h2>¿Que es ParkEasy?</h2>
+        <h2>¿Qué es ParkEasy?</h2>
         <p>Es una aplicacion que va a facilitarte el estacionar tu vehiculo con un solo click.</p>
     </section>
 
@@ -17,15 +17,15 @@
             <div class="col-md-3">
               <i class="bi bi-calculator display-4 mb-3"></i>
               <h4>Cotización en 1'</h4>
-              <p>Use nuestro cotizador y sepa el precio en 1 minuto</p>
+              <p>Use nuestro cotizador y sepa el precio en 1 minuto!</p>
             </div>
             <div class="col-md-3">
               <i class="bi bi-car-front display-4 mb-3"></i>
               <h4>Opciones</h4>
-              <p>Deje su auto aqui (aca podemos agregar lo del lavado)</p>
+              <p>Puedes optar por el servicio de lavado!</p>
             </div>
             <div class="col-md-3">
-              <i class="bi bi-warehouse display-4 mb-3"></i>
+              <i class="bi bi-geo-alt display-4 mb-3"></i>
               <h4>+ 200 cocheras</h4>
               <p>Más de 200 plazas techadas y seguras disponibles</p>
             </div>
@@ -37,38 +37,24 @@
           </div>
         </div>
       </section>
-
-      <section class="contacto">
-        <h6>contactanos!</h6>
-        <p>parkeasy&#64;gmail.com</p>
-    </section>
       
       <section class="ubicacion py-5">
         <div class="container">
-          <h3 class="text-center mb-4">Estamos bien ubicados</h3>
+          <h3 class="text-center mb-4">Encontrá tu cochera mas cercana</h3>
           <p class="text-center">
-            Estamos ubicados en (ver de poner el mapa)
+            ¡Tenemos todas estas opciones!
           </p>
           <div id="map" style="height: 400px; margin-top: 20px;"></div>
         </div>
       </section>
-      
+  
 
+      <section class="contacto">
+        <h6>contactanos!</h6>
+        <p>parkeasy&#64;gmail.com</p>
+     </section>
+     
 </body>
 
 
 
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-
-<script>
-  var map = L.map('map').setView([-34.8222, -58.535], 13); // Coordenadas
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-
-  L.marker([-34.8222, -58.535]).addTo(map)
-    .bindPopup('Ubicación de ParkEasy')
-    .openPopup();
-</script>

@@ -1,261 +1,317 @@
 @if (currentSection == 'initial') {
-  <div class="container mt-5 text-center">
-    <!-- Título general -->
-    <h2 class="mb-4">Gestión de Usuarios</h2>
-    
-    <!-- Obtener Todos los Usuarios -->
-    <div class="card mb-4 shadow-sm p-3">
-      <label class="h5 mb-3">Obtener Todos los Usuarios</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('getUser')">
-        <i class="fas fa-users"></i> Obtener Usuarios
-      </button>
-    </div>
+<div *ngIf="usuarioCreado" class="container alert alert-success mt-3 text-center">
+  Usuario creado exitosamente.
+</div>
+<div class="container mt-5 text-center">
+  <!-- Título general -->
+  <h2 class="mb-4">Gestión de Usuarios</h2>
 
-    <!-- Crear Nuevo Usuario -->
-    <div class="card shadow-sm p-3">
-      <label class="h5 mb-3">Crear Nuevo Usuario</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('createUser')">
-        <i class="fas fa-user-plus"></i> Crear Usuario
-      </button>
-    </div>
-
-    <div class="card shadow-sm p-3">
-      <label class="h5 mb-3">Obtener un usuario por ID</label>
-      <button type="button" class="btn btn-primary" (click)="showSection('geTaUser')">
-        <i class="fas fa-user-plus"></i> Obtener un usuario
-      </button>
-    </div>
-  </div>
-}
-
-@if (currentSection == 'geTaUser') {
-
-  <form (ngSubmit)="geTaUser()" #userForm="ngForm" class="needs-validation" novalidate>
-    <!-- Campo Nombre -->
-    <div class="form-group mb-3">
-      <label for="name">ID</label>
-      <input type="text" class="form-control" id="ID" name="ID" [(ngModel)]="userID" required placeholder="ID">
-      <div class="invalid-feedback">El ID es obligatorio.</div>
-    </div>
-    <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary">Encontrar</button>
-      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-    </div>
-    </form>
-}
-
-@if (currentSection == 'geTaUserTable') {
-  <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-    <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-      <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido</th>
-          <th scope="col">DNI</th>
-          <th scope="col">Dirección</th>
-          <th scope="col">Email</th>
-          <th scope="col">Teléfono</th>
-          <th scope="col">Vehículos</th>
-          <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-        </tr>
-      </thead>
-      <tbody>
-        <th>{{aUser.id}}</th>
-          <td>{{aUser.name}}</td>
-          <td>{{aUser.lastname}}</td>
-          <td>{{aUser.dni}}</td>
-          <td>{{aUser.address}}</td>
-          <td>{{aUser.email}}</td>
-          <td>{{aUser.phone_number}}</td>
-          <td>
-            <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
-              <li *ngFor="let vehicle of aUser.vehicles">
-                <i class="fas fa-car"></i> {{vehicle.license_plate}} <!-- Ícono decorativo de un coche -->
-              </li>
-            </ul>
-          </td>
-          <td>
-            <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(aUser.id, true)">Eliminar</button>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(aUser)">Modificar</button>
-            </div>
-          </td>
-      </tbody>
-    </table>
+  <!-- Obtener Todos los Usuarios -->
+  <div class="card mb-4 shadow-sm p-3">
+    <label class="h5 mb-3">Obtener Todos los Usuarios</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('getUsers')">
+      <i class="fas fa-users"></i> Obtener Usuarios
+    </button>
   </div>
 
+  <!-- Crear Nuevo Usuario -->
+  <div class="card shadow-sm p-3">
+    <label class="h5 mb-3">Crear Nuevo Usuario</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('createUser')">
+      <i class="fas fa-user-plus"></i> Crear Usuario
+    </button>
+  </div>
+
+  <!-- Obtener un Usuario -->
+  <div class="card shadow-sm p-3">
+    <label class="h5 mb-3">Obtener un usuario por ID</label>
+    <button type="button" class="btn btn-primary" (click)="showSection('getOneUser')">
+      <i class="fas fa-user-plus"></i> Obtener un usuario
+    </button>
+  </div>
+</div>
+}
+
+@if (currentSection == 'getOneUser') {
+
+<form (ngSubmit)="getOneUser(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
+
+  <!-- Campo ID -->
+  <div class="form-group mb-3">
+    <label for="id">ID</label>
+    <input type="number" class="form-control" id="ID" name="ID" [(ngModel)]="userID" required placeholder="ID"
+      #userIDField="ngModel" [class.is-invalid]="userIDField.invalid && (userIDField.dirty || userIDField.touched)" />
+    <div class="invalid-feedback">Debe ingresar un ID.</div>
+  </div>
   <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary">Encontrar</button>
     <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
   </div>
+</form>
+}
+
+@if (currentSection == 'getUserTable') {
+<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
+  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
+    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">DNI</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Email</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Vehículos</th>
+        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+      </tr>
+    </thead>
+    <tbody>
+      <th>{{aUser.id}}</th>
+      <td>{{aUser.name}}</td>
+      <td>{{aUser.lastname}}</td>
+      <td>{{aUser.dni}}</td>
+      <td>{{aUser.address}}</td>
+      <td>{{aUser.email}}</td>
+      <td>{{aUser.phoneNumber}}</td>
+      <td>
+        <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
+          <li *ngFor="let vehicle of aUser.vehicles">
+            <i class="fas fa-car"></i> {{vehicle.license_plate}}
+          </li>
+        </ul>
+      </td>
+      <td>
+        <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(aUser.id, true)">Eliminar</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="changeUser(aUser)">Modificar</button>
+        </div>
+      </td>
+    </tbody>
+  </table>
+</div>
+
+<div class="d-grid gap-2">
+  <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+</div>
 
 }
 
 
-@if (currentSection == 'getUser') {
-  <div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-    <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-      <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido</th>
-          <th scope="col">DNI</th>
-          <th scope="col">Dirección</th>
-          <th scope="col">Email</th>
-          <th scope="col">Teléfono</th>
-          <th scope="col">Vehículos</th>
-          <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of userList; let i = index">
-          <th>{{user.id}}</th>
-          <td>{{user.name}}</td>
-          <td>{{user.lastname}}</td>
-          <td>{{user.dni}}</td>
-          <td>{{user.address}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.phone_number}}</td>
-          <td>
-            <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
-              <li *ngFor="let vehicle of user.vehicles">
-                <i class="fas fa-car"></i> {{vehicle.license_plate}}<!-- Ícono decorativo de un coche -->
-              </li>
-            </ul>
-          </td>
-          <td>
-            <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-              <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.id, false)">Eliminar</button>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="modificarUsuario(user)">Modificar</button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
-  <!-- Botón de Volver con espaciado -->
-  <div class="mt-3"> <!-- Margen superior para espaciado -->
-    <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
-  </div>
+@if (currentSection == 'getUsers') {
+<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
+  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
+    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">DNI</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Email</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Vehículos</th>
+        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList; let i = index">
+        <th>{{user.id}}</th>
+        <td>{{user.name}}</td>
+        <td>{{user.lastname}}</td>
+        <td>{{user.dni}}</td>
+        <td>{{user.address}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phoneNumber}}</td>
+        <td>
+          <ul class="list-unstyled"> <!-- Quita los puntos de la lista -->
+            <li *ngFor="let vehicle of user.vehicles">
+              <i class="fas fa-car"></i> {{vehicle.license_plate}}<!-- Ícono decorativo de un coche -->
+            </li>
+          </ul>
+        </td>
+        <td>
+          <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user.id, false)">Eliminar</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="changeUser(user)">Modificar</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Botón de Volver con espaciado -->
+<div class="mt-3"> <!-- Margen superior para espaciado -->
+  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
+</div>
 }
 
 @if (currentSection == 'createUser') {
-  <div class="container mt-5">
-    <h2 class="text-center mb-4">Crear Nuevo Usuario</h2>
-    
-    <form (ngSubmit)="createUserr()" #userForm="ngForm" class="needs-validation" novalidate>
-      <!-- Campo Nombre -->
-      <div class="form-group mb-3">
-        <label for="name">Nombre:</label>
-        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userData.name" required placeholder="Nombre">
-        <div class="invalid-feedback">El nombre es obligatorio.</div>
-      </div>
-      
-      <!-- Campo Apellido -->
-      <div class="form-group mb-3">
-        <label for="lastname">Apellido:</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" [(ngModel)]="userData.lastname" required placeholder="Apellido">
-        <div class="invalid-feedback">El apellido es obligatorio.</div>
-      </div>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Crear Nuevo Usuario</h2>
 
-      <div class="form-group mb-3">
-        <label for="lastname">Contraseña:</label>
-        <input type="text" class="form-control" id="password" name="password" [(ngModel)]="userData.password" required placeholder="Contraseña">
-        <div class="invalid-feedback">El password es obligatorio.</div>
-      </div>
-      
-      <!-- Campo DNI -->
-      <div class="form-group mb-3">
-        <label for="dni">DNI:</label>
-        <input type="text" class="form-control" id="dni" name="dni" [(ngModel)]="userData.dni" required placeholder="DNI">
-        <div class="invalid-feedback">El DNI es obligatorio.</div>
-      </div>
+  <form (ngSubmit)="createUser(userForm)" #userForm="ngForm" class="needs-validation">
 
-      <!-- Campo Dirección -->
-      <div class="form-group mb-3">
-        <label for="address">Dirección:</label>
-        <input type="text" class="form-control" id="address" name="address" [(ngModel)]="userData.address" required placeholder="Dirección">
-        <div class="invalid-feedback">La dirección es obligatoria.</div>
+    <!-- Campo Nombre -->
+    <div class="form-group mb-3">
+      <label for="name">Nombre:</label>
+      <input id="name" name="name" placeholder="Nombre" type="text" class="form-control" [(ngModel)]="userData.name"
+        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+      <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-      
-      <!-- Campo Email -->
-      <div class="form-group mb-3">
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="userData.email" required placeholder="Correo Electrónico">
-        <div class="invalid-feedback">Por favor, introduce un correo válido.</div>
+    </div>
+
+    <!-- Campo Apellido -->
+    <div class="form-group mb-3">
+      <label for="lastname">Apellido:</label>
+      <input id="lastname" name="lastname" placeholder="Apellido" type="text" class="form-control"
+        [(ngModel)]="userData.lastname" #lastname="ngModel" required
+        [class.is-invalid]="lastname.invalid && (lastname.dirty || lastname.touched)" />
+      <div *ngIf="lastname.errors?.['required'] && (lastname.dirty || lastname.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-      
-      <!-- Campo Número de Teléfono -->
-      <div class="form-group mb-3">
-        <label for="phoneNumber">Número de Teléfono:</label>
-        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="userData.phone_number" required placeholder="Número de Teléfono">
-        <div class="invalid-feedback">El número de teléfono es obligatorio.</div>
+    </div>
+
+    <!-- Campo contraseña -->
+    <div class="form-group mb-3">
+      <label for="password">Contraseña:</label>
+      <input id="password" name="password" placeholder="Contraseña" type="password" class="form-control"
+        [(ngModel)]="userData.password" #password="ngModel" required
+        [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />
+      <div *ngIf="password.errors?.['required'] && (password.dirty || password.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-      
-      <!-- Botones -->
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary" (click)="showSection('initial')">Enviar</button>
-        <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+    </div>
+
+    <!-- Campo DNI -->
+    <div class="form-group mb-3">
+      <label for="dni">DNI:</label>
+      <input id="dni" name="dni" placeholder="DNI" type="text" class="form-control" [(ngModel)]="userData.dni"
+        #dni="ngModel" required [class.is-invalid]="dni.invalid && (dni.dirty || dni.touched)" />
+      <div *ngIf="dni.errors?.['required'] && (dni.dirty || dni.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- Campo Dirección -->
+    <div class="form-group mb-3">
+      <label for="address">Dirección:</label>
+      <input id="address" name="address" placeholder="Dirección" type="text" class="form-control"
+        [(ngModel)]="userData.address" #address="ngModel" required
+        [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
+      <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Campo Email -->
+    <div class="form-group mb-3">
+      <label for="email">Correo Electrónico:</label>
+      <input id="email" name="email" placeholder="Correo Electrónico" type="text" class="form-control"
+        [(ngModel)]="userData.email" #email="ngModel" required
+        [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
+      <div *ngIf="email.errors?.['required'] && (email.dirty || email.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Campo Número de Teléfono -->
+    <div class="form-group mb-3">
+      <label for="phoneNumber">Número de Teléfono:</label>
+      <input id="phoneNumber" name="phoneNumber" placeholder="Número de Teléfono" type="text" class="form-control"
+        [(ngModel)]="userData.phoneNumber" #phoneNumber="ngModel" required
+        [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
+      <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)"
+        class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary">Enviar</button>
+      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
+    </div>
+  </form>
+</div>
 }
 
 @if(currentSection == 'editUser') {
-  <!-- Formulario de edición de usuario -->
-  <div class="container mt-5"> <!-- Contenedor con espaciado superior -->
-    <h2 class="mb-4 text-center">Modificar Usuario</h2> <!-- Encabezado centrado y con margen inferior -->
-    
-    <form (ngSubmit)="updateUser()" class="needs-validation" novalidate>
-      <!-- Campo Nombre -->
-      <div class="form-group">
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" class="form-control" [(ngModel)]="editingUser.name" name="name" required>
-        <div class="invalid-feedback">El nombre es obligatorio.</div>
-      </div>
-  
-      <!-- Campo Apellido -->
-      <div class="form-group">
-        <label for="lastname">Apellido:</label>
-        <input type="text" id="lastname" class="form-control" [(ngModel)]="editingUser.lastname" name="lastname" required>
-        <div class="invalid-feedback">El apellido es obligatorio.</div>
-      </div>
-  
-      <!-- Campo DNI -->
-      <div class="form-group">
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" class="form-control" [(ngModel)]="editingUser.dni" name="dni" required>
-        <div class="invalid-feedback">El DNI es obligatorio.</div>
-      </div>
+<!-- Formulario de edición de usuario -->
+<div class="container mt-5"> <!-- Contenedor con espaciado superior -->
+  <h2 class="mb-4 text-center">Modificar Usuario</h2> <!-- Encabezado centrado y con margen inferior -->
 
-      <!-- Campo Dirección -->
-      <div class="form-group">
-        <label for="address">Dirección:</label>
-        <input type="text" id="address" class="form-control" [(ngModel)]="editingUser.address" name="address" required>
-        <div class="invalid-feedback">La dirección es obligatoria.</div>
+  <form (ngSubmit)="updateUser(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
+
+    <!-- Campo Nombre -->
+    <div class="form-group">
+      <label for="name">Nombre:</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="editingUser.name" name="name" required
+        #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
+      <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-   
-      <!-- Campo Email -->
-      <div class="form-group">
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" class="form-control" [(ngModel)]="editingUser.email" name="email" required>
-        <div class="invalid-feedback">Por favor, introduce un correo electrónico válido.</div>
+    </div>
+
+    <!-- Campo Apellido -->
+    <div class="form-group">
+      <label for="lastname">Apellido:</label>
+      <input type="text" id="lastname" class="form-control" [(ngModel)]="editingUser.lastname" name="lastname" required
+        #lastname="ngModel" required [class.is-invalid]="lastname.invalid && (lastname.dirty || lastname.touched)" />
+      <div *ngIf="lastname.errors?.['required'] && (lastname.dirty || lastname.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-    
-      <!-- Campo Teléfono -->
-      <div class="form-group">
-        <label for="phone_number">Número de Teléfono:</label>
-        <input type="tel" id="phone_number" class="form-control" [(ngModel)]="editingUser.phone_number" name="phone_number" required>
-        <div class="invalid-feedback">El número de teléfono es obligatorio.</div>
+    </div>
+
+    <!-- Campo DNI -->
+    <div class="form-group">
+      <label for="dni">DNI:</label>
+      <input type="text" id="dni" class="form-control" [(ngModel)]="editingUser.dni" name="dni" required #dni="ngModel"
+        required [class.is-invalid]="dni.invalid && (dni.dirty || dni.touched)" />
+      <div *ngIf="dni.errors?.['required'] && (dni.dirty || dni.touched)" class="invalid-feedback">
+        Este campo es requerido.
       </div>
-    
-      <!-- Botones -->
-      <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initial')">Guardar Cambios</button>
+    </div>
+
+    <!-- Campo Dirección -->
+    <div class="form-group">
+      <label for="address">Dirección:</label>
+      <input type="text" id="address" class="form-control" [(ngModel)]="editingUser.address" name="address" required
+        #address="ngModel" required [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
+      <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Campo Email -->
+    <div class="form-group">
+      <label for="email">Correo Electrónico:</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="editingUser.email" name="email" required
+        #email="ngModel" required [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
+      <div *ngIf="email.errors?.['required'] && (email.dirty || email.touched)" class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Campo Teléfono -->
+    <div class="form-group">
+      <label for="phoneNumber">Número de Teléfono:</label>
+      <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="editingUser.phoneNumber" name="phoneNumber"
+        required #phoneNumber="ngModel" required
+        [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
+      <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)"
+        class="invalid-feedback">
+        Este campo es requerido.
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
       <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
-        </div>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>
 }
