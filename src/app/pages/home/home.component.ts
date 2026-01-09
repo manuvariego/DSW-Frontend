@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import * as L from 'leaflet';
+import * as L from 'leaflet'; //librería para mapas
 
 @Component({
   selector: 'app-home',
@@ -21,8 +21,22 @@ export class HomeComponent implements OnInit {
     }).addTo(map);
 
     L.marker([-32.95435913192803, -60.64376536037566]).addTo(map)
-      .bindPopup('Ubicación de ParkEasy')
+      .bindPopup('Estacionamiento UTN')
       .openPopup();
+
+    L.marker([-32.956056, -60.661444]).addTo(map)
+      .bindPopup('Estacionamiento Parque Independencia')
+      .openPopup();
+
+    L.marker([-32.92750135, -60.6697378091253 ]).addTo(map)
+      .bindPopup('Estacionamiento Alto Rosario Shopping')
+      .openPopup();
+    
+    L.marker([-32.9479, -60.629752]).addTo(map)
+      .bindPopup('Estacionamiento Monumento a la Bandera')
+      .openPopup();
+
+    // agregar mas marcadores donde nos parezca
   }
 }
 

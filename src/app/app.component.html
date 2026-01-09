@@ -1,55 +1,145 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="" [ngClass]="{active: menuOption == 'home'}"(click)="onOption('home')">ParkEasy</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="login" id="login" [ngClass]="{active: menuOption == 'login'}" 
-            (click)="onOption('login')">Ingresar</a>
-       </li>
-        <li class="nav-item">
-           <a class="nav-link" routerLink="users" [ngClass]="{active: menuOption == 'users'}" 
-             (click)="onOption('users')">Usuarios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="vehicles" id="vehicles" [ngClass]="{active: menuOption == 'vehicles'}" 
-            (click)="onOption('vehicles')">Vehículos</a>
-       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="garages" [ngClass]="{active: menuOption == 'garages'}" 
-          (click)="onOption('garages')">Cocheras</a>
-     </li>
-     <li class="nav-item">
-      <a class="nav-link" routerLink="locations" [ngClass]="{active: menuOption == 'locations'}" 
-        (click)="onOption('locations')">Localidades</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="typeVehicles" [ngClass]="{active: menuOption == 'typeVehicles'}" 
-          (click)="onOption('typeVehicles')">Tipos de Vehículos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="parkingSpace" [ngClass]="{active: menuOption == 'parkingSpace'}" 
-          (click)="onOption('parkingSpace')">Lugar de Estacionamiento</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="reservationTypes" [ngClass]="{active: menuOption == 'reservationTypes'}" 
-          (click)="onOption('reservationTypes')">Tipos de Estadía</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="reservation" id="reservation" [ngClass]="{active: menuOption == 'reservation'}" 
-          (click)="onOption('reservation')">Reservar</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="cancelReservation" id="cancelReservation"  [ngClass]="{active: menuOption == 'cancelReservation'}" 
-          (click)="onOption('cancelReservation')">Dar de Baja una Reserva</a>
-      </li>
-      </ul>
+
+    <a class="navbar-brand"
+       routerLink=""
+       [ngClass]="{active: menuOption == 'home'}"
+       (click)="onOption('home')">
+      ParkEasy
+    </a>
+
+    <!-- Acciones derecha -->
+    <div class="d-flex align-items-center gap-2">
+
+      <!-- Botón ingresar (siempre visible) -->
+      <a class="btn button"
+         routerLink="login"
+         [ngClass]="{active: menuOption == 'login'}"
+         (click)="onOption('login')">
+        Ingresar
+      </a>
+
+      <!-- Botón hamburguesa -->
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasNavbar"
+              aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <!-- Menú lateral -->
+    <div class="offcanvas offcanvas-end"
+         tabindex="-1"
+         id="offcanvasNavbar"
+         aria-labelledby="offcanvasNavbarLabel">
+
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="users"
+               [ngClass]="{active: menuOption == 'users'}"
+               (click)="onOption('users')"
+               data-bs-dismiss="offcanvas">
+              Usuarios
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="vehicles"
+               [ngClass]="{active: menuOption == 'vehicles'}"
+               (click)="onOption('vehicles')"
+               data-bs-dismiss="offcanvas">
+              Vehículos
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="garages"
+               [ngClass]="{active: menuOption == 'garages'}"
+               (click)="onOption('garages')"
+               data-bs-dismiss="offcanvas">
+              Cocheras
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="locations"
+               [ngClass]="{active: menuOption == 'locations'}"
+               (click)="onOption('locations')"
+               data-bs-dismiss="offcanvas">
+              Localidades
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="typeVehicles"
+               [ngClass]="{active: menuOption == 'typeVehicles'}"
+               (click)="onOption('typeVehicles')"
+               data-bs-dismiss="offcanvas">
+              Tipos de Vehículos
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="parkingSpace"
+               [ngClass]="{active: menuOption == 'parkingSpace'}"
+               (click)="onOption('parkingSpace')"
+               data-bs-dismiss="offcanvas">
+              Lugar de Estacionamiento
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="reservationTypes"
+               [ngClass]="{active: menuOption == 'reservationTypes'}"
+               (click)="onOption('reservationTypes')"
+               data-bs-dismiss="offcanvas">
+              Tipos de Estadía
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="reservation"
+               [ngClass]="{active: menuOption == 'reservation'}"
+               (click)="onOption('reservation')"
+               data-bs-dismiss="offcanvas">
+              Reservar
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="cancelReservation"
+               [ngClass]="{active: menuOption == 'cancelReservation'}"
+               (click)="onOption('cancelReservation')"
+               data-bs-dismiss="offcanvas">
+              Dar de Baja una Reserva
+            </a>
+          </li>
+
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
 
 <router-outlet></router-outlet>
-

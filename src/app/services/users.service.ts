@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable , tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,29 @@ export class UsersService {
     return this._http.get<any>(`${this.apiUrl}/${userId}/reservations`)
   }
   
+  // Login 
+
+  login(credentials: any): Observable<any> {
+    // El backend espera { dni, password }
+    return this._http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response) => {
+        if (response.token) {
+          // Guardamos el token 
+          localStorage.setItem('token', response.token); 
+        }
+      })
+    );
+  }
+
+  // Método para saber si está logueado
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); // Devuelve true si existe el token
+  }
+
+  // Cerrar sesión
+  logout() {
+    localStorage.removeItem('token');
+  }
 
   } 
 

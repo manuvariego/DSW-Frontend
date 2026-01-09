@@ -1,13 +1,13 @@
 @if (currentSection == 'initial'){
 <div class="form-reservation">
-  <h3>Reserva tu Estacionamiento</h3>
+  <h3>Reservá tu Estacionamiento</h3>
   <form>
 
     <!-- Selección de vehículo -->
     <select class="form-control" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate"
       name="vehicle" required #license_plate="ngModel"
       [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
-      <option value="">Selecciona tu Vehículo</option>
+      <option value="">Seleccioná tu Vehículo</option>
       <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate">
         {{ vehicle.license_plate }}
       </option>
@@ -47,7 +47,6 @@
       {{ errorMessage }}
     </div>
 
-    <!-- Botón para buscar cocheras disponibles (Deshabilitado si hay errores de validación o fecha inválida) -->
 
     <!-- Botón para buscar cocheras disponibles (Deshabilitado si hay errores de validación o fecha inválida) -->
     <button type="button" class="btn btn-primary"
