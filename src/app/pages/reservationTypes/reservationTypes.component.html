@@ -1,213 +1,220 @@
-@if (currentSection == 'initReservationType' ) {
-<div *ngIf="resTypeCreado" class="container alert alert-success mt-3 text-center">
-  Tipo de estadía creado exitosamente.
-</div>
-<div class="container mt-5 text-center">
-  <!-- Título general -->
-  <h2 class="mb-4">Gestión de tipos de reserva</h2>
+@if (currentSection == 'initReservationType') {
+  <div class="fade-in-anim">
+    <div *ngIf="resTypeCreado" class="alert alert-success shadow-sm text-center mb-4">
+      <i class="fas fa-check-circle"></i> Tipo de estadía creado exitosamente.
+    </div>
 
-  <!-- Listado de tipos de reserva -->
-  <div class="card mb-4 shadow-sm p-3">
-    <label class="h5 mb-3">Listado de todos los tipos de reserva</label>
-    <button type="button" class="btn btn-primary" (click)="showSection('getReservationTypes')">
-      <i class="fas fa-list"></i> Ver Listado
-    </button>
+    <div class="container mt-4">
+      <h2 class="section-title text-center mb-5">Tipos de Reserva</h2>
+
+      <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getReservationTypes')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-list-ul fa-3x"></i>
+            </div>
+            <h5 class="card-title">Listado de Tipos</h5>
+            <p class="text-muted small">Ver precios y categorías disponibles.</p>
+            <button class="btn btn-dark-custom mt-2">Ver Listado</button>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('createReservationType')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-plus-circle fa-3x"></i>
+            </div>
+            <h5 class="card-title">Nuevo Tipo</h5>
+            <p class="text-muted small">Crear una nueva categoría de estadía.</p>
+            <button class="btn btn-dark-custom mt-2">Crear</button>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('geTaReservationType')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-search-dollar fa-3x"></i>
+            </div>
+            <h5 class="card-title">Buscar Específico</h5>
+            <p class="text-muted small">Buscar por descripción y cochera.</p>
+            <button class="btn btn-dark-custom mt-2">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Crear un tipo de reserva -->
-  <div class="card shadow-sm p-3">
-    <label class="h5 mb-3">Crear un nuevo tipo de reserva</label>
-    <button type="button" class="btn btn-primary" (click)="showSection('createReservationType')">
-      <i class="fas fa-plus-circle"></i> Crear tipo de reserva
-    </button>
-  </div>
-
-  <!-- Obtener un tipo de reserva por id -->
-  <div class="card shadow-sm p-3">
-    <label class="h5 mb-3">Obtener un tipo de reserva por id </label>
-    <button type="button" class="btn btn-primary" (click)="showSection('geTaReservationType')">
-      <i class="fas fa-user-plus"></i> Obtener un tipo de reserva
-    </button>
-  </div>
-
-</div>
 }
 
 @if (currentSection == 'geTaReservationType') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 500px;">
+      <h3 class="text-center mb-4 section-title">Buscar Tipo</h3>
+      
+      <form (ngSubmit)="getReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
+        
+        <div class="form-group mb-3">
+          <label for="description" class="form-label">Descripción</label>
+          <input id="description" name="description" type="text" class="form-control modern-input" placeholder="Ej: Hora, Dia, Mes..."
+            [(ngModel)]="reservationTypeData.description" #description="ngModel" required
+            [class.is-invalid]="description.invalid && (description.dirty || description.touched)" />
+          <div class="invalid-feedback">Requerido.</div>
+        </div>
 
-<form (ngSubmit)="getReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation"
-  novalidate>
-  <!-- Campos -->
-  <div class="form-group mb-3">
-    <label for="description">Descripcion:</label>
-    <input id="description" name="description" type="text" class="form-control" placeholder="Descripcion"
-      [(ngModel)]="reservationTypeData.description" required #description="ngModel" required
-      [class.is-invalid]="description.invalid && (description.dirty || description.touched)" />
-    <div *ngIf="description.errors?.['required'] && (description.dirty || description.touched)"
-      class="invalid-feedback">
-      Este campo es requerido.
+        <div class="form-group mb-4">
+          <label for="garage" class="form-label">CUIT de Cochera</label>
+          <input type="text" class="form-control modern-input" id="garage" name="garage" 
+            [(ngModel)]="reservationTypeData.garage" placeholder="CUIT" #garage="ngModel" required 
+            [class.is-invalid]="garage.invalid && (garage.dirty || garage.touched)" />
+          <div class="invalid-feedback">Requerido.</div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark-custom">Encontrar <i class="fas fa-search"></i></button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initReservationType')">Volver</button>
+        </div>
+      </form>
     </div>
   </div>
-
-  <div class="form-group mb-3">
-    <label for="price">Cuit:</label>
-    <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="reservationTypeData.garage" required
-      placeholder="CUIT" #garage="ngModel" required [class.is-invalid]="garage.invalid && (garage.dirty || garage.touched)" />
-    <div *ngIf="garage.errors?.['required'] && (garage.dirty || garage.touched)" class="invalid-feedback">
-      Este campo es requerido.
-    </div>
-  </div>
-
-  <!-- Botones -->
-  <button type="submit" class="btn btn-primary">Encontrar</button>
-  <button type="button" class="btn btn-secondary" (click)="showSection('initReservationType')">Volver</button>
-</form>
 }
 
 @if (currentSection == 'geTaReservationTypeTable') {
-<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-      <tr>
-        <th scope="col">Descripcion</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Garage</th>
-        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-      </tr>
-    </thead>
-    <tbody>
-      <td>{{aReservationType.description}}</td>
-      <td>{{aReservationType.price}}</td>
-      <td>{{aReservationType.garage}}</td>
-      <td>
-        <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-          <button type="button" class="btn btn-danger btn-sm"
-            (click)="deleteReservationType(aReservationType.description,aReservationType.garage, true)">Eliminar</button>
-          <button type="button" class="btn btn-secondary btn-sm"
-            (click)="changeTipodeReserva(aReservationType)">Modificar</button>
-        </div>
-      </td>
-    </tbody>
-  </table>
-</div>
-
-<div class="d-grid gap-2">
-  <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-</div>
-
+  <div class="container mt-4 fade-in-anim">
+    <div class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Descripción</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Garage (CUIT)</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="font-weight-bold">{{aReservationType.description}}</td>
+            <td class="text-success fw-bold">${{aReservationType.price}}</td>
+            <td>{{aReservationType.garage}}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-3">
+                 <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeTipodeReserva(aReservationType)" title="Editar">
+                   <i class="fas fa-pen"></i>
+                 </button>
+                 <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteReservationType(aReservationType.description, aReservationType.garage, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+                 </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 text-center">
+      <button type="button" class="btn btn-secondary px-5" (click)="showSection('initReservationType')">Volver al Menú</button>
+    </div>
+  </div>
 }
 
 @if (currentSection == 'getReservationTypes') {
-<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-      <tr>
-        <th scope="col">Descripcion</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Cuit</th>
-        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let reservation of reservationTypeList; let i = index">
-        <td>{{reservation.description}}</td>
-        <td>{{reservation.price}}</td>
-        <td>{{reservation.garage}}</td>
-        <td>
-          <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-            <button type="button" class="btn btn-danger btn-sm"
-              (click)="deleteReservationType(reservation.description, reservation.garage, true)">Eliminar</button>
-              <button type="button" class="btn btn-secondary btn-sm"
-              (click)="changeTipodeReserva(reservation)">Modificar</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div class="container-fluid mt-4 px-4 fade-in-anim">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="section-title">Precios y Categorías</h3>
+      <button type="button" class="btn btn-outline-dark" (click)="showSection('initReservationType')">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
 
-<div class="d-grid gap-2">
-  <button type="button" class="btn btn-secondary" (click)="showSection('initReservationType')">Volver</button>
-</div>
-
+    <div class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Descripción</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Garage (CUIT)</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of reservationTypeList; let i = index">
+            <td class="fw-bold text-muted">{{reservation.description}}</td>
+            <td class="text-success fw-bold">${{reservation.price}}</td>
+            <td>{{reservation.garage}}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-3">
+                 <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeTipodeReserva(reservation)" title="Editar">
+                   <i class="fas fa-pen"></i>
+                 </button>
+                 <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteReservationType(reservation.description, reservation.garage, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+                 </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 }
-
 
 @if (currentSection == 'createReservationType') {
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Crear Nuevo Tipo de Reserva</h2>
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center mb-4 section-title">Crear Nuevo Tipo</h3>
 
-  <form (ngSubmit)="createReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation"
-    novalidate>
+      <form (ngSubmit)="createReservationType(reservationTypeForm)" #reservationTypeForm="ngForm" class="needs-validation" novalidate>
+        
+        <div class="form-group mb-3">
+          <label for="description" class="form-label">Descripción</label>
+          <input id="description" name="description" type="text" class="form-control modern-input" placeholder="Ej: Media Estadia"
+            [(ngModel)]="reservationTypeData.description" #description="ngModel" required
+            [class.is-invalid]="description.invalid && (description.dirty || description.touched)" />
+          <div class="invalid-feedback">Requerido.</div>
+        </div>
 
-    <!-- Campo descripcion-->
-    <div class="form-group mb-3">
-      <label for="description">Descripcion:</label>
-      <input id="description" name="description" type="text" class="form-control" placeholder="Descripcion"
-        [(ngModel)]="reservationTypeData.description" required #description="ngModel" required
-        [class.is-invalid]="description.invalid && (description.dirty || description.touched)" />
-      <div *ngIf="description.errors?.['required'] && (description.dirty || description.touched)"
-        class="invalid-feedback">
-        Este campo es requerido.
-      </div>
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+              <label for="price" class="form-label">Precio</label>
+              <input id="price" name="price" type="number" class="form-control modern-input" placeholder="$"
+                [(ngModel)]="reservationTypeData.price" #price="ngModel" required
+                [class.is-invalid]="price.invalid && (price.dirty || price.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+            </div>
+
+            <div class="col-md-6 form-group mb-3">
+              <label for="CUIT" class="form-label">CUIT Cochera</label>
+              <input type="text" class="form-control modern-input" id="CUIT" name="CUIT" 
+                [(ngModel)]="reservationTypeData.garage" placeholder="CUIT" #CUIT="ngModel" required 
+                [class.is-invalid]="CUIT.invalid && (CUIT.dirty || CUIT.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-dark-custom btn-lg">Guardar</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initReservationType')">Cancelar</button>
+        </div>
+      </form>
     </div>
-
-
-    <!-- Campo Tipo -->
-    <div class="form-group mb-3">
-      <label for="price">Precio por tipo de reserva:</label>
-      <input id="price" name="price" type="text" class="form-control" placeholder="Precio"
-        [(ngModel)]="reservationTypeData.price" #price="ngModel" required
-        [class.is-invalid]="price.invalid && (price.dirty || price.touched)" />
-      <div *ngIf="price.errors?.['required'] && (price.dirty || price.touched)" class="invalid-feedback">
-        Este campo es requerido.
-      </div>
-
-    </div>
-
-    <!-- Campo CUIT -->
-    <div class="form-group mb-3">
-      <label for="price">Cuit:</label>
-      <input type="text" class="form-control" id="CUIT" name="CUIT" [(ngModel)]="reservationTypeData.garage" required
-        placeholder="CUIT" #CUIT="ngModel" required [class.is-invalid]="CUIT.invalid && (CUIT.dirty || CUIT.touched)" />
-      <div *ngIf="CUIT.errors?.['required'] && (CUIT.dirty || CUIT.touched)" class="invalid-feedback">
-        Este campo es requerido.
-      </div>
-    </div>
-
-    <!-- Botones -->
-    <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary">Enviar</button>
-      <button type="button" class="btn btn-secondary" (click)="showSection('initReservationType')">Volver</button>
-    </div>
-
-  </form>
-</div>
+  </div>
 }
 
+@if (currentSection == 'editReservationType') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 500px;">
+      <h3 class="text-center mb-4 section-title">Modificar Precio</h3>
+      
+      <form (ngSubmit)="updateReservationType()" class="needs-validation" novalidate>
+        
+        <div class="form-group mb-4">
+          <label for="price" class="form-label">Precio del Tipo Reserva</label>
+          <input type="number" id="price" class="form-control modern-input" [(ngModel)]="editingReservationType.price" name="price" required>
+          <div class="invalid-feedback">Este campo es obligatorio</div>
+        </div>
 
-@if(currentSection == 'editReservationType') {
-<!-- Formulario de edición -->
-<div class="container mt-4"> <!-- Contenedor con espaciado superior -->
-  <h2 class="mb-4 text-center">Modificar Tipo de Reserva</h2> <!-- Encabezado centrado y con margen inferior -->
-  <form (ngSubmit)="updateReservationType()" class="needs-validation" novalidate>
-
-    <!-- Campo Precio -->
-    <div class="form-group">
-      <label for="price">Precio del Tipo Reserva:</label>
-      <input type="text" id="price" class="form-control" [(ngModel)]="editingReservationType.price" name="price"
-        required>
-      <div class="invalid-feedback">Este campo es obligatorio</div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initReservationType')">Cancelar</button>
+        </div>
+      </form>
     </div>
-
-    <div class="d-grid gap-2">
-      <!-- Botón para guardar cambios -->
-      <button type="submit" class="btn btn-primary btn-block" (click)="showSection('initReservationType')">Guardar
-        cambios</button>
-      <!-- Botón para regresar -->
-      <button type="button" class="btn btn-secondary btn-block mt-2"
-        (click)="showSection('initReservationType')">Cancelar</button>
-    </div>
-  </form>
-</div>
+  </div>
 }

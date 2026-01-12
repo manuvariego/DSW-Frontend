@@ -25,7 +25,7 @@ export class ReservationCancelComponent implements OnInit {
   }
 
 
-  userID: any = 13
+  userID: any = 1
 
   userReservations: any[] = []
 

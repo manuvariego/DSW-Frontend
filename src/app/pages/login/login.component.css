@@ -1,54 +1,40 @@
-.container {
-    display: grid;
-  
-  }
+/* ANIMACIONES */
+.fade-in-anim { animation: fadeIn 0.6s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-  .login-form {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .container {
-    background-color: #ffffff;
-  }
-  
-  h2 {
-    font-weight: bold;
-  }
-  
-  .form-control {
-    border-radius: 0.25rem;
-  }
-  
-  .btn {
-    border-radius: 0.25rem;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004080;
-  }
-  
-  .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
-  }
-  
-  .text-muted {
-    font-size: 0.875rem;
-  }
-  
-  .form-check-input:checked {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
+/* Títulos */
+h2.section-title {
+    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.5rem;
+}
+
+/* CAJA DE LOGIN */
+.card-box { 
+    background: white; border-radius: 15px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra un poco más fuerte para el login */
+    border: 1px solid #f0f0f0; 
+}
+
+/* Inputs Modernos */
+.modern-input {
+    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
+}
+.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
+.form-label { font-weight: 600; color: #555; margin-bottom: 5px; font-size: 0.9rem; }
+
+
+/* Círculo del ícono */
+.icon-circle-login {
+    width: 70px; height: 70px; background-color: #343a40; color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Enlaces */
+.login-link { color: #007bff; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+.login-link:hover { color: #0056b3; text-decoration: underline; }
+
+/* BOTONES */
+.btn-dark-custom {
+    background: #343a40; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 700; transition: all 0.3s ease; letter-spacing: 1px;
+}
+.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }

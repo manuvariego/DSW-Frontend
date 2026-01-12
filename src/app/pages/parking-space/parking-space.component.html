@@ -1,232 +1,236 @@
 @if (currentSection == 'initial') {
-<div *ngIf="parkingCreado" class="container alert alert-success mt-3 text-center">
-  Parking creado exitosamente.
-</div>
-<div class="container mt-5 text-center">
-  <!-- Título general -->
-  <h2 class="mb-4">Gestión de Lugar de Estacionamientos</h2>
+  <div class="fade-in-anim">
+    <div *ngIf="parkingCreado" class="alert alert-success shadow-sm text-center mb-4">
+      <i class="fas fa-check-circle"></i> Parking creado exitosamente.
+    </div>
 
-  <!-- Obtener Todos los Lugar de Estacionamientos -->
-  <div class="card mb-4 shadow-sm p-3">
-    <label class="h5 mb-3">Obtener todos los Lugares de Estacionamientos</label>
-    <button type="button" class="btn btn-primary" (click)="showSection('getParkingSpace')">
-      <i class="fas fa-ParkingSpaces"></i> Obtener todos los Lugares de Estacionamiento
-    </button>
-  </div>
+    <div class="container mt-4">
+      <h2 class="section-title text-center mb-5">Gestión de Espacios</h2>
 
-  <!-- Crear Nuevo Lugar de Estacionamiento -->
-  <div class="card shadow-sm p-3">
-    <label class="h5 mb-3">Crear Nuevo Lugar de Estacionamiento</label>
-    <button type="button" class="btn btn-primary" (click)="showSection('createParkingSpace')">
-      <i class="fas fa-ParkingSpace-plus"></i> Crear Nuevo Lugar de Estacionamiento
-    </button>
-  </div>
+      <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getParkingSpace')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-parking fa-3x"></i>
+            </div>
+            <h5 class="card-title">Listado de Espacios</h5>
+            <p class="text-muted small">Ver todos los lugares disponibles.</p>
+            <button class="btn btn-dark-custom mt-2">Ver Listado</button>
+          </div>
+        </div>
 
-  <div class="card shadow-sm p-3">
-    <label class="h5 mb-3">Obtener un Lugar de Estacionamiento por ID</label>
-    <button type="button" class="btn btn-primary" (click)="showSection('geTaParkingSpace')">
-      <i class="fas fa-ParkingSpace-plus"></i> Obtener un Lugar de Estacionamiento
-    </button>
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('createParkingSpace')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-plus-circle fa-3x"></i>
+            </div>
+            <h5 class="card-title">Nuevo Espacio</h5>
+            <p class="text-muted small">Dar de alta un nuevo lugar.</p>
+            <button class="btn btn-dark-custom mt-2">Crear</button>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('geTaParkingSpace')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-search fa-3x"></i>
+            </div>
+            <h5 class="card-title">Buscar Específico</h5>
+            <p class="text-muted small">Buscar por Número y CUIT.</p>
+            <button class="btn btn-dark-custom mt-2">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 }
 
 @if (currentSection == 'geTaParkingSpace') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 500px;">
+      <h3 class="text-center mb-4 section-title">Buscar Espacio</h3>
+      
+      <form (ngSubmit)="geTaParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
+        
+        <div class="form-group mb-3">
+          <label for="number" class="form-label">Número de Espacio</label>
+          <input type="text" class="form-control modern-input" id="number" name="number" [(ngModel)]="numberParkingSpace" required placeholder="Ej: 101"
+            #numberParkingSpaceField="ngModel" [class.is-invalid]="numberParkingSpaceField.invalid && (numberParkingSpaceField.dirty || numberParkingSpaceField.touched)" />
+          <div class="invalid-feedback">Requerido.</div>
+        </div>
 
-<form (ngSubmit)="geTaParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
-  <!-- Campo Numero -->
-  <div class="form-group mb-3">
-    <label for="number">Numero</label>
-    <input type="text" class="form-control" id="number" name="number" [(ngModel)]="numberParkingSpace" required
-      placeholder="Numero" #numberParkingSpaceField="ngModel"
-      [class.is-invalid]="numberParkingSpaceField.invalid && (numberParkingSpaceField.dirty || numberParkingSpaceField.touched)" />
-    <div class="invalid-feedback">Debe ingresar un número de parking.</div>
+        <div class="form-group mb-4">
+          <label for="cuit" class="form-label">CUIT de Cochera</label>
+          <input type="text" class="form-control modern-input" id="cuit" name="cuit" [(ngModel)]="cuitGarage" required placeholder="CUIT"
+            #garageField="ngModel" [class.is-invalid]="garageField.invalid && (garageField.dirty || garageField.touched)" />
+          <div class="invalid-feedback">Requerido.</div>
+        </div>
+        
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark-custom">Encontrar <i class="fas fa-search"></i></button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Volver</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <!-- Campo Cuit -->
-  <div class="form-group mb-3">
-    <label for="cuitGarage">Cuit de Cochera</label>
-    <input type="text" class="form-control" id="cuit" name="cuit" [(ngModel)]="cuitGarage" required placeholder="Cuit"
-      #garageField="ngModel" [class.is-invalid]="garageField.invalid && (garageField.dirty || garageField.touched)" />
-    <div class="invalid-feedback">Debe ingresar un CUIT.</div>
-  </div>
-
-  <div class="d-grid gap-2">
-    <button type="submit" class="btn btn-primary">Encontrar</button>
-    <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-  </div>
-</form>
 }
 
 @if (currentSection == 'geTaParkingSpaceTable') {
-<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-      <tr>
-        <th scope="col">Numero</th>
-        <th scope="col">Garage</th>
-        <th scope="col">Tipo de vehiculo</th>
-        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-      </tr>
-    </thead>
-    <tbody>
-      <th>{{aParkingSpace.number}}</th>
-      <td>{{aParkingSpace.garage}}</td>
-      <td>{{aParkingSpace.TypeVehicle}}</td>
-      <td>
-        <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-          <button type="button" class="btn btn-danger btn-sm"
-            (click)="deleteParkingSpace(aParkingSpace.number,aParkingSpace.garage, true)">Eliminar</button>
-          <button type="button" class="btn btn-secondary btn-sm"
-            (click)="modificarParkingSpace(aParkingSpace)">Modificar</button>
-        </div>
-      </td>
-    </tbody>
-  </table>
-</div>
-
-<div class="d-grid gap-2">
-  <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-</div>
-
+  <div class="container mt-4 fade-in-anim">
+    <div class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Número</th>
+            <th scope="col">Garage (CUIT)</th>
+            <th scope="col">Tipo de Vehículo</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="font-weight-bold">#{{aParkingSpace.number}}</td>
+            <td>{{aParkingSpace.garage}}</td>
+            <td><span class="badge-type-custom">{{aParkingSpace.TypeVehicle}}</span></td>
+            <td>
+              <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarParkingSpace(aParkingSpace)" title="Editar">
+                   <i class="fas fa-pen"></i>
+                </button>
+                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteParkingSpace(aParkingSpace.number, aParkingSpace.garage, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 text-center">
+      <button type="button" class="btn btn-secondary px-5" (click)="showSection('initial')">Volver al Menú</button>
+    </div>
+  </div>
 }
 
-
 @if (currentSection == 'getParkingSpace') {
-<div class="table-responsive"> <!-- Hace la tabla adaptable a dispositivos móviles -->
-  <table class="table table-striped table-hover table-bordered"> <!-- Estilos de tabla con Bootstrap -->
-    <thead class="thead-dark"> <!-- Encabezado oscuro para mayor contraste -->
-      <tr>
-        <th scope="col">Numero</th>
-        <th scope="col">Garage</th>
-        <th scope="col">Tipo de vehiculo</th>
-        <th scope="col">Acciones</th> <!-- Columna adicional para los botones de acción -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let ParkingSpace of ParkingSpaceList; let i = index">
-        <th>{{ParkingSpace.number}}</th>
-        <td>{{ParkingSpace.garage}}</td>
-        <td>{{ParkingSpace.TypeVehicle}}</td>
-        <td>
-          <div class="d-flex justify-content-around"> <!-- Flex para alinear los botones -->
-            <button type="button" class="btn btn-danger btn-sm"
-              (click)="deleteParkingSpace(ParkingSpace.number, ParkingSpace.garage , true)">Eliminar</button>
-            <button type="button" class="btn btn-secondary btn-sm"
-              (click)="modificarParkingSpace(ParkingSpace)">Modificar</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div class="container-fluid mt-4 px-4 fade-in-anim">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="section-title">Listado de Lugares</h3>
+      <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
 
-<!-- Botón de Volver con espaciado -->
-<div class="mt-3"> <!-- Margen superior para espaciado -->
-  <button type="button" class="btn btn-primary" (click)="showSection('initial')">Volver</button>
-</div>
+    <div class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Número</th>
+            <th scope="col">Garage (CUIT)</th>
+            <th scope="col">Tipo de Vehículo</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ParkingSpace of ParkingSpaceList; let i = index">
+            <td class="fw-bold text-muted">#{{ParkingSpace.number}}</td>
+            <td>{{ParkingSpace.garage}}</td>
+            <td><span class="badge-type-custom">{{ParkingSpace.TypeVehicle}}</span></td>
+            <td>
+              <div class="d-flex justify-content-center gap-3">
+                 <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarParkingSpace(ParkingSpace)" title="Editar">
+                   <i class="fas fa-pen"></i>
+                </button>
+                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteParkingSpace(ParkingSpace.number, ParkingSpace.garage , true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 }
 
 @if (currentSection == 'createParkingSpace') {
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Crear Nuevo Lugar de Estacionamiento</h2>
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center mb-4 section-title">Registrar Nuevo Lugar</h3>
 
-  <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation"
-    novalidate>
+      <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
 
-    <div class="form-group mb-3">
-      <label for="number">Numero de Parking:</label>
-      <input type="text" class="form-control" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required
-        placeholder="Numero de Parking" #numberParkingSpace="ngModel" required
-        [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
-      <div *ngIf="numberParkingSpace.errors?.['required'] && (numberParkingSpace.dirty || numberParkingSpace.touched)"
-        class="invalid-feedback">
-        Este campo es requerido.
-      </div>
+        <div class="row">
+           <div class="col-md-6 form-group mb-3">
+              <label for="number" class="form-label">Número</label>
+              <input type="text" class="form-control modern-input" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required placeholder="Ej: 10"
+                #numberParkingSpace="ngModel" [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+           </div>
+
+           <div class="col-md-6 form-group mb-3">
+              <label for="garage" class="form-label">Garage (CUIT)</label>
+              <input type="text" class="form-control modern-input" id="garage" name="garage" [(ngModel)]="ParkingSpaceData.garage" required placeholder="CUIT"
+                #cuitGarage="ngModel" [class.is-invalid]="cuitGarage.invalid && (cuitGarage.dirty || cuitGarage.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+           </div>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="TypeVehicle" class="form-label">Tipo de Vehículo Aceptado</label>
+          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" #TypeVehicle="ngModel" required
+            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
+            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
+          </select>
+          <div class="invalid-feedback">Seleccione un tipo.</div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-dark-custom btn-lg">Dar de Alta</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Cancelar</button>
+        </div>
+      </form>
     </div>
-
-
-    <div class="form-group mb-3">
-      <label for="garage">Garage:</label>
-      <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="ParkingSpaceData.garage" required
-        placeholder="Numero de Garage" #cuitGarage="ngModel" required
-        [class.is-invalid]="cuitGarage.invalid && (cuitGarage.dirty || cuitGarage.touched)" />
-      <div *ngIf="cuitGarage.errors?.['required'] && (cuitGarage.dirty || cuitGarage.touched)" class="invalid-feedback">
-        Este campo es requerido.
-      </div>
-    </div>
-
-    <!-- Campo tipo-->
-    <div class="col-md-6 mb-3">
-      <label for="TypeVehicle" class="form-label">Seleccione el tipo de vehiculo:</label>
-      <select class="form-select" id="TypeVehicle" name="TypeVehicle" placeholder="Tipo"
-        [(ngModel)]="ParkingSpaceData.TypeVehicle" #TypeVehicle="ngModel" required
-        [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
-        <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
-      </select>
-      <div *ngIf="TypeVehicle.errors?.['required'] && (TypeVehicle.dirty || TypeVehicle.touched)"
-        class="invalid-feedback">
-        Seleccione un tipo.
-      </div>
-    </div>
-
-    <!-- Botones -->
-    <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary">Enviar</button>
-      <button type="button" class="btn btn-secondary" (click)="showSection('initial')">Volver</button>
-    </div>
-  </form>
-</div>
+  </div>
 }
 
 @if(currentSection == 'editParkingSpace') {
-<!-- Formulario de edición de Lugar de Estacionamiento -->
-<div class="container mt-5"> <!-- Contenedor con espaciado superior -->
-  <h2 class="mb-4 text-center">Modificar Lugar de Estacionamiento</h2>
-  <!-- Encabezado centrado y con margen inferior -->
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center mb-4 section-title">Modificar Espacio</h3>
 
-  <form (ngSubmit)="updateParkingSpace(parkingSpaceForm)" #parkingSpaceForm="ngForm" class="needs-validation"
-    novalidate>
+      <form (ngSubmit)="updateParkingSpace(parkingSpaceForm)" #parkingSpaceForm="ngForm" class="needs-validation" novalidate>
 
-    <div class="form-group mb-3">
-      <label for="number">Numero de Parking:</label>
-      <input type="text" class="form-control" id="number" name="number" [(ngModel)]="editingParkingSpace.number"
-        required #numberParkingSpace="ngModel" required
-        [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
-      <div *ngIf="numberParkingSpace.errors?.['required'] && (numberParkingSpace.dirty || numberParkingSpace.touched)"
-        class="invalid-feedback">
-        Este campo es requerido.
-      </div>
+        <div class="row">
+            <div class="col-md-6 form-group mb-3">
+              <label for="number" class="form-label">Número</label>
+              <input type="text" class="form-control modern-input" id="number" name="number" [(ngModel)]="editingParkingSpace.number" required
+                #numberParkingSpace="ngModel" [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+            </div>
+
+            <div class="col-md-6 form-group mb-3">
+              <label for="garage" class="form-label">Garage (CUIT)</label>
+              <input type="text" class="form-control modern-input" id="garage" name="garage" [(ngModel)]="editingParkingSpace.garage" required
+                #cuitGarage="ngModel" [class.is-invalid]="cuitGarage.invalid && (cuitGarage.dirty || cuitGarage.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="TypeVehicle" class="form-label">Tipo de Vehículo</label>
+          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="editingParkingSpace.TypeVehicle" #TypeVehicle="ngModel" required
+            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
+            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
+          </select>
+          <div class="invalid-feedback">Seleccione un tipo.</div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
+        </div>
+      </form>
     </div>
-
-    <div class="form-group mb-3">
-      <label for="garage">Garage:</label>
-      <input type="text" class="form-control" id="garage" name="garage" [(ngModel)]="editingParkingSpace.garage"
-        required #cuitGarage="ngModel" required
-        [class.is-invalid]="cuitGarage.invalid && (cuitGarage.dirty || cuitGarage.touched)" />
-      <div *ngIf="cuitGarage.errors?.['required'] && (cuitGarage.dirty || cuitGarage.touched)" class="invalid-feedback">
-        Este campo es requerido.
-      </div>
-    </div>
-
-    <div class="col-md-6 mb-3">
-      <label for="TypeVehicle" class="form-label">Seleccione el tipo de vehiculo:</label>
-      <select class="form-select" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="editingParkingSpace.TypeVehicle"
-        #TypeVehicle="ngModel" required
-        [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
-        <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
-      </select>
-      <div *ngIf="TypeVehicle.errors?.['required'] && (TypeVehicle.dirty || TypeVehicle.touched)"
-        class="invalid-feedback">
-        Seleccione un tipo.
-      </div>
-    </div>
-
-    <!-- Botones -->
-    <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
-      <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
-    </div>
-  </form>
-</div>
+  </div>
 }

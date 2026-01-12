@@ -95,20 +95,20 @@
             <td>{{aUser.phoneNumber}}</td>
             <td>
               <ul class="list-unstyled mb-0">
-                <li *ngFor="let vehicle of aUser.vehicles" class="badge badge-light p-2 mb-1 border">
-                  <i class="fas fa-car"></i> {{vehicle.license_plate}}
+                <li *ngFor="let vehicle of aUser.vehicles" class="car-icon p-2 mb-1 border">
+                  <i class="fas fa-car car-icon"></i> {{vehicle.license_plate}}
                 </li>
               </ul>
             </td>
             <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button type="button" class="btn btn-warning btn-sm text-white" (click)="changeUser(aUser)" title="Editar">
-                  <i class="fas fa-pen">Editar</i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(aUser.id, true)" title="Eliminar">
-                  <i class="fas fa-trash">Eliminar</i>
-                </button>
-              </div>
+              <div class="d-flex justify-content-center gap-3">
+               <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeUser(aUser)" title="Editar">
+                   <i class="fas fa-pen"></i>
+               </button>
+               <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteUser(aUser.id, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+               </button>
+            </div>
             </td>
           </tr>
         </tbody>
@@ -157,19 +157,19 @@
             <td>
               <ul class="list-unstyled mb-0">
                 <li *ngFor="let vehicle of user.vehicles" class="small text-muted">
-                  <i class="fas fa-car text-primary"></i> {{vehicle.license_plate}}
+                  <i class="fas fa-car car-icon"></i> {{vehicle.license_plate}}
                 </li>
               </ul>
             </td>
             <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button type="button" class="btn btn-outline-primary btn-sm" (click)="changeUser(user)">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteUser(user.id, false)">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
+              <div class="d-flex justify-content-center gap-3">
+               <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeUser(user)" title="Editar">
+                   <i class="fas fa-pen"></i>
+               </button>
+               <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteUser(user.id, false)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
+               </button>
+            </div>
             </td>
           </tr>
         </tbody>
@@ -279,7 +279,7 @@
         </div>
 
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
+          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
           <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
         </div>
       </form>

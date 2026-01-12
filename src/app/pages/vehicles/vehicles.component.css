@@ -40,7 +40,13 @@ h2.section-title, h3.section-title {
 }
 
 .menu-card:hover .icon-container {
-    color: #007bff;
+    color: #b08d57 ;
+}
+
+.tipo {
+    font-weight: 600;
+    color: #272525;
+    border-radius: 8px;
 }
 
 /* FORMULARIOS */
@@ -117,44 +123,26 @@ h2.section-title, h3.section-title {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.btn-action-edit, .btn-action-delete {
+.btn-icon-action {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50%;
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: center;    
+    justify-content: center;
     border: none;
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    cursor: pointer;
 }
+.btn-icon-action i { font-size: 1.1rem; pointer-events: none; }
 
-.btn-action-edit {
-    background: linear-gradient(135deg, #f0ad4e, #ec971f);
-}
-.btn-action-edit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(240, 173, 78, 0.4);
-    filter: brightness(1.1);
-}
+/* Editar (Lápiz) */
+.btn-edit-icon { color: #f0ad4e !important; background-color: rgba(240, 173, 78, 0.15) !important; }
+.btn-edit-icon:hover { background-color: #f0ad4e !important; color: white !important; transform: scale(1.1); }
 
-.btn-action-delete {
-    background: linear-gradient(135deg, #ff4d4d, #dc3545);
-}
-.btn-action-delete:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
-    filter: brightness(1.1);
-}
+/* Eliminar (Tacho) */
+.btn-delete-icon { color: #dc3545 !important; background-color: rgba(220, 53, 69, 0.15) !important; }
+.btn-delete-icon:hover { background-color: #dc3545 !important; color: white !important; transform: scale(1.1); }
 
-@media (max-width: 768px) {
-    .btn-action-edit span, .btn-action-delete span {
-        display: none;
-    }
-    .btn-action-edit, .btn-action-delete {
-        padding: 8px;
-        border-radius: 8px;
-    }
-}
+.gap-3 { gap: 1rem !important; }

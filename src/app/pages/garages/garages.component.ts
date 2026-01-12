@@ -35,7 +35,7 @@ export class GaragesComponent {
   }
 
   ngOnInit() {
-    this.loadLocations(); // Cargar las localidades al iniciar
+    this.loadLocations(); // Carga las localidades al iniciar
   }
 
 

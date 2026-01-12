@@ -1,31 +1,40 @@
-/* Contenedor principal del formulario */
-.form-reservation {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* ANIMACIONES */
+.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+h2.section-title, h3.section-title {
+    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.8rem;
 }
 
-/* Estilos para los inputs y selectores */
-.form-reservation .form-control {
-    margin-bottom: 10px;
+/* FORMULARIOS */
+.card-box { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
+.modern-input {
+    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
+}
+.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
+.form-label { font-weight: 600; color: #555; margin-bottom: 8px; }
+.invalid-feedback { font-size: 0.8rem; margin-top: 5px; }
+
+/* TABLAS */
+.table-responsive { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.thead-dark-custom th {
+    background: linear-gradient(135deg, #343a40, #212529); color: white; padding: 15px; font-weight: 500;
+    text-transform: uppercase; font-size: 0.9rem; border: none;
+}
+.table td { vertical-align: middle; padding: 15px; color: #495057; }
+
+/* Badge para Locación */
+.badge-type-custom {
+    background-color: #4a5568; color: white; font-weight: 500; padding: 6px 12px; border-radius: 12px;
+    font-size: 0.85rem; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Botón de envío */
-.form-reservation .btn-primary {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
+/*BOTONES*/
+.btn-dark-custom {
+    background: #343a40; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;
 }
+.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.btn-dark-custom:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* Título del formulario */
-.form-reservation h3 {
-    margin-bottom: 15px;
-    color: #0d6efd;
-    text-align: center;
-}
-
-/* Pequeños ajustes en los márgenes para alineación visual */
-.form-reservation .form-group {
-    margin-bottom: 15px;
-}
+/* Botón grande para volver en el ticket */
+.btn-lg { padding: 12px 24px; font-size: 1.1rem; }

@@ -1,4 +1,4 @@
-/* --- ANIMACIONES --- */
+/* ANIMACIONES */
 .fade-in-anim {
     animation: fadeIn 0.5s ease-in-out;
 }
@@ -8,7 +8,7 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- TIPOGRAFÍA Y TÍTULOS --- */
+/* TIPOGRAFÍA Y TÍTULOS */
 h2.section-title, h3.section-title {
     font-weight: 700;
     color: #343a40;
@@ -17,7 +17,7 @@ h2.section-title, h3.section-title {
     font-size: 1.8rem;
 }
 
-/* --- TARJETAS DEL MENÚ INICIAL (Interactive) --- */
+/* TARJETAS DEL MENÚ INICIAL */
 .menu-card {
     border: none;
     border-radius: 15px;
@@ -32,7 +32,7 @@ h2.section-title, h3.section-title {
 .menu-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    border-bottom: 4px solid #343a40; /* Color de acento oscuro al pasar el mouse */
+    border-bottom: 4px solid #394034; /* Color oscuro cuando pasa el mouse */
 }
 
 .icon-container {
@@ -41,10 +41,15 @@ h2.section-title, h3.section-title {
 }
 
 .menu-card:hover .icon-container {
-    color: #007bff; /* O el color principal de tu marca */
+    color: #b08d57; /*color dorado para cuando pasa el mouse */
 }
 
-/* --- Contenedor para formularios) --- */
+.car-icon {
+  color: #000; 
+}
+
+
+/* Contenedor para formularios) */
 .card-box {
     background: white;
     border-radius: 12px;
@@ -72,7 +77,7 @@ h2.section-title, h3.section-title {
     margin-bottom: 8px;
 }
 
-/* --- TABLAS --- */
+/* TABLAS */
 .table-responsive {
     border-radius: 12px;
     overflow: hidden;
@@ -81,7 +86,7 @@ h2.section-title, h3.section-title {
 }
 
 .thead-dark-custom th {
-    background: linear-gradient(135deg, #343a40, #212529); /* Gradiente oscuro similar a tu Home */
+    background: linear-gradient(135deg, #343a40, #212529); 
     color: white;
     padding: 15px;
     font-weight: 500;
@@ -96,7 +101,7 @@ h2.section-title, h3.section-title {
     color: #495057;
 }
 
-/* --- BOTONES --- */
+/* BOTONES */
 .btn-dark-custom {
     background: #343a40;
     color: white;
@@ -112,6 +117,31 @@ h2.section-title, h3.section-title {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+
+.btn-icon-action {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    cursor: pointer;
+}
+.btn-icon-action i { font-size: 1.1rem; pointer-events: none; }
+
+
+
+/* Editar (Lápiz) */
+.btn-edit-icon { color: #f0ad4e !important; background-color: rgba(240, 173, 78, 0.15) !important; }
+.btn-edit-icon:hover { background-color: #f0ad4e !important; color: white !important; transform: scale(1.1); }
+
+/* Eliminar (Tacho) */
+.btn-delete-icon { color: #dc3545 !important; background-color: rgba(220, 53, 69, 0.15) !important; }
+.btn-delete-icon:hover { background-color: #dc3545 !important; color: white !important; transform: scale(1.1); }
+
 
 .gap-2 {
     gap: 0.5rem;

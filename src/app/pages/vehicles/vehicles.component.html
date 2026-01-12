@@ -84,14 +84,14 @@
           <tr>
             <td class="font-weight-bold">{{aVehicle.license_plate}}</td>
             <td>{{aVehicle.owner}}</td>
-            <td><span class="badge badge-secondary p-2">{{aVehicle.type}}</span></td>
+            <td><span class="tipo p-2">{{aVehicle.type}}</span></td>
             <td>
-              <div class="d-flex justify-content-center gap-2">
-                <button type="button" class="btn btn-action-edit btn-sm" (click)="changeVehicle(aVehicle)">
-                   <i class="fas fa-pen"></i> <span>Editar</span>
+           <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeVehicle(aVehicle)" title="Editar">
+                   <i class="fas fa-pen"></i>
                 </button>
-                <button type="button" class="btn btn-action-delete btn-sm" (click)="deleteVehicle(aVehicle.license_plate, true)">
-                   <i class="fas fa-trash-alt"></i> <span>Borrar</span>
+                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteVehicle(aVehicle.license_plate, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
             </td>
@@ -129,14 +129,14 @@
           <tr *ngFor="let vehicle of vehiclesList; let i = index">
             <td class="fw-bold text-muted">{{vehicle.license_plate}}</td>
             <td>{{vehicle.owner}}</td>
-            <td><span class="badge badge-light border p-2">{{vehicle.type}}</span></td>
+            <td><span class="tipo p-2">{{vehicle.type}}</span></td>
             <td>
-              <div class="d-flex justify-content-center gap-2">
-                 <button type="button" class="btn btn-action-edit btn-sm" (click)="changeVehicle(vehicle)">
-                   <i class="fas fa-pen"></i> <span>Editar</span>
+         <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeVehicle(vehicle)" title="Editar">
+                   <i class="fas fa-pen"></i>
                 </button>
-                <button type="button" class="btn btn-action-delete btn-sm" (click)="deleteVehicle(vehicle.license_plate, false)">
-                   <i class="fas fa-trash-alt"></i> <span>Borrar</span>
+                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteVehicle(vehicle.license_plate, true)" title="Eliminar">
+                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
             </td>
@@ -176,7 +176,7 @@
         </div>
 
         <div class="d-grid gap-2 mt-4">
-          <button type="submit" class="btn btn-dark-custom btn-lg">Dar de Alta</button>
+          <button type="submit" class="btn btn-dark-custom btn-lg">Crear</button>
           <button type="button" class="btn btn-outline-secondary" (click)="showSection('initVehicles')">Cancelar</button>
         </div>
       </form>
