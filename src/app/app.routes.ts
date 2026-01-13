@@ -24,5 +24,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'cancelReservation', component: ReservationCancelComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
+    
 ];
 

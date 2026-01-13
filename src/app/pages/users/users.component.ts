@@ -29,6 +29,7 @@ export class UsersComponent {
     address: '',
     email:'',
     phoneNumber: '',
+    role: '',
     vehicles: ['']
   }
 

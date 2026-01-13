@@ -35,29 +35,10 @@ export class UsersService {
     return this._http.get<any>(`${this.apiUrl}/${userId}/reservations`)
   }
   
-  // Login 
-
   login(credentials: any): Observable<any> {
-    // El backend espera { dni, password }
-    return this._http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        if (response.token) {
-          // Guardamos el token 
-          localStorage.setItem('token', response.token); 
-        }
-      })
-    );
-  }
+  return this._http.post<any>(`${this.apiUrl}/login`, credentials);
+}
 
-  // Método para saber si está logueado
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token'); // Devuelve true si existe el token
-  }
-
-  // Cerrar sesión
-  logout() {
-    localStorage.removeItem('token');
-  }
 
   } 
 

@@ -5,6 +5,7 @@ import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GaragesService } from '../../services/garages.service.js';
+import { AuthService } from '../../services/auth.service.js';
 
 @Component({
   selector: 'app-reservation-cancel',
@@ -17,15 +18,25 @@ export class ReservationCancelComponent implements OnInit {
 
   private _apiservice = inject(UsersService)
   private resService = inject(ReservationService)
+  private userService = inject(UsersService);
+  private authService = inject(AuthService);
+
+  
+  userID: string = ''
 
   ngOnInit() {
-
+  // Obtenemos el ID real del usuario logueado
+  const storedId = this.authService.getCurrentUserId();
+  
+  if (storedId) {
+    this.userID = storedId;
     this.getReservations()
-
+  } else {
+    // Si no hay ID, no está logueado -> Mandarlo al login
+    // this.router.navigate(['/login']);
+    console.warn('Usuario no identificado');
   }
-
-
-  userID: any = 1
+}
 
   userReservations: any[] = []
 

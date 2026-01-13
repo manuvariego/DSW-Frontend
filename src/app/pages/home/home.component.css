@@ -153,3 +153,24 @@ h1 {
     align-items: stretch;
     min-width: 240px;
 }
+
+.hero-cta-btn {
+  margin-top: 30px;
+  padding: 16px 42px;
+  border-radius: 999px;
+  background: #b8c073;
+  color: rgba(34, 30, 30, 0.856);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.hero-cta-btn:hover {
+  background: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}

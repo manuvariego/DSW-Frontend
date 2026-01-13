@@ -224,6 +224,12 @@
           <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">Requerido.</div>
         </div>
 
+         <div class="form-group mb-3">
+          <label for="role" class="form-label">Rol (admin / user)</label>
+          <input id="role" name="role" type="text" class="form-control modern-input" [(ngModel)]="userData.role" #role="ngModel" required [class.is-invalid]="role.invalid && (role.dirty || role.touched)" />
+          <div *ngIf="role.errors?.['required'] && (role.dirty || role.touched)" class="invalid-feedback">Requerido.</div>
+        </div>
+
         <div class="form-group mb-4">
             <label for="password" class="form-label">Contraseña</label>
             <input id="password" name="password" type="password" class="form-control modern-input" [(ngModel)]="userData.password" #password="ngModel" required [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />

@@ -28,6 +28,10 @@
         <label class="form-check-label text-muted small" for="remember">Recordar contraseña</label>
       </div>
 
+      <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+
       <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3">INICIAR SESIÓN</button>
 
       <div class="text-center">
