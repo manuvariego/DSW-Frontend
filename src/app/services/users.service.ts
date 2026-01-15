@@ -34,6 +34,10 @@ export class UsersService {
   getUserReservations(userId: string): Observable<any>{
     return this._http.get<any>(`${this.apiUrl}/${userId}/reservations`)
   }
+
+  getUserVehicles(userId: string): Observable<any>{
+    return this._http.get<any>(`${this.apiUrl}/${userId}/vehicles`)
+  }
   
   login(credentials: any): Observable<any> {
   return this._http.post<any>(`${this.apiUrl}/login`, credentials);

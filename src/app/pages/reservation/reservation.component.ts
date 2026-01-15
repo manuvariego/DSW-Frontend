@@ -2,10 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service.js';
 import { UsersService } from '../../services/users.service.js';
+import { AuthService } from '../../services/auth.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GaragesService } from '../../services/garages.service.js';
 import { error } from 'console';
+import { Router } from '@angular/router';
 
 
 
@@ -16,6 +18,7 @@ import { error } from 'console';
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
+
 export class ReservationComponent implements OnInit {
   errorMessage: string = '';
   errorDateInvalid: string = '';
@@ -38,32 +41,50 @@ export class ReservationComponent implements OnInit {
 
   }
 
-  constructor(private fb: FormBuilder, private reservationService: ReservationService) { }
-
+  constructor(
+  private fb: FormBuilder, 
+  private reservationService: ReservationService, 
+  private authService: AuthService, 
+  private router: Router) {}  
   private _apiservice = inject(UsersService)
   private _apiserviceGarage = inject(GaragesService)
   
 
   userID: string = ''
-
-  ngOnInit() {
-  
-    this.getVehicles()
-}
-
-  getVehicles() {
-
-    this._apiservice.getUser((this.userID)).subscribe((user: any) => {
-
-      console.log(user)
-
-      this.userVehicles = user.vehicles
-    })
+  userVehicles: any[] = []
+  Garages: any[] = []
+  theReservation: any = null
 
 
+ngOnInit() {
+    // para saber que usuario es el que está haciendo la reserva
+    const storedId = this.authService.getCurrentUserId(); 
+
+    if (storedId) {
+      this.userID = storedId;
+      console.log("Usuario detectado ID:", this.userID);
+      
+      // buscamos los vehículos de ese usuario
+      this.getUserVehicles();
+    } else {
+      console.warn("No hay usuario logueado.");
+      this.router.navigate(['/login']); // Si no hay usuario, se va al login
+    }
   }
 
-  Garages: any[] = []
+  getUserVehicles() {
+    this._apiservice.getUserVehicles(this.userID).subscribe({
+      next: (data: any) => {
+        console.log("Vehículos cargados:", data);
+        this.userVehicles = data;
+      },
+      error: (error) => {
+        console.error("Error cargando vehículos:", error);
+        this.errorMessage = "No se pudieron cargar tus vehículos.";
+      }
+    });
+  }
+  
 
   getGaragesAvailables() {
     this.reservationService.getGaragesAvailables(this.filters).subscribe(
@@ -113,7 +134,6 @@ export class ReservationComponent implements OnInit {
 
   }
 
-  theReservation: any = null
 
   createReservation() {
     this.reservationService.createReservation(this.reservationData).subscribe({
@@ -127,9 +147,6 @@ export class ReservationComponent implements OnInit {
     });
   }
 
-
-
-  userVehicles: any[] = []
   /*
     onSubmit() {
         this.reservationService.createReservation(this.reservationData).subscribe({

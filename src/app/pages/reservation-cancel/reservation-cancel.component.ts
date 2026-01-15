@@ -41,11 +41,8 @@ export class ReservationCancelComponent implements OnInit {
   userReservations: any[] = []
 
   getReservations() {
-
     this._apiservice.getUserReservations((this.userID)).subscribe((data: any) => {
-
       console.log(data)
-
       this.userReservations = data
     })
 
