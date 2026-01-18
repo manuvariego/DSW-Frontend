@@ -6,6 +6,7 @@ import { GaragesComponent } from './pages/garages/garages.component';
 import { LocationsComponent } from './pages/locations/locations.component';
 import { ReservationTypesComponent } from './pages/reservationTypes/reservationTypes.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { VehicleTypeComponent } from './pages/vehicle-type/vehicle-type.component.js';
 import { ParkingSpaceComponent } from './pages/parking-space/parking-space.component.js';
 import { ReservationComponent } from './pages/reservation/reservation.component';
@@ -13,6 +14,8 @@ import { ReservationCancelComponent } from './pages/reservation-cancel/reservati
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent },
     { path: 'vehicles', component: VehiclesComponent },
     { path: 'garages', component: GaragesComponent },
@@ -21,9 +24,8 @@ export const routes: Routes = [
     { path: 'parkingSpace', component: ParkingSpaceComponent },
     { path: 'reservationTypes', component: ReservationTypesComponent },
     { path: 'reservation', component: ReservationComponent },
-    { path: 'login', component: LoginComponent },
     { path: 'cancelReservation', component: ReservationCancelComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
-    
+
 ];
 

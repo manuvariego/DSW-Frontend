@@ -1,7 +1,6 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
 
-    <!-- LOGO / HOME -->
     <a class="navbar-brand"
        routerLink=""
        (click)="onOption('home')">
@@ -9,12 +8,17 @@
     </a>
 
     
-
-    <!-- ACCIONES DERECHA -->
     <div class="d-flex align-items-center gap-2">
 
-      <!-- INGRESAR (solo si NO está logueado) -->
-      <a class="btn button"
+      <!-- botones de registrar e ingresar -->
+      <a class="btn btn-navbar-outline"
+         *ngIf="!authService.isLoggedIn()"
+         routerLink="register"
+         (click)="onOption('register')">
+        Registrarse
+      </a>
+
+      <a class="btn btn-navbar-dark"
          *ngIf="!authService.isLoggedIn()"
          routerLink="login"
          (click)="onOption('login')">
@@ -63,13 +67,7 @@
 
             <li class="nav-item">
               <a class="nav-link" routerLink="reservation" data-bs-dismiss="offcanvas">
-                Reservar
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="cancelReservation" data-bs-dismiss="offcanvas">
-                Cancelar Reserva
+                Mis Reservas
               </a>
             </li>
 
@@ -79,41 +77,37 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" routerLink="locations" data-bs-dismiss="offcanvas">
-                Localidades
-              </a>
-            </li>
 
           </ng-container>
 
-          <!-- ===== MENÚ ADMIN ===== -->
-          <ng-container *ngIf="authService.isAdmin()">
+          <!-- ===== MENÚ COCHERA (GARAGE) ===== -->
+          <ng-container *ngIf="authService.isGarage()">
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="users" data-bs-dismiss="offcanvas">
-                Usuarios
+              <a class="nav-link" routerLink="garages" data-bs-dismiss="offcanvas">
+                Mi Cochera
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="typeVehicles" data-bs-dismiss="offcanvas">
-                Tipos de Vehículos
+              <a class="nav-link" routerLink="parkingSpace" data-bs-dismiss="offcanvas">
+                Espacios de Estacionamiento
               </a>
             </li>
+
 
             <li class="nav-item">
               <a class="nav-link" routerLink="reservationTypes" data-bs-dismiss="offcanvas">
-                Tipos de Estadía
+                Precios por Estadía
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="locations" data-bs-dismiss="offcanvas">
-                Localidades
+              <a class="nav-link" routerLink="reservation" data-bs-dismiss="offcanvas">
+                Reservas
               </a>
             </li>
-
+            
           </ng-container>
 
           <!-- CERRAR SESIÓN -->

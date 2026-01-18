@@ -2,14 +2,16 @@
 
     <section class="hero">
         <h1>¡Bienvenido a ParkEasy!</h1>
-        <p>Estacionamiento fácil y rápido.</p>
+        <p>Estacionamiento fácil y rápido en toda la ciudad.</p>
 
   <a
+    *ngIf="authService.isUser()"
     class="hero-cta-btn"
     routerLink="/reservation"
   >
     Reservar ahora
   </a>
+
     </section>
 
     <section class="contenido">

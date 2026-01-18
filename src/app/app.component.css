@@ -1,7 +1,43 @@
-
 .greeting {
   font-size: 0.95rem;
   color: #333;
+}
+
+/* Botones del Navbar */
+.btn-navbar-dark {
+  background: #343a40;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-navbar-dark:hover {
+  background: #000;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-navbar-outline {
+  background: transparent;
+  color: #343a40;
+  border: 2px solid #343a40;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-navbar-outline:hover {
+  background: #343a40;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 

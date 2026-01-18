@@ -7,11 +7,11 @@ h2.section-title {
     font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.5rem;
 }
 
-/* CAJA DE LOGIN */
-.card-box { 
-    background: white; border-radius: 15px; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra un poco más fuerte para el login */
-    border: 1px solid #f0f0f0; 
+/* CAJA DE REGISTRO */
+.card-box {
+    background: white; border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid #f0f0f0;
 }
 
 /* Inputs Modernos */
@@ -21,12 +21,12 @@ h2.section-title {
 .modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
 .form-label { font-weight: 600; color: #555; margin-bottom: 5px; font-size: 0.9rem; }
 
-
 /* Círculo del ícono */
 .icon-circle-login {
-    width: 70px; height: 70px; background-color: #343a40; color: white;
+    width: 70px; height: 70px;
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    color: white;
 }
 
 /* Enlaces */
@@ -37,21 +37,22 @@ h2.section-title {
 .btn-dark-custom {
     background: #343a40; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 700; transition: all 0.3s ease; letter-spacing: 1px;
 }
-.btn-dark-custom:hover:not(:disabled) { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-.btn-dark-custom:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
+.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-/* Validación de campos */
-.modern-input.is-invalid {
-    border-color: #dc3545;
-    background-color: #fff8f8;
+/* TARJETAS DE TIPO DE CUENTA */
+.account-type-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
-.modern-input.is-invalid:focus {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+
+.account-type-card:hover {
+    border-color: #007bff;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
 }
-.invalid-feedback {
-    display: block;
-    color: #dc3545;
-    font-size: 0.8rem;
-    margin-top: 4px;
+
+.account-type-card:active {
+    transform: translateY(-2px);
 }

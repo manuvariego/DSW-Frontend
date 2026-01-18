@@ -1,0 +1,198 @@
+<div class="container mt-5 fade-in-anim">
+  <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+
+    <!-- SELECCIÓN DE TIPO DE CUENTA -->
+    <div *ngIf="currentStep === 'selectType'">
+      <div class="text-center mb-4">
+        <h2 class="section-title">Crear Cuenta</h2>
+        <p class="text-muted">Selecciona el tipo de cuenta que deseas crear</p>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('user')" style="cursor: pointer;">
+            <div class="icon-circle-login mb-3 mx-auto bg-primary">
+              <i class="fas fa-user"></i>
+            </div>
+            <h5 class="fw-bold">Usuario</h5>
+            <p class="text-muted small">Busco estacionamiento para mi vehículo</p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('garage')" style="cursor: pointer;">
+            <div class="icon-circle-login mb-3 mx-auto bg-success">
+              <i class="fas fa-warehouse"></i>
+            </div>
+            <h5 class="fw-bold">Cochera</h5>
+            <p class="text-muted small">Ofrezco espacios de estacionamiento</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <span class="text-muted small">¿Ya tienes cuenta? <a routerLink="/login" class="login-link">Inicia sesión aquí</a></span>
+      </div>
+    </div>
+
+    <!-- FORMULARIO DE REGISTRO DE USUARIO -->
+    <div *ngIf="currentStep === 'registerUser'">
+      <div class="text-center mb-4">
+        <button class="btn btn-link text-muted" (click)="backToSelection()">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+        <h2 class="section-title">Registro de Usuario</h2>
+        <p class="text-muted small">Completa tus datos para crear tu cuenta</p>
+      </div>
+
+      <form (ngSubmit)="registerUser()" #userForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="dni" class="form-label">DNI *</label>
+            <input type="text" id="dni" class="form-control modern-input"
+                   name="dni" [(ngModel)]="userData.dni" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="name" class="form-label">Nombre *</label>
+            <input type="text" id="name" class="form-control modern-input"
+                   name="name" [(ngModel)]="userData.name" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Apellido *</label>
+          <input type="text" id="lastname" class="form-control modern-input"
+                 name="lastname" [(ngModel)]="userData.lastname" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input type="email" id="email" class="form-control modern-input"
+                 name="email" [(ngModel)]="userData.email" required>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="phoneNumber" class="form-label">Teléfono *</label>
+            <input type="tel" id="phoneNumber" class="form-control modern-input"
+                   name="phoneNumber" [(ngModel)]="userData.phoneNumber" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="address" class="form-label">Dirección *</label>
+            <input type="text" id="address" class="form-control modern-input"
+                   name="address" [(ngModel)]="userData.address" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="password" class="form-label">Contraseña *</label>
+            <input type="password" id="password" class="form-control modern-input"
+                   name="password" [(ngModel)]="userData.password" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="confirmPassword" class="form-label">Confirmar Contraseña *</label>
+            <input type="password" id="confirmPassword" class="form-control modern-input"
+                   name="confirmPassword" [(ngModel)]="userData.confirmPassword" required>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
+          <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="userForm.invalid || successMessage">
+          REGISTRARSE
+        </button>
+      </form>
+    </div>
+
+    <!-- FORMULARIO DE REGISTRO DE COCHERA -->
+    <div *ngIf="currentStep === 'registerGarage'">
+      <div class="text-center mb-4">
+        <button class="btn btn-link text-muted" (click)="backToSelection()">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+        <h2 class="section-title">Registro de Cochera</h2>
+        <p class="text-muted small">Completa los datos de tu cochera</p>
+      </div>
+
+      <form (ngSubmit)="registerGarage()" #garageForm="ngForm">
+        <div class="mb-3">
+          <label for="cuit" class="form-label">CUIT *</label>
+          <input type="text" id="cuit" class="form-control modern-input"
+                 name="cuit" [(ngModel)]="garageData.cuit" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="garageName" class="form-label">Nombre de la Cochera *</label>
+          <input type="text" id="garageName" class="form-control modern-input"
+                 name="garageName" [(ngModel)]="garageData.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="garageEmail" class="form-label">Email *</label>
+          <input type="email" id="garageEmail" class="form-control modern-input"
+                 name="garageEmail" [(ngModel)]="garageData.email" required>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="garagePhone" class="form-label">Teléfono *</label>
+            <input type="tel" id="garagePhone" class="form-control modern-input"
+                   name="garagePhone" [(ngModel)]="garageData.phoneNumber" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="garageAddress" class="form-label">Dirección *</label>
+            <input type="text" id="garageAddress" class="form-control modern-input"
+                   name="garageAddress" [(ngModel)]="garageData.address" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="location" class="form-label">Localidad *</label>
+          <select id="location" class="form-control modern-input"
+                  name="location" [(ngModel)]="garageData.location" required>
+            <option value="">Selecciona una localidad</option>
+            <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="garagePassword" class="form-label">Contraseña *</label>
+            <input type="password" id="garagePassword" class="form-control modern-input"
+                   name="garagePassword" [(ngModel)]="garageData.password" required>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="garageConfirmPassword" class="form-label">Confirmar Contraseña *</label>
+            <input type="password" id="garageConfirmPassword" class="form-control modern-input"
+                   name="garageConfirmPassword" [(ngModel)]="garageData.confirmPassword" required>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
+          <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="garageForm.invalid || successMessage">
+          REGISTRAR COCHERA
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>

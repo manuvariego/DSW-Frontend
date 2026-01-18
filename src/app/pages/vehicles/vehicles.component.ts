@@ -4,6 +4,7 @@ import { VehiclesService } from '../../services/vehicles.service.js';
 import { runInThisContext } from 'vm';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
+import { AuthService } from '../../services/auth.service.js';
 
 @Component({
   selector: 'app-vehicle',
@@ -17,6 +18,7 @@ export class VehiclesComponent {
   vehiculoCreado = false;
   private _apiservice = inject(VehiclesService)
   private _typeVehicleService = inject(TypeVehicleService)
+  private _authService = inject(AuthService)
   vehiclesList: any[] = []
   typeVehicles: Array<any> = [];
   licensePlate: string = ''
@@ -65,23 +67,21 @@ export class VehiclesComponent {
 
 
   getVehicles() {
+    const userId = this._authService.getCurrentUserId();
+    
+    if (!userId) {
+      console.error('Usuario no logueado');
+      return;
+    }
 
-    this._apiservice.getVehicles().subscribe((data: any[]) => {
-
-
+    this._apiservice.getVehiclesByOwner(Number(userId)).subscribe((data: any[]) => {
       if (Array.isArray(data)) {
         this.vehiclesList = data
-
       } else {
-
         this.vehiclesList = [data]
       }
-
       console.log(data)
-
     })
-
-
   }
 
 
@@ -148,6 +148,7 @@ export class VehiclesComponent {
       });
       return;
     }
+    this.vehicleData.owner = this._authService.getCurrentUserId() || '';
 
     this._apiservice.createVehicle(this.vehicleData).subscribe({
       next: (response) => {

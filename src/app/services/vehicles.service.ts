@@ -12,6 +12,7 @@ export class VehiclesService {
   getVehicles(): Observable<any[]> {
     return this._http.get<any[]>(this.apiUrl);
   }
+  
 
   createVehicle(vehicle: any): Observable<any> {
     return this._http.post<any>(this.apiUrl, vehicle);
@@ -30,5 +31,7 @@ export class VehiclesService {
     return this._http.get<any>(`${this.apiUrl}/${licensePlate}`)
   }
 
-
+  getVehiclesByOwner(ownerId: number): Observable<any[]>{
+    return this._http.get<any[]>(`${this.apiUrl}/owner/${ownerId}`)
+  }
 }

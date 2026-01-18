@@ -9,36 +9,25 @@
       <h2 class="section-title text-center mb-5">Gestión de Vehículos</h2>
 
       <div class="row justify-content-center">
-        <div class="col-md-4 mb-4">
+        <div class="col-md-5 mb-4">
           <div class="card menu-card h-100 text-center p-4" (click)="showSection('getVehicles')">
             <div class="icon-container mb-3">
               <i class="fas fa-list-alt fa-3x"></i>
             </div>
             <h5 class="card-title">Listado Completo</h5>
-            <p class="text-muted small">Ver todos los vehículos registrados.</p>
+            <p class="text-muted small">Ver todos mis vehículos registrados.</p>
             <button class="btn btn-dark-custom mt-2">Ver Listado</button>
           </div>
         </div>
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-5 mb-4">
           <div class="card menu-card h-100 text-center p-4" (click)="showSection('createVehicle')">
             <div class="icon-container mb-3">
               <i class="fas fa-car-side fa-3x"></i>
             </div>
-            <h5 class="card-title">Nuevo Vehículo</h5>
-            <p class="text-muted small">Dar de alta un vehículo en el sistema.</p>
+            <h5 class="card-title">Agregar Vehículo</h5>
+            <p class="text-muted small">Dar de alta un nuevo vehículo.</p>
             <button class="btn btn-dark-custom mt-2">Crear</button>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('geTaVehicle')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-search fa-3x"></i>
-            </div>
-            <h5 class="card-title">Buscar por Patente</h5>
-            <p class="text-muted small">Encontrar un vehículo específico.</p>
-            <button class="btn btn-dark-custom mt-2">Buscar</button>
           </div>
         </div>
       </div>
@@ -46,70 +35,11 @@
   </div>
 }
 
-@if (currentSection == 'geTaVehicle') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 500px;">
-      <h3 class="text-center mb-4 section-title">Buscar Vehículo</h3>
-      
-      <form (ngSubmit)="getAvehicle(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
-        <div class="form-group mb-4">
-          <label for="licensePlate" class="form-label">Patente</label>
-          <input type="text" class="form-control modern-input" id="licensePlate" name="licensePlate" [(ngModel)]="licensePlate" required placeholder="Ej: AA123BB" 
-            #license_plateField="ngModel" [class.is-invalid]="license_plateField.invalid && (license_plateField.dirty || license_plateField.touched)">
-          <div class="invalid-feedback">Debe ingresar una patente.</div>
-        </div>
-        
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-dark-custom">Encontrar <i class="fas fa-search"></i></button>
-          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initVehicles')">Volver</button>
-        </div>
-      </form>
-    </div>
-  </div>
-}
-
-@if (currentSection == 'geTaVehicleTable') {
-  <div class="container mt-4 fade-in-anim">
-    <div class="table-responsive shadow-lg rounded bg-white">
-      <table class="table table-hover mb-0">
-        <thead class="thead-dark-custom">
-          <tr>
-            <th scope="col">Patente</th>
-            <th scope="col">Propietario</th>
-            <th scope="col">Tipo</th>
-            <th scope="col" class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="font-weight-bold">{{aVehicle.license_plate}}</td>
-            <td>{{aVehicle.owner}}</td>
-            <td><span class="tipo p-2">{{aVehicle.type}}</span></td>
-            <td>
-           <div class="d-flex justify-content-center gap-3">
-                <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeVehicle(aVehicle)" title="Editar">
-                   <i class="fas fa-pen"></i>
-                </button>
-                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteVehicle(aVehicle.license_plate, true)" title="Eliminar">
-                   <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mt-4 text-center">
-      <button type="button" class="btn btn-secondary px-5" (click)="showSection('initVehicles')">Volver al Menú</button>
-    </div>
-  </div>
-}
 
 @if (currentSection == 'getVehicles') {
   <div class="container-fluid mt-4 px-4 fade-in-anim">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="section-title">Vehículos</h3>
+      <h3 class="section-title">Mis vehículos</h3>
       <button type="button" class="btn btn-outline-dark" (click)="showSection('initVehicles')">
         <i class="fas fa-arrow-left"></i> Volver
       </button>
@@ -120,21 +50,16 @@
         <thead class="thead-dark-custom">
           <tr>
             <th scope="col">Patente</th>
-            <th scope="col">Propietario</th>
             <th scope="col">Tipo</th>
-            <th scope="col" class="text-center">Acciones</th>
+            <th scope="col" class="text-center">Eliminar vehículo</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let vehicle of vehiclesList; let i = index">
             <td class="fw-bold text-muted">{{vehicle.license_plate}}</td>
-            <td>{{vehicle.owner}}</td>
-            <td><span class="tipo p-2">{{vehicle.type}}</span></td>
+            <td><span class="tipo p-2">{{vehicle.type.name}}</span></td>
             <td>
          <div class="d-flex justify-content-center gap-3">
-                <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeVehicle(vehicle)" title="Editar">
-                   <i class="fas fa-pen"></i>
-                </button>
                 <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteVehicle(vehicle.license_plate, true)" title="Eliminar">
                    <i class="fas fa-trash-alt"></i>
                 </button>
@@ -160,12 +85,6 @@
           <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)" class="invalid-feedback">Requerido.</div>
         </div>
 
-        <div class="form-group mb-3">
-          <label for="owner" class="form-label">ID Propietario</label>
-          <input type="text" class="form-control modern-input" id="owner" name="owner" [(ngModel)]="vehicleData.owner" required placeholder="ID del dueño" #id="ngModel" [class.is-invalid]="id.invalid && (id.dirty || id.touched)" />
-          <div *ngIf="id.errors?.['required'] && (id.dirty || id.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-
         <div class="form-group mb-4">
           <label for="type" class="form-label">Tipo de Vehículo</label>
           <select class="form-select modern-input" id="type" name="type" [(ngModel)]="vehicleData.type" #type="ngModel" required [class.is-invalid]="type.invalid && (type.dirty || type.touched)">
@@ -178,36 +97,6 @@
         <div class="d-grid gap-2 mt-4">
           <button type="submit" class="btn btn-dark-custom btn-lg">Crear</button>
           <button type="button" class="btn btn-outline-secondary" (click)="showSection('initVehicles')">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-}
-
-@if(currentSection == 'editVehicle') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
-      <h3 class="text-center mb-4 section-title">Modificar Vehículo</h3>
-      
-      <form (ngSubmit)="updateVehicle(vehicleForm)" #vehicleForm="ngForm" class="needs-validation" novalidate>
-
-        <div class="form-group mb-3">
-          <label for="type" class="form-label">Tipo de Vehículo</label>
-          <select class="form-select modern-input" id="type" name="type" [(ngModel)]="editingVehicle.type" #type="ngModel" required [class.is-invalid]="type.invalid && (type.dirty || type.touched)">
-            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
-          </select>
-          <div *ngIf="type.errors?.['required'] && (type.dirty || type.touched)" class="invalid-feedback">Seleccione un tipo.</div>
-        </div>
-
-        <div class="form-group mb-4">
-          <label for="owner" class="form-label">ID Propietario</label>
-          <input type="text" class="form-control modern-input" id="owner" name="owner" [(ngModel)]="editingVehicle.owner" required #id="ngModel" [class.is-invalid]="id.invalid && (id.dirty || id.touched)" />
-          <div *ngIf="id.errors?.['required'] && (id.dirty || id.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
-          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initVehicles')">Cancelar</button>
         </div>
       </form>
     </div>
