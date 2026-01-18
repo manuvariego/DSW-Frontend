@@ -41,6 +41,21 @@ export class HomeComponent implements OnInit {
       .bindPopup('Estacionamiento Monumento a la Bandera')
       .openPopup();
 
+    L.marker([-32.950010070498195, -60.65453052493023]).addTo(map)
+      .bindPopup('Estacionamiento UNR')
+      .openPopup();
+
+    L.marker([-32.93436092716381, -60.650496919933026]).addTo(map)
+      .bindPopup('Estacionamiento Oroño')
+      .openPopup();
+
+    L.marker([-32.944959077650594, -60.645939653711835]).addTo(map)
+      .bindPopup('Estacionamiento Shopping del Siglo')
+      .openPopup();
+    
+    L.marker([-32.94068892561842, -60.64257527575075]).addTo(map)
+      .bindPopup('Estacionamiento Centro')
+      .openPopup();
     // agregar mas marcadores donde nos parezca
   }
 }
