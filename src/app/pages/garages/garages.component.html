@@ -1,20 +1,95 @@
 @if (currentSection == 'initial') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="p-3 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #fdfdfd 0%, #fff 100%); border: 1px solid #f0f0f0;">
+    
+    <!-- Welcome Header -->
+    <div class="row mb-4  text-center">
+      <div class="col-12">
+        <h1 class="display-5 fw-bold mb-1">BIENVENIDO</h1>
+        <p class="text-muted lead">Resumen general y estadísticas de tu negocio.</p>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row justify-content-center mb-3 g-2">
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100 text-center py-4">
+          <div class="card-body">
+            <div class="mb-3 text-primary">
+              <i class="fas fa-car-side fa-2x"></i>
+            </div>
+            <h2 class="fw-bold mb-1">8</h2>
+            <p class="text-muted mb-0 small text-uppercase fw-bold">Reservas Activas</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100 text-center py-4">
+          <div class="card-body">
+            <div class="mb-3 text-success">
+              <i class="fas fa-dollar-sign fa-2x"></i>
+            </div>
+            <h2 class="fw-bold mb-1">$12.500</h2>
+            <p class="text-muted mb-0 small text-uppercase fw-bold">Ingresos Hoy</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="card border-0 shadow-sm h-100 text-center py-4">
+          <div class="card-body">
+            <div class="mb-3 text-warning">
+              <i class="fas fa-parking fa-2x"></i>
+            </div>
+            <h2 class="fw-bold mb-1">12</h2>
+            <p class="text-muted mb-0 small text-uppercase fw-bold">Disponibilidad</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5 text-center">
+      <div class="col-12">
+        <p class="text-muted" style="font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">Reservas realizadas hasta la fecha con ParkEasy:</p>
+      </div>
+    </div>
+
+    <!-- Minimalistic Action Button -->
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <button class="btn btn-dark-custom rounded-pill px-5 py-3 shadow-sm" (click)="showSection('gestion')">
+          <i class="fas fa-cogs me-2"></i> Gestión y Operaciones
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+}
+
+@if (currentSection == 'gestion') {
   <div class="fade-in-anim">
     <div *ngIf="garageCreado" class="alert alert-success shadow-sm text-center mb-4">
       <i class="fas fa-check-circle"></i> Cochera creada exitosamente.
     </div>
 
     <div class="container mt-4">
-      <h2 class="section-title text-center mb-5">Gestión de Cocheras</h2>
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <button class="btn btn-outline-secondary" (click)="showSection('initial')">
+           <i class="fas fa-arrow-left"></i> Volver
+        </button>
+        <h2 class="section-title text-center m-0 flex-grow-1">Gestión de Cocheras</h2>
+        <div style="width: 100px;"></div>
+      </div>
 
       <div class="row justify-content-center">
         <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getGarage')">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getParkingSpaces')">
             <div class="icon-container mb-3">
               <i class="fas fa-warehouse fa-3x"></i>
             </div>
-            <h5 class="card-title">Listado de Cocheras</h5>
-            <p class="text-muted small">Ver todas las sucursales disponibles.</p>
+            <h5 class="card-title">Listado de Slots</h5>
+            <p class="text-muted small">Ver todos los Parking spaces registrados.</p>
             <button class="btn btn-dark-custom mt-2">Ver Listado</button>
           </div>
         </div>
@@ -24,22 +99,13 @@
             <div class="icon-container mb-3">
               <i class="fas fa-plus-circle fa-3x"></i>
             </div>
-            <h5 class="card-title">Nueva Cochera</h5>
-            <p class="text-muted small">Dar de alta una nueva cochera.</p>
+            <h5 class="card-title">Listado de Servicios</h5>
+            <p class="text-muted small">Ver todos los servicios registrados</p>
             <button class="btn btn-dark-custom mt-2">Crear</button>
           </div>
         </div>
 
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('geTaGarage')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-search-location fa-3x"></i>
-            </div>
-            <h5 class="card-title">Buscar por CUIT</h5>
-            <p class="text-muted small">Encontrar una cochera específica.</p>
-            <button class="btn btn-dark-custom mt-2">Buscar</button>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -123,7 +189,6 @@
     <table class="table table-hover mb-0 align-middle">
       <thead class="thead-dark-custom">
         <tr>
-          <th scope="col">CUIT</th>
           <th scope="col">Nombre</th>
           <th scope="col">Dirección</th>
           <th scope="col">Email</th>
@@ -134,7 +199,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let garage of garageList; let i = index">
-          <td class="fw-bold text-muted">{{ garage.cuit }}</td>
           <td>{{ garage.name }}</td>
           <td>{{ garage.address }}</td>
           <td>{{ garage.email }}</td>
@@ -153,6 +217,53 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div *ngIf="currentSection == 'getParkingSpaces'" class="container-fluid mt-4 px-4 fade-in-anim">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="section-title">Listado de Parking Spaces</h3>
+    <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
+      <i class="fas fa-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <div class="table-responsive shadow-lg rounded bg-white">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="thead-dark-custom">
+        <tr>
+          <th scope="col">Numero</th>
+          <th scope="col">Tipo de vehiculo</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Servicios</th>
+          <th scope="col" class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let parkingSlot of garageList; let i = index">
+          <td class="fw-bold text-muted">{{ parkingSlot.number }}</td>
+          <td>{{ getTypeVehicleName(parkingSlot.TypeVehicle) }}</td>
+          <td>{{ parkingSlot.status }}</td>
+          <td>"{{ 'sin servicios' }}"</td>
+          <td>
+            <div class="d-flex justify-content-center gap-3">
+               <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarParkingSpace(parkingSlot)" title="Editar">
+                   <i class="fas fa-edit"></i>
+               </button>
+               <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteParkingSpace(parkingSlot.number, false)" title="Eliminar">
+                   <i class="fas fa-trash"></i>
+               </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 text-center">
+    <button class="btn btn-dark-custom" (click)="showSection('createParkingSpace')">
+      <i class="fas fa-plus me-2"></i> Crear Nuevo Espacio
+    </button>
   </div>
 </div>
 
@@ -253,3 +364,64 @@
     </form>
   </div>
 </div>
+
+@if(currentSection == 'editParkingSpace') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center mb-4 section-title">Modificar Espacio</h3>
+
+      <form (ngSubmit)="updateParkingSpace(parkingSpaceForm)" #parkingSpaceForm="ngForm" class="needs-validation" novalidate>
+
+        <div class="form-group mb-4">
+          <label for="TypeVehicle" class="form-label">Tipo de Vehículo</label>
+          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="editingParkingSpace.TypeVehicle" #TypeVehicle="ngModel" required
+            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
+            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
+          </select>
+          <div class="invalid-feedback">Seleccione un tipo.</div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (currentSection == 'createParkingSpace') {
+  <div class="container mt-5 fade-in-anim">
+    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center mb-4 section-title">Registrar Nuevo Lugar</h3>
+
+      <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
+
+        <div class="row">
+           <div class="col-md-6 form-group mb-3">
+              <label for="number" class="form-label">Número</label>
+              <input type="text" class="form-control modern-input" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required placeholder="Ej: 10"
+                #numberParkingSpace="ngModel" [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
+              <div class="invalid-feedback">Requerido.</div>
+           </div>
+
+
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="TypeVehicle" class="form-label">Tipo de Vehículo Aceptado</label>
+          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" #TypeVehicle="ngModel" required
+            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
+            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
+          </select>
+          <div class="invalid-feedback">Seleccione un tipo.</div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-dark-custom btn-lg">Dar de Alta</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
