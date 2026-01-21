@@ -1,0 +1,52 @@
+<div class="container-fluid page-container">
+  
+  <div class="header-section text-center mb-5">
+    <h2>Configurar Servicios</h2>
+    <p class="subtitle">Seleccioná los servicios adicionales que ofrece tu cochera</p>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Cargando catálogo...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="services-grid">
+    
+    <label 
+      *ngFor="let service of availableServices" 
+      class="service-card" 
+      [class.selected]="selectedServicesIds.includes(service.id)"
+    >
+      <input 
+        type="checkbox" 
+        [checked]="selectedServicesIds.includes(service.id)"
+        (change)="onCheckboxChange($event, service.id)"
+      >
+
+      <div class="card-content">
+        <div class="card-top">
+          <span class="badge-code">{{ service.code }}</span>
+          <div class="check-indicator">✔</div>
+        </div>
+        
+        <h4 class="service-desc">{{ service.description }}</h4>
+        
+        <div class="price-tag">
+          ${{ service.price }}
+        </div>
+      </div>
+    </label>
+
+  </div>
+
+  <div class="actions-bar text-end mt-4">
+    <button class="btn-save" (click)="saveChanges()">
+      Guardar Cambios
+    </button>
+  </div>
+
+  <div *ngIf="message" class="alert alert-success mt-3 shadow-sm">
+    {{ message }}
+  </div>
+
+</div>
