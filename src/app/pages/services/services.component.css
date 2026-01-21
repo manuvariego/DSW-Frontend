@@ -1,139 +1,127 @@
-/* Contenedor principal */
-.page-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
+
+.container {
+  max-width: 1000px; 
+}
+
+h2, h4, h5 {
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.5px; 
 }
 
-.subtitle {
-  color: #6c757d;
-  font-size: 1.1rem;
+.text-primary {
+  color: #000 !important; 
 }
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-/* TARJETA DEL SERVICIO */
-.service-card {
-  background: #ffffff;
-  border: 2px solid #e9ecef; 
-  border-radius: 16px;
-  padding: 25px;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-  display: block; 
-}
-
-/* Efecto Hover (pasar el mouse) */
-.service-card:hover {
-  transform: translateY(-5px); /* Se levanta un poco */
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-  border-color: #cbd3da;
-}
-
-.service-card.selected {
-  border-color: #0d6efd; /* Borde Azul */
-  background-color: #f8fbff; /* Fondo azul muy pálido */
-  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15);
-}
-
-.service-card input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.badge-code {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #adb5bd;
-  background: #f1f3f5;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-/* El tilde ✔ que solo aparece al seleccionar */
-.check-indicator {
-  width: 24px;
-  height: 24px;
-  background-color: #0d6efd;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  opacity: 0; /* Invisible por defecto */
-  transform: scale(0);
+.card {
+  border-radius: 16px; 
   transition: all 0.3s ease;
+  background-color: #fff;
 }
 
-.service-card.selected .check-indicator {
-  opacity: 1;
-  transform: scale(1);
+.card-header {
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 16px 16px 0 0 !important;
+  background-color: #fff;
 }
 
-.service-desc {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #343a40;
-  margin-bottom: 20px;
-  line-height: 1.4;
-  min-height: 3em; 
+
+.form-control, .input-group-text {
+  border: 2px solid #f1f3f5; 
+  background-color: #f8f9fa; 
+  border-radius: 10px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s;
 }
 
-.price-tag {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #198754; 
-  text-align: right;
+
+.form-control:focus {
+  background-color: #fff;
+  border-color: #000; 
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05); 
+  color: #000;
 }
 
-.price-tag::before {
-  content: "Precio base";
-  display: block;
-  font-size: 0.7rem;
-  color: #adb5bd;
-  font-weight: 400;
-  text-transform: uppercase;
+.form-label {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 8px;
 }
 
-/* BOTÓN DE GUARDAR */
-.btn-save {
-  background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
-  color: white;
+.btn-primary {
+  background-color: #000; 
   border: none;
-  padding: 12px 40px;
-  border-radius: 50px;
+  border-radius: 10px;
   font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 12px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #333; 
+  transform: translateY(-2px); 
+}
+
+.btn-primary:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+}
+
+.service-card {
+  border: 1px solid #f0f0f0; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
+}
+
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08); 
+  border-color: #000; 
+}
+
+.card-title {
   font-size: 1.1rem;
-  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
-  transition: transform 0.2s;
+  margin-bottom: 0;
 }
 
-.btn-save:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+
+.text-success {
+  color: #000 !important;   
+  font-weight: 800 !important;
+  font-size: 1.5rem;
 }
 
-.btn-save:active {
-  transform: scale(0.95);
+/* --- BOTÓN DE BORRAR (Danger) --- */
+.btn-outline-danger {
+  color: #dc3545;
+  border: 2px solid #f8d7da;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+
+.alert-info {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 50px; 
+  padding: 10px 20px;
+  display: inline-block; 
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.25em;
+  color: #000 !important; 
 }

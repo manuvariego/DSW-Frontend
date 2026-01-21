@@ -13,6 +13,18 @@ constructor(private http: HttpClient) { }
 getAllServices(): Observable<any[]> {
 return this.http.get<any[]>(`${this.apiUrl}/services`);
 }
+getGarageWithServices(cuit: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/garages/${cuit}`);
+}
+
+createService(serviceData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/services`, serviceData);
+}
+
+
+deleteService(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/services/${id}`);
+}
 
 getGarageByCuit(cuit: number): Observable<any> {
 return this.http.get<any>(`${this.apiUrl}/garages/${cuit}`);

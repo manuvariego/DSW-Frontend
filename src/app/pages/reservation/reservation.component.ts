@@ -54,7 +54,12 @@ export class ReservationComponent implements OnInit {
   userVehicles: any[] = []
   Garages: any[] = []
   theReservation: any = null
-
+  availableServices: any[] = [];     // Los servicios que BRINDA la cochera 
+  selectedServicesIds: number[] = []; // Los servicios que ELIGE el cliente 
+  totalExtra: number = 0; // Para sumar $$ al precio final
+  selectedGarageName: string = '';
+  currentSection: any = 'initial';
+  paymentMethod: string = ''; //  efectivo o mercado pago
 
 ngOnInit() {
     // para saber que usuario es el que está haciendo la reserva
@@ -126,47 +131,65 @@ ngOnInit() {
 
   saveGarage(aGarage: any) {
     this.reservationData.cuitGarage = aGarage.cuit
-
-    this.createReservation()
-
-    this.currentSection = 'realizada'
-
-
+    this.selectedGarageName = aGarage.name
+    this.availableServices = aGarage.services || [];
+    
+    this.selectedServicesIds = [];
+    this.totalExtra = 0;
+    this.currentSection = 'services';
   }
 
+  onServiceChange(event: any, service: any) {
+    const isChecked = event.target.checked;
+    
+    if (isChecked) {
+      this.selectedServicesIds.push(service.id);
+      this.totalExtra += Number(service.price); 
+    } else {
+      this.selectedServicesIds = this.selectedServicesIds.filter(id => id !== service.id);
+      this.totalExtra -= Number(service.price);
+    }
+  }
+
+  // métodos para que se haga el pago 
+  
+  goToPaymentSection() {
+    this.currentSection = 'payment';
+  }
+
+  selectPaymentMethod(method: string) {
+    this.paymentMethod = method;
+  }
 
   createReservation() {
-    this.reservationService.createReservation(this.reservationData).subscribe({
+    const finalData = {
+      ...this.reservationData, 
+      services: this.selectedServicesIds 
+    };
+
+    console.log("Enviando reserva con servicios:", finalData);
+
+    this.reservationService.createReservation(finalData).subscribe({
       next: (response) => {
         console.log('Reserva creada exitosamente:', response);
-        this.theReservation = response
+        this.theReservation = response;
+        this.currentSection = 'realizada'; 
       },
       error: (error) => {
         console.error('Error al crear la reserva:', error);
+        this.errorMessage = 'Hubo un error al procesar la reserva.';
       }
     });
   }
-
-  /*
-    onSubmit() {
-        this.reservationService.createReservation(this.reservationData).subscribe({
-          next: (res) => {
-            console.log('Reserva creada!', res);
-          },
-          error: (err) => {
-            console.error('Error creando reserva', err);
-          }
-        });
-    }
-    */
-
-  currentSection: any = 'initial'
 
   showSection(section: string) {
     this.currentSection = section;
 
     if (this.currentSection == 'garages') {
-      this.getGaragesAvailables()
+      this.getGaragesAvailables();
     }
   }
 }
+
+
+
