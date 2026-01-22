@@ -70,6 +70,7 @@ ngOnInit() {
       console.warn("No hay usuario logueado.");
       this.router.navigate(['/login']); // Si no hay usuario, se va al login
     }
+
   }
 
   getUserVehicles() {

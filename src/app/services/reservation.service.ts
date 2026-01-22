@@ -33,7 +33,23 @@ export class ReservationService {
     return this._http.put(`${this.apiUrl}/${reservationData.id}`, reservationData);
   }
 
-
-
+  getReservationsOfGarage(cuit: string, condition:boolean, filters?: any): Observable<any[]> {
+    let params = new HttpParams();
+    if (filters) {
+      if (filters.vehicleLicensePlate) {
+        params = params.append('license_plate', filters.vehicleLicensePlate);
+      }
+      if (filters.status) {
+        params = params.append('estado', filters.status);
+      }
+      if (filters.checkInDate) {
+        params = params.append('check_in_at', filters.checkInDate);
+      }
+      if (filters.checkOutDate) {
+        params = params.append('check_out_at', filters.checkOutDate);
+      }
+    }
+    return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/${condition}`, { params });
+  }
 
 }

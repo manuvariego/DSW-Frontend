@@ -8,6 +8,8 @@ import {ParkingSpaceService} from '../../services/parking-space.service.js';
 import { ParkingSpaceComponent } from '../parking-space/parking-space.component.js';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
+import { ReservationService } from '../../services/reservation.service.js';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-garages',
@@ -21,6 +23,7 @@ export class GaragesComponent {
   garageList: any[] = [];
   private _apiservice = inject(GaragesService);
   private __apiservice = inject(ParkingSpaceService);
+  private ___apiservice = inject(ReservationService);
   private _locationService = inject(LocationsService);
   private _typeVehicleService = inject(TypeVehicleService);
   private _authService = inject(AuthService);
@@ -30,7 +33,15 @@ export class GaragesComponent {
   editingGarage: any = null;
   editingParkingSpace: any = null;
   typeVehicles: Array<any> = [];
-
+  ReservationsList: any[] = []
+  
+  
+  reservationFilters = {
+    vehicleLicensePlate: '',
+    status: '',
+    checkInDate: '',
+    checkOutDate: ''
+  };
   garageData = {
 
     cuit: '',
@@ -46,9 +57,88 @@ export class GaragesComponent {
   ngOnInit() {
     this.loadLocations(); // Carga las localidades al iniciar
     this.loadTypeVehicles();
+
+    this.loadReservationsOnProgress();
+
   }
 
+  totalResevartionsOnProgress: number = 0;
+  totalParkingSpaces: number = 0;
+  totalParkingSpacesAvailable: number = 0;
+  totalMoneyEarned: number = 0;
+  totalReservationsAlltime: number = 0;
 
+loadReservationsOnProgress() {
+  const cuit = this._authService.getCurrentUserId();
+
+  if (!cuit) {
+    console.error('No CUIT found for current user.');
+    return;
+  }
+
+  const now = new Date();
+  const todayEnd = now.toLocaleString('sv-SE').replace(' ', 'T'); 
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const todayStart = startOfDay.toLocaleString('sv-SE').replace(' ', 'T');
+
+  console.log('Fetching dashboard data...', { todayStart, todayEnd });
+
+
+
+  const reservationsRequest$ = this.___apiservice.getReservationsOfGarage(cuit, false, { 
+    status: 'pendiente' 
+  });
+
+  const reservationsRequest$$ = this.___apiservice.getReservationsOfGarage(cuit, false, { 
+ 
+  });
+
+  const spacesRequest$ = this.__apiservice.getParkingSpaceOfGarage(cuit);
+
+
+  const revenueRequest$ = this.___apiservice.getReservationsOfGarage(cuit, true, { 
+    status: 'finalizada', 
+    checkInDate: todayStart, 
+    checkOutDate: todayEnd 
+  });
+
+
+
+  forkJoin({
+    reservations: reservationsRequest$,
+    spaces: spacesRequest$,
+    revenue: revenueRequest$,
+    reservations2: reservationsRequest$$
+  }).subscribe({
+    next: (results) => {
+
+      console.log('All dashboard data received:', results);
+
+
+      this.totalResevartionsOnProgress = results.reservations ? results.reservations.length : 0;
+
+
+      if (Array.isArray(results.spaces)) {
+        this.totalParkingSpaces = results.spaces.length;
+      } else {
+        this.totalParkingSpaces = 0; 
+      }
+
+      this.totalMoneyEarned = (results.revenue as any).totalRevenue || 0;
+
+      this.totalReservationsAlltime = results.reservations2 ? results.reservations2.length : 0;
+
+      this.totalParkingSpacesAvailable = Math.max(0, this.totalParkingSpaces - this.totalResevartionsOnProgress);
+
+      console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
+    },
+    error: (err) => {
+      console.error('Error loading dashboard data:', err);
+    }
+  });
+}
 
   modificarGarage(garage: any) {
 
@@ -90,7 +180,40 @@ export class GaragesComponent {
       }
     });
   }
+  
+   getReservation() {
+    const cuit = this._authService.getCurrentUserId();
 
+    if (!cuit) return;
+
+    const filters = {
+      vehicleLicensePlate: this.reservationFilters.vehicleLicensePlate,
+      status: this.reservationFilters.status,
+      checkInDate: this.reservationFilters.checkInDate,
+      checkOutDate: this.reservationFilters.checkOutDate
+    };
+
+    // Pass filters to the service. The ReservationService's getReservationsOfGarage method
+    // will need to be updated to accept these filter parameters.
+    this.___apiservice.getReservationsOfGarage(cuit,false, filters).subscribe((data: any[]) => {
+
+      if (Array.isArray(data)) {
+        this.ReservationsList = data;
+
+      } else {
+
+        this.ReservationsList = [data]
+      }
+
+
+      console.log(data)
+    })
+  }
+
+  // New method to apply filters (can be called from UI)
+  applyReservationFilters() {
+    this.getReservation();
+  }
 
 
   createGarage(form: NgForm) {
@@ -311,6 +434,11 @@ export class GaragesComponent {
 
       this.getParkingsSpaces() 
     }           
+
+    if (section == 'getReservations') { 
+      // Call getReservation with current filters when navigating to this section
+      this.getReservation();
+    }  
 
   }
 
