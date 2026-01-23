@@ -19,21 +19,24 @@ export class ReservationService {
 
 
   getGaragesAvailables(filters: any): Observable<any> {
-
     let params = new HttpParams()
       .set('check_in_at', filters.check_in_at)
       .set('check_out_at', filters.check_out_at)
       .set('license_plate', filters.license_plate);
 
     return this.http.get<any>(this.apiAvailables, { params });
-
   }
 
   updateReservation(reservationData: any): Observable<any> {
     return this._http.put(`${this.apiUrl}/${reservationData.id}`, reservationData);
   }
 
+  getReservationsByUser(userId: number): Observable<any[]> {
+    return this._http.get<any[]>(`${this.apiUrl}/user/${userId}`);
+  }
 
-
+  cancelReservation(reservationId: number): Observable<any> {
+    return this._http.patch(`${this.apiUrl}/${reservationId}/cancel`, {});
+  }
 
 }

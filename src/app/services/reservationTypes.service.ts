@@ -30,6 +30,12 @@ export class ReservationTypesService {
     return this._http.put(`${this.apiUrl}/${reservationType.description}/${reservationType.garage}`, reservationType);
   }
 
+  getPricingStatus(cuit: string): Observable<any> {
+    return this._http.get<any>(`${this.apiUrl}/garage/${cuit}/status`);
+  }
 
+  getReservationTypesByGarage(cuit: string): Observable<any[]> {
+    return this._http.get<any[]>(`${this.apiUrl}/garage/${cuit}`);
+  }
 
 }

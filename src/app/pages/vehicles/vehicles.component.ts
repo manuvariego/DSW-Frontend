@@ -161,6 +161,8 @@ export class VehiclesComponent {
         setTimeout(() => {
           this.vehiculoCreado = false;
         }, 3000);
+        this.getVehicles();
+        this.vehicleData = { license_plate: '', type: '', owner: '' };
       },
       error: (error) => {
         console.error('Error al crear vehiculo:', error);

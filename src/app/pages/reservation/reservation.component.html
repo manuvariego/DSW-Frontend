@@ -1,6 +1,59 @@
+@if (currentSection == 'menu') {
+
+    <div class="container mt-4">
+      <h2 class="section-title text-center mb-5">Gestión de Reservas</h2>
+    
+      <div class="row justify-content-center">
+        <div class="col-md-5 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('misReservas')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-list-alt fa-3x"></i>
+            </div>
+            <h5 class="card-title">Mis Reservas</h5>
+            <p class="text-muted small">Ver historial de reservas.</p>
+            <button class="btn btn-dark-custom mt-2">Ver Listado</button>
+          </div>
+        </div>
+    
+        <div class="col-md-5 mb-4">
+          <div class="card menu-card h-100 text-center p-4" (click)="showSection('initial')">
+            <div class="icon-container mb-3">
+              <i class="fas fa-car-side fa-3x"></i>
+            </div>
+            <h5 class="card-title">Crear Nueva Reserva</h5>
+            <p class="text-muted small">Registrar una nueva reserva.</p>
+            <button class="btn btn-dark-custom mt-2">Crear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+
+
 @if (currentSection == 'initial') {
   <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+    <!-- Aviso si el usuario no tiene vehículos -->
+    <div *ngIf="userVehicles.length === 0" class="card-box p-5 mx-auto text-center" style="max-width: 500px;">
+      <div class="icon-container mb-4">
+        <i class="fas fa-car fa-4x text-warning"></i>
+      </div>
+      <h3 class="section-title mb-3">¡Necesitás un vehículo!</h3>
+      <p class="text-muted mb-4">
+        Para poder realizar una reserva, primero tenés que registrar al menos un vehículo en tu cuenta.
+      </p>
+      <div class="d-grid gap-2">
+        <a routerLink="/vehicles" class="btn btn-dark-custom btn-lg">
+          <i class="fas fa-plus-circle"></i> Agregar Vehículo
+        </a>
+        <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+
+    <!-- Formulario de reserva (solo si tiene vehículos) -->
+    <div *ngIf="userVehicles.length > 0" class="card-box p-5 mx-auto" style="max-width: 600px;">
       <div class="text-center mb-4">
         <h3 class="section-title">Reservá tu Estacionamiento</h3>
         <p class="text-muted">Seleccioná tu vehículo y fechas para encontrar lugar.</p>
@@ -37,7 +90,7 @@
             <div class="col-md-6 form-group mb-3">
               <label class="form-label">Fecha y Hora de Salida</label>
               <input type="datetime-local" class="form-control modern-input" [(ngModel)]="reservationData.check_out_at"
-                [(ngModel)]="filters.check_out_at" name="checkOut" required (change)="validateDates()" 
+                [(ngModel)]="filters.check_out_at" name="checkOut" required (change)="validateDates()"
                 #check_out_at="ngModel"
                 [class.is-invalid]="check_out_at.invalid && (check_out_at.dirty || check_out_at.touched) || isDateInvalid" />
               <div *ngIf="check_out_at.errors?.['required'] && (check_out_at.dirty || check_out_at.touched)" class="invalid-feedback">
@@ -60,6 +113,7 @@
             (click)="showSection('garages')">
             <i class="fas fa-search"></i> Buscar Cocheras Disponibles
           </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">Cancelar</button>
         </div>
       </form>
     </div>
@@ -84,13 +138,14 @@
             <th scope="col">Dirección</th>
             <th scope="col">Email</th>
             <th scope="col">Teléfono</th>
-            <th scope="col">Locación</th>
+            <th scope="col">Localidad</th>
+            <th scope="col">Precio Estimado</th>
             <th scope="col" class="text-center">Seleccionar</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="Garages.length === 0">
-            <td colspan="7" class="text-center p-5">
+            <td colspan="8" class="text-center p-5">
                 <i class="fas fa-car-crash fa-2x text-muted mb-3"></i>
                 <p class="text-muted">No encontramos cocheras disponibles para esas fechas.</p>
             </td>
@@ -102,7 +157,8 @@
             <td>{{ garage.address }}</td>
             <td>{{ garage.email }}</td>
             <td>{{ garage.phoneNumber }}</td>
-            <td><span class="badge-type-custom">{{garage.location.name}}</span></td>
+            <td><span class="badge-type-custom">{{ garage.location .name}}</span></td>
+            <td class="fw-bold text-success">${{ garage.precioEstimado }}</td>
             <td class="text-center">
               <button type="button" class="btn btn-dark-custom btn-sm" (click)="saveGarage(garage)">
                 Seleccionar <i class="fas fa-check"></i>
@@ -204,7 +260,7 @@
 
       <div class="alert alert-secondary mt-4 text-end">
         <small>Total a Pagar:</small>
-        <h3 class="fw-bold text-dark">$ {{ totalExtra }} <span class="fs-6 text-muted"> + ${{theReservation.amount}}</span></h3>
+        <h3 class="fw-bold text-dark">$ {{ totalFinal }}</h3>
       </div>
 
       <div class="d-grid gap-2 mt-4">
@@ -220,57 +276,205 @@
   </div>
 }
 
-@if (currentSection == 'realizada') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-4 shadow-lg">
-      <div class="text-center mb-4">
-          <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
-          <h3 class="section-title">¡Reserva Exitosa!</h3>
-          <p class="text-muted">Aquí tienes los detalles de tu operación.</p>
-      </div>
+@if (currentSection == 'misReservas') {
+  <div class="container mt-4 fade-in-anim">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="section-title">Mis Reservas</h3>
+      <button type="button" class="btn btn-outline-dark" (click)="showSection('menu')">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
 
-      <div class="table-responsive rounded border">
-        <table class="table mb-0">
-          <thead class="thead-dark-custom">
-            <tr>
-              <th scope="col">Fecha Operación</th>
-              <th scope="col">Ingreso</th>
-              <th scope="col">Salida</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Monto</th>
-              <th scope="col">Vehículo</th>
-              <th scope="col">Garage</th>
-              <th scope="col">Espacio #</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ theReservation.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</td>
-              <td class="text-primary fw-bold">{{ theReservation.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
-              <td class="text-primary fw-bold">{{ theReservation.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
-              <td><span class="badge bg-success">CONFIRMADA</span></td> <td class="fw-bold text-dark fs-5">${{theReservation.amount + totalExtra }} </td>
-              <td>{{theReservation.vehicle.license_plate}}</td>
-              <td>{{theReservation.garage.name}}</td>
-              <td><span class="badge bg-secondary">#{{theReservation.parkingSpace.number}}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div *ngIf="paymentMethod === 'MP'" class="mt-4 text-center animate-bounce">
-      <div class="alert alert-info border-info">
-      <h5><i class="fas fa-hand-holding-usd"></i> Completar Pago</h5>
-      <p class="mb-2">Hacé click abajo para abonar tu reserva ahora.</p>
-    
-        <a href="https://link.mercadopago.com.ar/parkeasytest" target="_blank" class="btn btn-mp btn-lg text-white" style="background-color: #009ee3;">
-          <b>Pagar con Mercado Pago</b>
+    <!-- separar las dos secciones en proximas e historial -->
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'proximas'" (click)="activeTab = 'proximas'" style="cursor: pointer;">
+          <i class="fas fa-calendar-alt"></i> Próximas ({{reservasProximas.length}})
         </a>
-      </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'historial'" (click)="activeTab = 'historial'" style="cursor: pointer;">
+          <i class="fas fa-history"></i> Historial ({{reservasHistorial.length}})
+        </a>
+      </li>
+    </ul>
+
+    <!-- seccion de Próximas -->
+    <div *ngIf="activeTab === 'proximas'" class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Ingreso</th>
+            <th scope="col">Salida</th>
+            <th scope="col">Cochera</th>
+            <th scope="col">Vehículo</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Monto</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="reservasProximas.length === 0">
+            <td colspan="7" class="text-center p-5">
+              <i class="fas fa-calendar-check fa-2x text-muted mb-3"></i>
+              <p class="text-muted">No tenés reservas próximas.</p>
+            </td>
+          </tr>
+          <tr *ngFor="let reserva of reservasProximas">
+            <td class="text-primary fw-bold">{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td class="text-primary fw-bold">{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>{{ reserva.garage?.name || reserva.garage }}</td>
+            <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
+            <td><span class="badge bg-success">{{ reserva.estado | uppercase }}</span></td>
+            <td class="fw-bold">${{ reserva.amount}}</td>
+            <td class="text-center">
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="cancelReservation(reserva)">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="d-grid gap-2 mt-4">
-      <button type="button" class="btn btn-primary btn-lg" (click)="showSection('initial')">Volver al Inicio</button>
-    </div>
+    <!-- seccion del Historial -->
+    <div *ngIf="activeTab === 'historial'" class="table-responsive shadow-lg rounded bg-white">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="thead-dark-custom">
+          <tr>
+            <th scope="col">Ingreso</th>
+            <th scope="col">Salida</th>
+            <th scope="col">Cochera</th>
+            <th scope="col">Vehículo</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="reservasHistorial.length === 0">
+            <td colspan="6" class="text-center p-5">
+              <i class="fas fa-history fa-2x text-muted mb-3"></i>
+              <p class="text-muted">No tenés historial de reservas.</p>
+            </td>
+          </tr>
+          <tr *ngFor="let reserva of reservasHistorial">
+            <td>{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>{{ reserva.garage?.name || reserva.garage }}</td>
+            <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-secondary': reserva.estado === 'completada',
+                'bg-danger': reserva.estado === 'cancelada'
+              }">{{ reserva.estado | uppercase }}</span>
+            </td>
+            <td class="fw-bold">${{ reserva.amount }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+}
+
+@if (currentSection == 'realizada') {
+<div class="container mt-4 fade-in-anim">
+  <div class="card-box p-4 mx-auto" style="max-width: 700px;">
+
+    <!-- Encabezado con animación -->
+    <div class="text-center mb-4">
+      <div class="success-checkmark mb-3">
+        <i class="fas fa-check-circle text-success fa-4x"></i>
+      </div>
+      <h3 class="section-title">¡Reserva Confirmada!</h3>
+      <p class="text-muted">Tu lugar está reservado. Guardá estos datos para el día de tu visita.</p>
+    </div>
+
+    <!-- Tarjeta principal con monto destacado -->
+    <div class="bg-dark text-white rounded p-4 mb-4 text-center">
+      <span class="d-block small text-light opacity-75">Total a pagar</span>
+      <span class="fs-1 fw-bold">${{ totalFinal }}</span>
+      <div class="mt-2">
+        <span class="badge bg-success px-3 py-2">
+          <i class="fas fa-check me-1"></i> CONFIRMADA
+        </span>
+      </div>
+    </div>
+
+    <!-- Info del Garage (destacada) -->
+    <div class="border rounded p-4 mb-4 bg-light">
+      <div class="d-flex align-items-start justify-content-between">
+        <div class="flex-grow-1">
+          <h5 class="mb-1">
+            <i class="fas fa-warehouse me-2 text-primary"></i>
+            {{ selectedGarage?.name || theReservation.garage }}
+          </h5>
+          <a class="text-primary text-decoration-underline" style="cursor: pointer;" (click)="confirmOpenMaps()">
+            <i class="fas fa-map-marker-alt me-1"></i>
+            {{ selectedGarage?.address }}, {{ selectedGarage?.location }}
+          </a>
+        </div>
+        <div class="text-end">
+          <span class="d-block text-muted small mb-1">Espacio asignado</span>
+          <span class="badge bg-primary fs-5 px-3 py-2">
+            #{{ theReservation.parkingSpace?.number }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles en 2 columnas -->
+    <div class="row g-4 mb-4">
+      <!-- Fechas -->
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+          <h6 class="text-muted mb-3">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Horarios
+          </h6>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Ingreso</span>
+            <span class="fw-bold text-success">
+              {{ theReservation.check_in_at | date: 'dd/MM/yy HH:mm' }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted small">Salida</span>
+            <span class="fw-bold text-danger">
+              {{ theReservation.check_out_at | date: 'dd/MM/yy HH:mm' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehículo -->
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+          <h6 class="text-muted mb-3">
+            <i class="fas fa-car me-2"></i>
+            Tu Vehículo
+          </h6>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Patente</span>
+            <span class="fw-bold">{{ theReservation.vehicle?.license_plate }}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted small">Reserva</span>
+            <span class="text-muted small">{{ theReservation.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-dark-custom btn-lg" (click)="showSection('misReservas')">
+        <i class="fas fa-list-alt me-2"></i> Ver Mis Reservas
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">
+        <i class="fas fa-home me-2"></i> Volver al inicio
+      </button>
+    </div>
+
+  </div>
+</div>
 }
