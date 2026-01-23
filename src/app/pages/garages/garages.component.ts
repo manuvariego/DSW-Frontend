@@ -4,6 +4,10 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { isArray } from 'node:util';
 import { GaragesService } from '../../services/garages.service.js';
 import { LocationsService } from '../../services/locations.service.js';
+import {ParkingSpaceService} from '../../services/parking-space.service.js';
+import { ParkingSpaceComponent } from '../parking-space/parking-space.component.js';
+import { TypeVehicleService } from '../../services/type-vehicle.service.js';
+import { AuthService } from '../../services/auth.service.js';
 
 @Component({
   selector: 'app-garages',
@@ -16,11 +20,16 @@ export class GaragesComponent {
   currentSection: string = 'initial';
   garageList: any[] = [];
   private _apiservice = inject(GaragesService);
+  private __apiservice = inject(ParkingSpaceService);
   private _locationService = inject(LocationsService);
-  garageCreado = false;;
+  private _typeVehicleService = inject(TypeVehicleService);
+  private _authService = inject(AuthService);
+  garageCreado = false;
   garageCuit: any = '';
   aGarage: any = null;
   editingGarage: any = null;
+  editingParkingSpace: any = null;
+  typeVehicles: Array<any> = [];
 
   garageData = {
 
@@ -36,6 +45,7 @@ export class GaragesComponent {
 
   ngOnInit() {
     this.loadLocations(); // Carga las localidades al iniciar
+    this.loadTypeVehicles();
   }
 
 
@@ -46,6 +56,41 @@ export class GaragesComponent {
     this.editingGarage = { ...garage };
 
   }
+
+    modificarParkingSpace(parkingSpace: any) {
+
+    this.currentSection = 'editParkingSpace';
+    this.editingParkingSpace = { ...parkingSpace };
+
+  }
+
+   updateParkingSpace(form: NgForm) {
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+    const confirmation = confirm('¿Está seguro de que desea modificar este Space?');
+    if (!confirmation) {
+      return; // Si el Lugar de Estacionamiento cancela, no hacemos nada
+    }
+
+    this.__apiservice.updateParkingSpace(this.editingParkingSpace).subscribe({
+      next: (response) => {
+        console.log('Space actualizado exitosamente', response);
+        this.editingParkingSpace = null; // Limpia la variable de edición;
+        this.getParkingsSpaces(); // Refresca la lista de parkingSpace
+        this.showSection('getParkingSpaces');
+        form.resetForm();
+      },
+      error: (error) => {
+        console.error('Error al actualizar el Lugar de Estacionamiento', error);
+      }
+    });
+  }
+
 
 
   createGarage(form: NgForm) {
@@ -97,6 +142,76 @@ export class GaragesComponent {
     );
   }
 
+    ParkingSpaceData = {
+    garage: 0,
+    number: '',
+    TypeVehicle: '',
+
+  }
+
+  parkingCreado = false;
+
+  createParkingSpace(form: NgForm) {
+    const cuit = this._authService.getCurrentUserId();
+    const numericCuit = cuit ? parseInt(cuit, 10) : 0;
+
+    this.ParkingSpaceData = {
+    ...this.ParkingSpaceData,
+    garage: numericCuit,
+  }
+
+    if (form.invalid) {
+      Object.keys(form.controls).forEach(field => {
+        const control = form.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    }
+    this.__apiservice.createParkingSpace(this.ParkingSpaceData).subscribe({
+      next: (response) => {
+        console.log('Lugar de Estacionamiento creado exitosamente:', response);
+        this.parkingCreado = true;
+        this.showSection('initial');
+        form.resetForm();
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => {
+          this.parkingCreado = false;
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error al crear Lugar de Estacionamiento:', error);
+      }
+    });
+  }
+
+  getParkingsSpaces() {
+    const cuit = this._authService.getCurrentUserId();
+
+    console.log(cuit);
+
+    if (!cuit) return;
+    this.garageCuit = cuit;
+
+    this.__apiservice.getParkingSpaceOfGarage(cuit).subscribe((data: any[]) => {
+
+      if (Array.isArray(data)) {
+        this.garageList = data
+
+      } else {
+
+        this.garageList = [data]
+      }
+
+
+      console.log(data)
+    })
+  }
+
+  getTypeVehicleName(id: any): string {
+    const type = this.typeVehicles.find(t => t.id == id);
+    return type ? type.name : 'Desconocido';
+  }
+
   getGarages() {
     this._apiservice.getGarages().subscribe((data: any[]) => {
 
@@ -111,6 +226,25 @@ export class GaragesComponent {
 
       console.log(data)
     })
+  }
+
+  deleteParkingSpace(numberParkingSpace: string, tipo: boolean) {
+    const confirmation = confirm('¿Está seguro de que desea eliminar este Lugar de Estacionamiento?');
+    if (!confirmation) {
+      return;
+    }
+
+    this.__apiservice.deleteParkingSpace(numberParkingSpace, this.garageCuit).subscribe({
+      next: (response) => {
+        console.log('Lugar de Estacionamiento eliminado exitosamente', response);
+        this.getParkingsSpaces();
+      },
+      error: (error) => {
+        console.error('Error al eliminar el Lugar de Estacionamiento', error);
+      }
+    });
+
+    if (tipo) { this.currentSection = 'initial'; }
   }
 
   deleteGarage(garageCuit: string, tipo: boolean) {
@@ -129,7 +263,7 @@ export class GaragesComponent {
       }
     });
 
-    if (tipo = true) { this.currentSection = 'initial' }
+    if (tipo) { this.currentSection = 'initial' }
   }
 
 
@@ -173,6 +307,11 @@ export class GaragesComponent {
 
     }
 
+    if (section == 'getParkingSpaces') { 
+
+      this.getParkingsSpaces() 
+    }           
+
   }
 
   locations: Array<any> = []; // Array para almacenar las localidades
@@ -182,6 +321,12 @@ export class GaragesComponent {
   loadLocations() {
     this._locationService.getLocations().subscribe(data => {
       this.locations = data;
+    });
+  }
+
+  loadTypeVehicles() {
+    this._typeVehicleService.getTypeVehicles().subscribe(data => {
+      this.typeVehicles = data;
     });
   }
 

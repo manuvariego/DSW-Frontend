@@ -5,39 +5,32 @@
     </div>
 
     <div class="container mt-4">
-      <h2 class="section-title text-center mb-5">Tipos de Reserva</h2>
+      <h2 class="section-title text-center mb-5">Precios por Estadía</h2>
 
       <div class="row justify-content-center">
+        <!-- Alerta si faltan precios - como una tarjeta centrada -->
+        <div *ngIf="pricingStatus && !pricingStatus.completo" class="col-md-4 mb-4">
+          <div class="card menu-card h-100 text-center p-4 border-warning" style="border: 2px solid #ffc107;">
+            <div class="icon-container mb-3">
+              <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+            </div>
+            <h5 class="card-title text-warning">¡Atención!</h5>
+            <p class="text-muted small">Tu cochera no aparecerá en las búsquedas hasta que completes todos los precios.</p>
+            <p class="small"><strong>Faltan:</strong> {{ tiposFaltantes.join(', ') }}</p>
+            <button class="btn btn-warning mt-2" (click)="showSection('configurarPrecios')">
+              <i class="fas fa-cog"></i> Configurar Precios
+            </button>
+          </div>
+        </div>
+
         <div class="col-md-4 mb-4">
           <div class="card menu-card h-100 text-center p-4" (click)="showSection('getReservationTypes')">
             <div class="icon-container mb-3">
               <i class="fas fa-list-ul fa-3x"></i>
             </div>
-            <h5 class="card-title">Listado de Tipos</h5>
-            <p class="text-muted small">Ver precios y categorías disponibles.</p>
+            <h5 class="card-title">Mis Precios</h5>
+            <p class="text-muted small">Ver y editar mis precios por estadía.</p>
             <button class="btn btn-dark-custom mt-2">Ver Listado</button>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('createReservationType')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-plus-circle fa-3x"></i>
-            </div>
-            <h5 class="card-title">Nuevo Tipo</h5>
-            <p class="text-muted small">Crear una nueva categoría de estadía.</p>
-            <button class="btn btn-dark-custom mt-2">Crear</button>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('geTaReservationType')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-search-dollar fa-3x"></i>
-            </div>
-            <h5 class="card-title">Buscar Específico</h5>
-            <p class="text-muted small">Buscar por descripción y cochera.</p>
-            <button class="btn btn-dark-custom mt-2">Buscar</button>
           </div>
         </div>
       </div>
@@ -115,42 +108,41 @@
 }
 
 @if (currentSection == 'getReservationTypes') {
-  <div class="container-fluid mt-4 px-4 fade-in-anim">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="section-title">Precios y Categorías</h3>
-      <button type="button" class="btn btn-outline-dark" (click)="showSection('initReservationType')">
-        <i class="fas fa-arrow-left"></i> Volver
-      </button>
-    </div>
+  <div class="container mt-4 fade-in-anim">
+    <div class="card-box p-4 mx-auto" style="max-width: 700px;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mb-0">Mis Precios por Estadía</h3>
+        <button type="button" class="btn btn-outline-dark" (click)="showSection('initReservationType')">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
 
-    <div class="table-responsive shadow-lg rounded bg-white">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="thead-dark-custom">
-          <tr>
-            <th scope="col">Descripción</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Garage (CUIT)</th>
-            <th scope="col" class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let reservation of reservationTypeList; let i = index">
-            <td class="fw-bold text-muted">{{reservation.description}}</td>
-            <td class="text-success fw-bold">${{reservation.price}}</td>
-            <td>{{reservation.garage}}</td>
-            <td>
-              <div class="d-flex justify-content-center gap-3">
-                 <button type="button" class="btn-icon-action btn-edit-icon" (click)="changeTipodeReserva(reservation)" title="Editar">
-                   <i class="fas fa-pen"></i>
-                 </button>
-                 <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteReservationType(reservation.description, reservation.garage, true)" title="Eliminar">
-                   <i class="fas fa-trash-alt"></i>
-                 </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div *ngIf="reservationTypeList.length === 0" class="alert alert-info text-center">
+        <i class="fas fa-info-circle"></i> No tenés precios configurados todavía.
+      </div>
+
+      <div *ngIf="reservationTypeList.length > 0" class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="thead-dark-custom">
+            <tr>
+              <th scope="col">Tipo de Estadía</th>
+              <th scope="col">Precio</th>
+              <th scope="col" class="text-center">Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reservation of reservationTypeList">
+              <td class="fw-bold">{{ getNombreTipo(reservation.description) }}</td>
+              <td class="text-success fw-bold">${{reservation.price}}</td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="changeTipodeReserva(reservation)" title="Editar precio">
+                  <i class="fas fa-pen"></i> Editar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 }
@@ -201,20 +193,154 @@
   <div class="container mt-5 fade-in-anim">
     <div class="card-box p-5 mx-auto" style="max-width: 500px;">
       <h3 class="text-center mb-4 section-title">Modificar Precio</h3>
-      
-      <form (ngSubmit)="updateReservationType()" class="needs-validation" novalidate>
-        
+
+      <form #editForm="ngForm" (ngSubmit)="updateReservationType()" class="needs-validation" novalidate>
+
+        <div class="alert alert-light text-center mb-4">
+          <strong>{{ getNombreTipo(editingReservationType.description) }}</strong>
+        </div>
+
         <div class="form-group mb-4">
-          <label for="price" class="form-label">Precio del Tipo Reserva</label>
-          <input type="number" id="price" class="form-control modern-input" [(ngModel)]="editingReservationType.price" name="price" required>
-          <div class="invalid-feedback">Este campo es obligatorio</div>
+          <label for="editPrice" class="form-label">Nuevo Precio</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" id="editPrice" class="form-control"
+              [(ngModel)]="editingReservationType.price" name="editPrice"
+              #editPrice="ngModel" required min="1"
+              [class.is-invalid]="editPrice.invalid && (editPrice.dirty || editPrice.touched)"
+              placeholder="Ingrese el nuevo precio">
+            <div class="invalid-feedback">
+              <span *ngIf="editPrice.errors?.['required']">Este campo es obligatorio.</span>
+              <span *ngIf="editPrice.errors?.['min']">El precio debe ser mayor a 0.</span>
+            </div>
+          </div>
         </div>
 
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
-          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initReservationType')">Cancelar</button>
+          <button type="submit" class="btn btn-dark-custom btn-block" [disabled]="editForm.invalid">
+            <i class="fas fa-save"></i> Guardar Cambios
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="showSection('getReservationTypes')">
+            <i class="fas fa-arrow-left"></i> Cancelar
+          </button>
         </div>
       </form>
     </div>
   </div>
+}
+
+@if (currentSection == 'configurarPrecios') {
+<div class="container mt-4 fade-in-anim">
+  <div class="card-box p-4 mx-auto" style="max-width: 600px;">
+    <h3 class="text-center mb-4 section-title">Configurar Precios de Estadía</h3>
+    <p class="text-muted text-center mb-4">Completá todos los precios para que tu cochera aparezca en las búsquedas. No se permiten precios negativos ni cero.</p>
+
+    <form #preciosForm="ngForm" (ngSubmit)="guardarTodosLosPrecios(preciosForm)">
+      <!-- Por Hora -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('HOUR')">
+        <label for="precioHour" class="form-label"><strong>Por Hora</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioHour" name="precioHour"
+            [(ngModel)]="preciosNuevos.HOUR" #precioHour="ngModel" required min="1"
+            [class.is-invalid]="precioHour.invalid && (precioHour.dirty || precioHour.touched)"
+            placeholder="Ingrese precio por hora">
+          <div class="invalid-feedback">
+            <span *ngIf="precioHour.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioHour.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medio Día -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('HALF_DAY')">
+        <label for="precioHalfDay" class="form-label"><strong>Medio Día</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioHalfDay" name="precioHalfDay"
+            [(ngModel)]="preciosNuevos.HALF_DAY" #precioHalfDay="ngModel" required min="1"
+            [class.is-invalid]="precioHalfDay.invalid && (precioHalfDay.dirty || precioHalfDay.touched)"
+            placeholder="Ingrese precio medio día">
+          <div class="invalid-feedback">
+            <span *ngIf="precioHalfDay.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioHalfDay.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Por Día -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('DAY')">
+        <label for="precioDay" class="form-label"><strong>Por Día</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioDay" name="precioDay"
+            [(ngModel)]="preciosNuevos.DAY" #precioDay="ngModel" required min="1"
+            [class.is-invalid]="precioDay.invalid && (precioDay.dirty || precioDay.touched)"
+            placeholder="Ingrese precio por día">
+          <div class="invalid-feedback">
+            <span *ngIf="precioDay.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioDay.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semanal -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('WEEKLY')">
+        <label for="precioWeekly" class="form-label"><strong>Semanal</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioWeekly" name="precioWeekly"
+            [(ngModel)]="preciosNuevos.WEEKLY" #precioWeekly="ngModel" required min="1"
+            [class.is-invalid]="precioWeekly.invalid && (precioWeekly.dirty || precioWeekly.touched)"
+            placeholder="Ingrese precio semanal">
+          <div class="invalid-feedback">
+            <span *ngIf="precioWeekly.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioWeekly.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quincenal -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('HALF_MONTH')">
+        <label for="precioHalfMonth" class="form-label"><strong>Quincenal</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioHalfMonth" name="precioHalfMonth"
+            [(ngModel)]="preciosNuevos.HALF_MONTH" #precioHalfMonth="ngModel" required min="1"
+            [class.is-invalid]="precioHalfMonth.invalid && (precioHalfMonth.dirty || precioHalfMonth.touched)"
+            placeholder="Ingrese precio quincenal">
+          <div class="invalid-feedback">
+            <span *ngIf="precioHalfMonth.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioHalfMonth.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensual -->
+      <div class="form-group mb-3" *ngIf="tiposFaltantes.includes('MONTH')">
+        <label for="precioMonth" class="form-label"><strong>Mensual</strong></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="precioMonth" name="precioMonth"
+            [(ngModel)]="preciosNuevos.MONTH" #precioMonth="ngModel" required min="1"
+            [class.is-invalid]="precioMonth.invalid && (precioMonth.dirty || precioMonth.touched)"
+            placeholder="Ingrese precio mensual">
+          <div class="invalid-feedback">
+            <span *ngIf="precioMonth.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="precioMonth.errors?.['min']">El precio debe ser mayor a 0.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-dark-custom btn-lg" [disabled]="preciosForm.invalid">
+          <i class="fas fa-save"></i> Guardar Todos los Precios
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="showSection('initReservationType')">
+          <i class="fas fa-arrow-left"></i> Volver al Menú
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 }

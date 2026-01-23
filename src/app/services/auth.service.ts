@@ -14,10 +14,12 @@ export class AuthService {
   }
 
   saveSession(response: any) {
+    console.log(response);
     localStorage.setItem('token', response.token);
     localStorage.setItem('userId', response.user.id);
     localStorage.setItem('userName', response.user.name);
     localStorage.setItem('userRole', response.user.type);
+
   }
 
   getCurrentUserId(): string | null {

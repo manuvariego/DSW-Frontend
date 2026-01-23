@@ -18,6 +18,10 @@ export class ParkingSpaceService {
     getParkingSpace(numberParkingSpace: string, cuitGarage: string): Observable<any>{
       return this._http.get<any>(`${this.apiUrl}/${numberParkingSpace}/${cuitGarage}`)
     }
+
+    getParkingSpaceOfGarage(cuitGarage: string): Observable<any>{
+      return this._http.get<any>(`${this.apiUrl}/${cuitGarage}`)
+    }
   
     createParkingSpace(parkingSpace: any): Observable<any> {
       return this._http.post<any>(this.apiUrl, parkingSpace);

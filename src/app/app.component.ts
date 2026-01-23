@@ -14,12 +14,13 @@ import { RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
 
-authService = inject(AuthService);
+  authService = inject(AuthService);
   router = inject(Router);
 
-   menuOption = '';
+  menuOption = '';
 
   onOption(option: string) {
     this.menuOption = option;
@@ -28,8 +29,6 @@ authService = inject(AuthService);
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-
-
-}
+  }
 }
 
