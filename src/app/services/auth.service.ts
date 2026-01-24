@@ -39,8 +39,8 @@ export class AuthService {
   }
 
   getUserName(): string | null {
-  return localStorage.getItem('userName');
-}
+    return localStorage.getItem('userName');
+  }
 
 
   isGarage(): boolean {

@@ -47,6 +47,8 @@ export class LoginComponent {
       this.fieldErrors.password = 'La contraseña es muy corta';
       isValid = false;
     }
+    console.log(this.username)
+    console.log(this.password)
 
     return isValid;
   }
@@ -59,6 +61,7 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
+
 
     const credentials = {
       dni: this.username.trim(),

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceService } from '../../services/service.service.js'; 
+import { ServiceService } from '../../services/service.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,12 +7,12 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-service',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './services.component.html', 
+  templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
 export class ServiceComponent implements OnInit {
 
-  myServices: any[] = []; 
+  myServices: any[] = [];
   garageCuit: any = '';
 
 
@@ -27,9 +27,12 @@ export class ServiceComponent implements OnInit {
   constructor(private serviceService: ServiceService) { }
 
   ngOnInit(): void {
-    const cuit = localStorage.getItem('cuitGarage');
+    const cuit = localStorage.getItem('userId');
+    console.log("CUIT")
+    console.log(cuit)
+    console.log("CUIT")
     // Usamos el CUIT del localStorage o uno por defecto para probar
-    this.garageCuit = cuit ? Number(cuit) : 11;
+    this.garageCuit = cuit ? Number(cuit) : 55555;
     this.loadData();
   }
 
@@ -56,7 +59,7 @@ export class ServiceComponent implements OnInit {
     }
 
     const dataToSend = {
-      garageCuit: this.garageCuit, 
+      garageCuit: this.garageCuit,
       description: this.newService.description,
       price: Number(this.newService.price)
     };
@@ -66,11 +69,11 @@ export class ServiceComponent implements OnInit {
     this.serviceService.createService(dataToSend).subscribe({
       next: (response) => {
         this.message = '¡Servicio agregado!';
-        
+
         this.newService = { description: '', price: null };
-        
+
         this.loadData();
-        
+
         setTimeout(() => this.message = '', 3000);
       },
       error: (err) => {
@@ -82,7 +85,7 @@ export class ServiceComponent implements OnInit {
   }
 
   deleteService(serviceId: number) {
-    if(!confirm('¿Eliminar este servicio?')) return;
+    if (!confirm('¿Eliminar este servicio?')) return;
 
     this.isLoading = true;
 
