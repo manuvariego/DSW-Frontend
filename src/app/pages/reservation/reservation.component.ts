@@ -220,8 +220,7 @@ ngOnInit() {
   createReservation() {
     const finalData = {
       ...this.reservationData, 
-      services: this.selectedServicesIds, 
-      amount: this.totalFinal
+      services: this.selectedServicesIds
     };
 
     console.log("Enviando reserva con servicios:", finalData);

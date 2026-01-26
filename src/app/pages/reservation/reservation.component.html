@@ -203,10 +203,25 @@
               <span class="badge bg-success rounded-pill p-2 fs-6">+ ${{ service.price }}</span>
             </label>
           </div>
-          
-          <div class="alert alert-secondary text-end">
-             Costo Adicional: <strong class="text-success fs-5">$ {{ totalExtra }}</strong>
-          </div>
+        </div>
+
+        <div class="card bg-light border-0 rounded-3 p-3 mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Precio base (Estadía):</span>
+              <span class="fw-bold">$ {{ totalEstadia }}</span>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Servicios adicionales:</span>
+              <span class="fw-bold text-success">+ $ {{ totalExtra }}</span>
+            </div>
+            
+            <hr class="my-2">
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <strong class="fs-5 text-dark">Total Final:</strong>
+              <h2 class="fw-bold text-primary mb-0">$ {{ totalFinal }}</h2>
+            </div>
         </div>
 
         <div class="d-flex justify-content-between mt-4">
@@ -219,10 +234,7 @@
           </button>
         </div>
 
-      </div>
-    </div>
-  </div>
-}
+      </div> </div> </div> }
 
 @if (currentSection == 'payment') {
   <div class="container mt-5 fade-in-anim">
