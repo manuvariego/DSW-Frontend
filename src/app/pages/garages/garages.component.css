@@ -71,3 +71,19 @@ h2.section-title, h3.section-title {
 
 .gap-3 { gap: 1rem !important; }
 
+button.btn-icon-action.btn-delete-icon:disabled {
+    background-color: #e9ecef !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    opacity: 0.65 !important;
+    border: 1px solid #dee2e6 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Evita que el efecto hover cambie el color cuando está desactivado */
+.btn-delete-icon:disabled:hover {
+    background-color: #e9ecef !important;
+    color: #adb5bd !important;
+}
+

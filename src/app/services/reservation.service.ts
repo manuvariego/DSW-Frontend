@@ -52,7 +52,9 @@ export class ReservationService {
       }
     }
     return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/${condition}`, { params });
-  }  cancelReservation(reservationId: number): Observable<any> {
+  }  
+  
+  cancelReservation(reservationId: number): Observable<any> {
     return this._http.patch(`${this.apiUrl}/${reservationId}/cancel`, {});
   }
 

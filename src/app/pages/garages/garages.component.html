@@ -90,22 +90,26 @@
               <i class="fas fa-parking fa-3x"></i>
             </div>
             <h5 class="card-title">Listado de Slots</h5>
-            <p class="text-muted small">Ver todos los Parking spaces registrados.</p>
+            <p class="text-muted small">Administra y edita los Parking Spaces existentes</p>
             <button class="btn btn-dark-custom mt-2">Ver Listado</button>
           </div>
         </div>
 
         <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('createGarage')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-plus-circle fa-3x"></i>
-            </div>
-            <h5 class="card-title">Listado de Servicios</h5>
-            <p class="text-muted small">Ver todos los servicios registrados</p>
-            <button class="btn btn-dark-custom mt-2">Crear</button>
-          </div>
-        </div>
+          <div class="card menu-card h-100 text-center p-4"> <div class="icon-container mb-3">
+           <i class="fas fa-list-ul fa-3x"></i> 
+         </div>
+         <h5 class="card-title">Listado de Servicios</h5>
+         <p class="text-muted small">Administra y edita los servicios existentes</p>
+    
+         <button class="btn btn-dark-custom mt-2" routerLink="/services">
+           Ver Listado
+         </button>
+  </div>
+</div>
 
+
+        
         <div class="col-md-4 mb-4">
           <div class="card menu-card h-100 text-center p-4" (click)="showSection('getReservations')">
             <div class="icon-container mb-3">
@@ -123,6 +127,7 @@
   </div>
 
 }
+
 
 @if (currentSection == 'getReservations') {
   <div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
@@ -227,12 +232,21 @@
               <td><span class="badge bg-secondary">#{{ res.parkingSpace?.number || res.parking_space_number }}</span></td>
               <td>
                 <div class="d-flex justify-content-center gap-3">
-                  <button type="button" class="btn-icon-action btn-edit-icon" title="Ver Detalles">
+                  <button type="button" 
+                          class="btn-icon-action btn-edit-icon" 
+                          (click)="viewReservationDetails(res)"
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modalDetalle">
                     <i class="fas fa-eye"></i>
                   </button>
-                  <button type="button" class="btn-icon-action btn-delete-icon" title="Cancelar Reserva">
-                    <i class="fas fa-times"></i>
-                  </button>
+                  <button type="button" 
+                          class="btn-icon-action btn-delete-icon" 
+                          [title]="res.estado !== 'confirmada' ? 'Solo se pueden cancelar reservas confirmadas' : 'Cancelar Reserva'" 
+                          [disabled]="res.estado !== 'confirmada'"
+                          (click) = "deleteReservation(res.id)">
+                      <i class="fas fa-trash"></i>
+                  </button>                    
+                  
                 </div>
               </td>
             </tr>
@@ -247,6 +261,100 @@
         </tbody>
       </table>
     </div>
+
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+      
+      <div class="modal-header bg-dark text-white rounded-top-4">
+        <h5 class="modal-title">Detalle de la Reserva</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body p-4" *ngIf="selectedReservation">
+        <div class="row g-3">
+          
+          <div class="col-6">
+            <label class="text-muted small fw-bold text-uppercase">Patente</label>
+            <p class="fw-bold fs-5 mb-0">{{ selectedReservation.vehicle?.license_plate || 'N/A' }}</p>
+          </div>
+
+          <div class="col-6 text-end">
+            <label class="text-muted small fw-bold text-uppercase d-block">Estado</label>
+            <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                'bg-success': selectedReservation.estado === 'confirmada',
+                'bg-warning text-dark': selectedReservation.estado === 'pendiente',
+                'bg-danger': selectedReservation.estado === 'cancelada'
+              }">
+              {{ selectedReservation.estado | uppercase }}
+            </span>
+          </div>
+
+          <div class="col-12">
+            <label class="text-muted small fw-bold text-uppercase">Propietario / Cliente</label>
+            <div class="d-flex align-items-center mt-1">
+              <div class="bg-light rounded-circle p-2 me-2 text-secondary">
+                <i class="fas fa-user"></i>
+              </div>
+              <p class="fw-bold mb-0">
+                {{ selectedReservation.vehicle?.owner?.name || 'Desconocido' }} 
+                {{ selectedReservation.vehicle?.owner?.surname || '' }}
+              </p>
+            </div>
+          </div>
+
+          <hr class="text-muted opacity-25">
+
+          <div class="col-6">
+            <label class="text-muted small fw-bold text-uppercase">Entrada</label>
+            <p class="mb-0">{{ selectedReservation.check_in_at | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="col-6">
+            <label class="text-muted small fw-bold text-uppercase">Salida</label>
+            <p class="mb-0">{{ selectedReservation.check_out_at | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+
+          <div class="col-12 mt-3">
+            <label class="text-muted small fw-bold text-uppercase">Cochera Asignada</label>
+            <p class="fw-bold">N° {{ selectedReservation.parkingSpace?.number || 'Sin asignar'}}</p>
+          </div>
+
+          <div class="col-12 mt-3">
+            <label class="text-muted small fw-bold text-uppercase">Monto</label>
+            <p class="fw-bold">{{ selectedReservation.amount || 'Sin asignar'}}</p>
+          </div>
+
+          <div class="col-12">
+            <label class="text-muted small fw-bold text-uppercase mb-2">Servicios Adicionales</label>
+            
+            <div *ngIf="selectedReservation.services && selectedReservation.services.length > 0; else noServices">
+              <ul class="list-group list-group-flush rounded-3">
+                <li *ngFor="let service of selectedReservation.services" class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 mb-1 rounded">
+                  <span>
+                    <i class="fas fa-tools text-primary me-2"></i> 
+                    {{ service.description }}
+                  </span>
+                  <span class="badge bg-dark rounded-pill">${{ service.price }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <ng-template #noServices>
+              <div class="p-3 bg-light rounded text-center text-muted fst-italic border border-light">
+                <small>No hay servicios contratados para esta reserva.</small>
+              </div>
+            </ng-template>
+          </div>
+
+        </div>
+      </div>
+      
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
     
     <div class="mb-5"></div>
   </div>

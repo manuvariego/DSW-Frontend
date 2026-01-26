@@ -10,11 +10,12 @@ import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
 import { forkJoin } from 'rxjs';
+import { RouterLink } from '@angular/router'; 
 
 @Component({
   selector: 'app-garages',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './garages.component.html',
   styleUrl: './garages.component.css'
 })
@@ -35,6 +36,7 @@ export class GaragesComponent {
   typeVehicles: Array<any> = [];
   ReservationsList: any[] = []
   
+  selectedReservation: any = null;
   
   reservationFilters = {
     vehicleLicensePlate: '',
@@ -140,6 +142,23 @@ loadReservationsOnProgress() {
   });
 }
 
+deleteReservation(reservationId: number) {
+    const confirmation = confirm('¿Está seguro de que desea cancelar esta reserva?');
+    if (!confirmation) {
+      return; // Si el usuario cancela, no hacemos nada
+    } 
+
+    this.___apiservice.cancelReservation(reservationId).subscribe({
+      next: (response) => {
+        console.log('Reserva cancelada exitosamente', response);
+        this.getReservation(); // Refresca la lista de reservas
+      },
+      error: (error) => {
+        console.error('Error al cancelar la reserva', error);
+      }
+    });
+  }
+
   modificarGarage(garage: any) {
 
     this.currentSection = 'editGarage';
@@ -215,6 +234,10 @@ loadReservationsOnProgress() {
     this.getReservation();
   }
 
+  viewReservationDetails(res: any) {
+  this.selectedReservation = res;
+  console.log(this.selectedReservation)
+}
 
   createGarage(form: NgForm) {
     if (form.invalid) {
