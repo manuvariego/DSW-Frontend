@@ -1,61 +1,61 @@
 <body>
 
-    <section class="hero">
-        <h1>¡Bienvenido a ParkEasy!</h1>
-        <p>Estacionamiento fácil y rápido en toda la ciudad.</p>
+  <section class="hero">
+    <h1>¡Bienvenido a ParkEasy!</h1>
+    <p>Estacionamiento fácil y rápido en toda la ciudad.</p>
 
-  <a
-    *ngIf="authService.isUser()"
-    class="hero-cta-btn"
-    routerLink="/reservation"
-  >
-    Reservar ahora
-  </a>
+    <a
+      *ngIf="authService.isUser()"
+      class="hero-cta-btn"
+      routerLink="/reservation"
+    >
+      Reservar ahora
+    </a>
 
-    </section>
+  </section>
 
-    <section class="contenido">
-        <h2>¿Qué es ParkEasy?</h2>
-        <p>Es una aplicacion que va a facilitarte el estacionar tu vehiculo con un solo click.</p>
-    </section>
+  <section class="contenido">
+      <h2>¿Qué es ParkEasy?</h2>
+      <p>Es una aplicacion que va a facilitarte el estacionar tu vehiculo con un solo click.</p>
+  </section>
 
 
-    <section class="info-seccion py-5">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-3">
-              <i class="bi bi-calculator display-4 mb-3"></i>
-              <h4>Cotización en 1'</h4>
-              <p>Calcula el costo de tu estadía al instante!</p>
-            </div>
-            <div class="col-md-3">
-              <i class="bi bi-car-front display-4 mb-3"></i>
-              <h4>Servicios</h4>
-              <p>Opciones de lavado y mantenimiento disponibles</p>
-            </div>
-            <div class="col-md-3">
-              <i class="bi bi-geo-alt display-4 mb-3"></i>
-              <h4>+ 200 cocheras</h4>
-              <p>Amplia red de estacionamientos techados y seguros</p>
-            </div>
-            <div class="col-md-3">
-              <i class="bi bi-airplane display-4 mb-3"></i>
-              <h4>Park to Fly</h4>
-              <p>Cocheras exclusivas a solo 10' del Aeropuerto</p>
-            </div>
-          </div>
+  <section class="info-seccion py-5">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-3">
+          <i class="bi bi-calculator display-4 mb-3"></i>
+          <h4>Cotización en 1'</h4>
+          <p>Calcula el costo de tu estadía al instante!</p>
         </div>
-      </section>
-      
-      <section class="ubicacion py-5">
-        <div class="container">
-          <h3 class="text-center mb-4">Encontrá tu cochera mas cercana</h3>
-          <p class="text-center">
-            ¡Tenemos todas estas opciones!
-          </p>
-          <div id="map" style="height: 400px; margin-top: 20px;"></div>
+        <div class="col-md-3">
+          <i class="bi bi-car-front display-4 mb-3"></i>
+          <h4>Servicios</h4>
+          <p>Opciones de lavado y mantenimiento disponibles</p>
         </div>
-      </section>
+        <div class="col-md-3">
+          <i class="bi bi-geo-alt display-4 mb-3"></i>
+          <h4>+ 200 cocheras</h4>
+          <p>Amplia red de estacionamientos techados y seguros</p>
+        </div>
+        <div class="col-md-3">
+          <i class="bi bi-airplane display-4 mb-3"></i>
+          <h4>Park to Fly</h4>
+          <p>Cocheras exclusivas a solo 10' del Aeropuerto</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+  <section class="ubicacion py-5">
+    <div class="container">
+      <h3 class="text-center mb-4">Encontrá tu cochera mas cercana</h3>
+      <p class="text-center">
+        ¡Tenemos todas estas opciones!
+      </p>
+      <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    </div>
+  </section>
   
 
  <section class="contacto">

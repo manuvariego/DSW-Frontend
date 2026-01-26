@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationTypesService {
   private _http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/reservationTypes';
+  private apiUrl = `${environment.apiUrl}/reservationTypes`;
 
   getReservationTypes(): Observable<any[]> {
     return this._http.get<any[]>(this.apiUrl);
@@ -30,6 +31,12 @@ export class ReservationTypesService {
     return this._http.put(`${this.apiUrl}/${reservationType.description}/${reservationType.garage}`, reservationType);
   }
 
+  getPricingStatus(cuit: string): Observable<any> {
+    return this._http.get<any>(`${this.apiUrl}/garage/${cuit}/status`);
+  }
 
+  getReservationTypesByGarage(cuit: string): Observable<any[]> {
+    return this._http.get<any[]>(`${this.apiUrl}/garage/${cuit}`);
+  }
 
 }

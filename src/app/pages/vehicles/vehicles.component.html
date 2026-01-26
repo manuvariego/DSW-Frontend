@@ -55,6 +55,12 @@
           </tr>
         </thead>
         <tbody>
+          <tr *ngIf="vehiclesList.length === 0">
+            <td colspan="3" class="text-center p-5">
+              <i class="fas fa-car fa-2x text-muted mb-3"></i>
+              <p class="text-muted">No tenés vehículos registrados.</p>
+            </td>
+          </tr>
           <tr *ngFor="let vehicle of vehiclesList; let i = index">
             <td class="fw-bold text-muted">{{vehicle.license_plate}}</td>
             <td><span class="tipo p-2">{{vehicle.type.name}}</span></td>
