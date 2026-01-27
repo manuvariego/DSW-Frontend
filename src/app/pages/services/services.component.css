@@ -1,127 +1,43 @@
+/* --- ANIMACIONES --- */
+.fade-in-anim { animation: fadeIn 0.4s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.container {
-  max-width: 1000px; 
-}
+/* --- TÍTULOS --- */
+h3.section-title { font-weight: 500; color: #212529; letter-spacing: -0.5px; }
+h4.section-subtitle { font-size: 1.1rem; color: #6c757d; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-h2, h4, h5 {
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: -0.5px; 
-}
+/* --- CONTENEDOR FORMULARIO --- */
+.card-box { background: white; border-radius: 12px; border: 1px solid #e9ecef; transition: all 0.3s ease; }
+.border-editing { border: 2px solid #ffc107 !important; background-color: #fffdf5; }
 
-.text-primary {
-  color: #000 !important; 
-}
+/* Icono circular del formulario */
+.icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.bg-dark-light { background-color: #f1f3f5; }
+.bg-warning-light { background-color: #fff3cd; }
+.text-warning-dark { color: #856404; }
 
-.card {
-  border-radius: 16px; 
-  transition: all 0.3s ease;
-  background-color: #fff;
-}
+/* --- INPUTS --- */
+.form-control, .input-group-text { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 10px; font-weight: 500; }
+.form-control:focus { background-color: #fff; border-color: #212529; box-shadow: none; }
 
-.card-header {
-  border-bottom: 1px solid #f0f0f0;
-  border-radius: 16px 16px 0 0 !important;
-  background-color: #fff;
-}
+/* --- BOTONES --- */
+.btn-dark-custom { background: #212529; color: white; border: none; padding: 10px; border-radius: 6px; transition: 0.2s; }
+.btn-dark-custom:hover { background: #000; transform: translateY(-1px); }
 
+.btn-warning { background-color: #ffc107; border: none; font-weight: 700; padding: 10px; border-radius: 6px; }
+.btn-warning:hover { background-color: #e0a800; }
 
-.form-control, .input-group-text {
-  border: 2px solid #f1f3f5; 
-  background-color: #f8f9fa; 
-  border-radius: 10px;
-  font-weight: 500;
-  color: #333;
-  transition: all 0.2s;
-}
+/* --- TABLA --- */
+.table-responsive { border-radius: 10px; overflow: hidden; }
+.table thead th { font-weight: 600; letter-spacing: 0.5px; border-bottom: 2px solid #f1f1f1; }
+.table-hover tbody tr:hover { background-color: #f8f9fa; }
 
+/* Botones de acción en tabla */
+.btn-light { background: white; transition: all 0.2s; color: #495057; }
+.btn-light:hover { background: #f1f3f5; transform: translateY(-1px); }
 
-.form-control:focus {
-  background-color: #fff;
-  border-color: #000; 
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05); 
-  color: #000;
-}
+/* Fila activa cuando se edita */
+.table-active { background-color: #fff3cd !important; --bs-table-accent-bg: #fff3cd !important; }
 
-.form-label {
-  font-size: 0.9rem;
-  color: #6c757d;
-  margin-bottom: 8px;
-}
-
-.btn-primary {
-  background-color: #000; 
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  padding: 12px;
-  transition: transform 0.2s, background-color 0.2s;
-}
-
-.btn-primary:hover {
-  background-color: #333; 
-  transform: translateY(-2px); 
-}
-
-.btn-primary:disabled {
-  background-color: #e9ecef;
-  color: #adb5bd;
-}
-
-.service-card {
-  border: 1px solid #f0f0f0; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
-}
-
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08); 
-  border-color: #000; 
-}
-
-.card-title {
-  font-size: 1.1rem;
-  margin-bottom: 0;
-}
-
-
-.text-success {
-  color: #000 !important;   
-  font-weight: 800 !important;
-  font-size: 1.5rem;
-}
-
-/* --- BOTÓN DE BORRAR (Danger) --- */
-.btn-outline-danger {
-  color: #dc3545;
-  border: 2px solid #f8d7da;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.btn-outline-danger:hover {
-  background-color: #dc3545;
-  color: #fff;
-  border-color: #dc3545;
-  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
-}
-
-
-.alert-info {
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 50px; 
-  padding: 10px 20px;
-  display: inline-block; 
-  margin-bottom: 30px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.spinner-border {
-  width: 3rem;
-  height: 3rem;
-  border-width: 0.25em;
-  color: #000 !important; 
-}
+/* Texto de precio */
+.text-success { color: #198754 !important; font-weight: 700; }

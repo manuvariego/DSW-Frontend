@@ -1,11 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { isArray } from 'node:util';
 import { GaragesService } from '../../services/garages.service.js';
 import { LocationsService } from '../../services/locations.service.js';
 import {ParkingSpaceService} from '../../services/parking-space.service.js';
-import { ParkingSpaceComponent } from '../parking-space/parking-space.component.js';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
@@ -59,9 +57,7 @@ export class GaragesComponent {
   ngOnInit() {
     this.loadLocations(); // Carga las localidades al iniciar
     this.loadTypeVehicles();
-
     this.loadReservationsOnProgress();
-
   }
 
   totalResevartionsOnProgress: number = 0;
@@ -72,7 +68,6 @@ export class GaragesComponent {
 
 loadReservationsOnProgress() {
   const cuit = this._authService.getCurrentUserId();
-
   if (!cuit) {
     console.error('No CUIT found for current user.');
     return;
@@ -80,14 +75,10 @@ loadReservationsOnProgress() {
 
   const now = new Date();
   const todayEnd = now.toLocaleString('sv-SE').replace(' ', 'T'); 
-
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
   const todayStart = startOfDay.toLocaleString('sv-SE').replace(' ', 'T');
-
   console.log('Fetching dashboard data...', { todayStart, todayEnd });
-
-
 
   const reservationsRequest$ = this.___apiservice.getReservationsOfGarage(cuit, false, { 
     status: 'pendiente' 
@@ -99,14 +90,11 @@ loadReservationsOnProgress() {
 
   const spacesRequest$ = this.__apiservice.getParkingSpaceOfGarage(cuit);
 
-
   const revenueRequest$ = this.___apiservice.getReservationsOfGarage(cuit, true, { 
     status: 'finalizada', 
     checkInDate: todayStart, 
     checkOutDate: todayEnd 
   });
-
-
 
   forkJoin({
     reservations: reservationsRequest$,
@@ -118,22 +106,16 @@ loadReservationsOnProgress() {
 
       console.log('All dashboard data received:', results);
 
-
       this.totalResevartionsOnProgress = results.reservations ? results.reservations.length : 0;
-
 
       if (Array.isArray(results.spaces)) {
         this.totalParkingSpaces = results.spaces.length;
       } else {
         this.totalParkingSpaces = 0; 
       }
-
       this.totalMoneyEarned = (results.revenue as any).totalRevenue || 0;
-
       this.totalReservationsAlltime = results.reservations2 ? results.reservations2.length : 0;
-
       this.totalParkingSpacesAvailable = Math.max(0, this.totalParkingSpaces - this.totalResevartionsOnProgress);
-
       console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
     },
     error: (err) => {
@@ -159,18 +141,9 @@ deleteReservation(reservationId: number) {
     });
   }
 
-  modificarGarage(garage: any) {
-
-    this.currentSection = 'editGarage';
-    this.editingGarage = { ...garage };
-
-  }
-
     modificarParkingSpace(parkingSpace: any) {
-
     this.currentSection = 'editParkingSpace';
     this.editingParkingSpace = { ...parkingSpace };
-
   }
 
    updateParkingSpace(form: NgForm) {
@@ -218,13 +191,9 @@ deleteReservation(reservationId: number) {
 
       if (Array.isArray(data)) {
         this.ReservationsList = data;
-
       } else {
-
         this.ReservationsList = [data]
       }
-
-
       console.log(data)
     })
   }
@@ -238,61 +207,11 @@ deleteReservation(reservationId: number) {
   this.selectedReservation = res;
   console.log(this.selectedReservation)
 }
-
-  createGarage(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return;
-    }
-
-    this._apiservice.createGarage(this.garageData).subscribe({
-      next: (response) => {
-        console.log('Garage creado exitosamente:', response);
-        this.garageCreado = true;
-        this.showSection('initial');
-        form.resetForm();
-
-        // Oculta el mensaje después de 3 segundos
-        setTimeout(() => {
-          this.garageCreado = false;
-        }, 3000);
-      },
-      error: (error) => {
-        console.error('Error al crear usuario:', error);
-      }
-    });
-  }
-
-  getGarage(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return; // Detiene el envío si el formulario no es válido
-    }
-    this._apiservice.getGarage(this.garageCuit).subscribe(
-      (garage: any) => {
-        this.currentSection = "geTaGarageTable"
-        console.log(garage)
-        this.aGarage = garage
-        this.garageCuit = ''
-      },
-      (error) => {
-        console.error('Error al obtener un Garage', error);
-        alert('El garage no existe o ocurrió un error al obtener la información.');
-      }
-    );
-  }
-
+ 
     ParkingSpaceData = {
     garage: 0,
     number: '',
     TypeVehicle: '',
-
   }
 
   parkingCreado = false;
@@ -332,23 +251,17 @@ deleteReservation(reservationId: number) {
 
   getParkingsSpaces() {
     const cuit = this._authService.getCurrentUserId();
-
     console.log(cuit);
 
     if (!cuit) return;
     this.garageCuit = cuit;
-
     this.__apiservice.getParkingSpaceOfGarage(cuit).subscribe((data: any[]) => {
 
       if (Array.isArray(data)) {
         this.garageList = data
-
       } else {
-
         this.garageList = [data]
       }
-
-
       console.log(data)
     })
   }
@@ -368,8 +281,6 @@ deleteReservation(reservationId: number) {
 
         this.garageList = [data]
       }
-
-
       console.log(data)
     })
   }
@@ -393,68 +304,15 @@ deleteReservation(reservationId: number) {
     if (tipo) { this.currentSection = 'initial'; }
   }
 
-  deleteGarage(garageCuit: string, tipo: boolean) {
-    const confirmation = confirm('¿Está seguro de que desea eliminar esta cochera?');
-    if (!confirmation) {
-      return; // Si el usuario cancela, no hacemos nada
-    }
-
-    this._apiservice.deleteGarage(garageCuit).subscribe({
-      next: (response) => {
-        console.log('Cochera eliminada exitosamente', response);
-        this.getGarages(); // Refresca la lista de cocheras
-      },
-      error: (error) => {
-        console.error('Error al eliminar la cochera', error);
-      }
-    });
-
-    if (tipo) { this.currentSection = 'initial' }
-  }
-
-
-
-  updateGarage(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return;
-    }
-
-    const confirmation = confirm('¿Está seguro de que desea modificar esta cochera?');
-    if (!confirmation) {
-      return; // Si el usuario cancela, no hacemos nada
-    }
-
-    this._apiservice.updateGarage(this.editingGarage).subscribe({
-      next: (response) => {
-        console.log('Cochera actualizada exitosamente', response);
-        this.editingGarage = null; // Limpia la variable de edición
-        this.getGarages(); // Refresca la lista de garages
-        this.showSection('initial');
-        form.resetForm();
-      },
-      error: (error) => {
-        console.error('Error al actualizar la cochera', error);
-      }
-    });
-  }
-
-
   // Método para actualizar la sección actual mostrada
   showSection(section: string) {
     this.currentSection = section;
 
     if (section == 'getGarage') {
-
       this.getGarages()
-
     }
 
     if (section == 'getParkingSpaces') { 
-
       this.getParkingsSpaces() 
     }           
 
@@ -462,12 +320,9 @@ deleteReservation(reservationId: number) {
       // Call getReservation with current filters when navigating to this section
       this.getReservation();
     }  
-
   }
 
   locations: Array<any> = []; // Array para almacenar las localidades
-
-
 
   loadLocations() {
     this._locationService.getLocations().subscribe(data => {
@@ -480,6 +335,4 @@ deleteReservation(reservationId: number) {
       this.typeVehicles = data;
     });
   }
-
-
 }

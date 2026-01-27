@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router'
 
 @Component({
   selector: 'app-service',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
@@ -14,7 +15,8 @@ export class ServiceComponent implements OnInit {
 
   myServices: any[] = [];
   garageCuit: any = '';
-
+  isEditing: boolean = false; 
+  editingId: number | null = null; 
 
   newService = {
     description: '',
@@ -47,6 +49,52 @@ export class ServiceComponent implements OnInit {
       error: (err) => {
         console.error('Error cargando cochera', err);
         this.message = 'Error al cargar los datos.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  editService(service: any) {
+    this.isEditing = true;
+    this.editingId = service.id;
+    this.newService = { 
+      description: service.description, 
+      price: service.price 
+    };
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editingId = null;
+    this.newService = { description: '', price: null };
+  }
+
+  updateService() {
+    if (!this.editingId) return;
+    const serviceToUpdate = {
+      id: this.editingId,
+      description: this.newService.description,
+      price: Number(this.newService.price) || 0,
+      garageId: this.garageCuit 
+    };
+
+    this.isLoading = true; 
+
+    this.serviceService.updateService(serviceToUpdate).subscribe({
+      next: (response) => {
+        console.log('Servicio actualizado:', response);
+        this.message = '¡Servicio actualizado correctamente!';
+   
+        this.loadData(); 
+        this.cancelEdit();
+        this.isLoading = false;
+        setTimeout(() => this.message = '', 3000);
+      },
+      error: (error) => {
+        console.error('Error al actualizar:', error);
+        this.message = 'Error al actualizar el servicio. Intenta nuevamente.';
         this.isLoading = false;
       }
     });

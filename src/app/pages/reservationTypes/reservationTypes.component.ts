@@ -50,6 +50,7 @@ export class ReservationTypesComponent {
     if (this._authService.isGarage()) {
       this.garageCuit = this._authService.getCurrentUserId() || '';
       this.loadPricingStatus();
+      this.getReservationTypes();
     }
   }
 
@@ -123,8 +124,7 @@ export class ReservationTypesComponent {
       next: (response) => {
         console.log('Precio actualizado exitosamente', response);
         this.editingReservationType = null;
-        this.getReservationTypes();
-        this.showSection('getReservationTypes');
+        this.showSection('initReservationType');
       },
       error: (error) => {
         console.error('Error al actualizar el precio', error);
@@ -201,12 +201,10 @@ export class ReservationTypesComponent {
   showSection(section: string) {
     this.currentSection = section;
 
-    if(section == 'getReservationTypes'){
-
+    if(section == 'initReservationType'){
+      this.loadPricingStatus();
       this.getReservationTypes()
-
     }
-
   }
 
   guardarTodosLosPrecios(form: NgForm) {

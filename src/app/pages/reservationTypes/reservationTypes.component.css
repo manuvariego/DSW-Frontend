@@ -1,57 +1,142 @@
-/* ESTILOS GENERALES Y ANIMACIONES */
-.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in-anim {
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 h2.section-title, h3.section-title {
-    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.8rem;
+  font-weight: 700;
+  color: #343a40;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 3 rem; 
+  margin-bottom: 0 !important;
 }
 
-/* MENÚ INICIAL */
-.menu-card {
-    border: none; border-radius: 15px; background: #ffffff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer; overflow: hidden; border-bottom: 4px solid transparent;
+.card-box {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border: 1px solid #f0f0f0;
+  padding: 1.5rem;
 }
-.menu-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); border-bottom: 4px solid #343a40; }
-.icon-container { color: #495057; transition: color 0.3s ease; }
-.menu-card:hover .icon-container { color: #b08d57; }
 
-/* FORMULARIOS Y CAJAS */
-.card-box { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
-.modern-input {
-    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
+.input-group-text {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  font-weight: bold;
 }
-.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
-.form-label { font-weight: 600; color: #555; margin-bottom: 8px; }
-.invalid-feedback { font-size: 0.8rem; margin-top: 5px; }
 
-/* TABLAS */
-.table-responsive { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0 8px 8px 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: #ffffff;
+  border-color: #343a40;
+  box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1);
+  z-index: 2;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+/* --- TABLAS --- */
+.table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: none; 
+  margin-top: 10px  ; 
+}
+
 .thead-dark-custom th {
-    background: linear-gradient(135deg, #343a40, #212529); color: white; padding: 15px; font-weight: 500;
-    text-transform: uppercase; font-size: 0.9rem; border: none;
+  background: linear-gradient(135deg, #343a40, #212529);
+  color: white;
+  padding: 12px 15px; 
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border: none;
 }
-.table td { vertical-align: middle; padding: 15px; color: #495057; }
 
-/* BOTONES */
+.table td {
+  vertical-align: middle;
+  padding: 12px 15px;
+  color: #495057;
+}
+
+/* --- BOTONES --- */
 .btn-dark-custom {
-    background: #343a40; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;
+  background: #343a40;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
-.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-/* Íconos de acción (Lápiz y Tacho) */
-.btn-icon-action {
-    width: 38px !important; height: 38px !important; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: none; transition: all 0.2s ease-in-out; background-color: transparent; cursor: pointer;
+.btn-dark-custom:hover {
+  background: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-.btn-icon-action i { font-size: 1.1rem; pointer-events: none; }
 
-/* Editar */
-.btn-edit-icon { color: #f0ad4e !important; background-color: rgba(240, 173, 78, 0.15) !important; }
-.btn-edit-icon:hover { background-color: #f0ad4e !important; color: white !important; transform: scale(1.1); }
+.btn-dark-custom:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
-/* Eliminar */
-.btn-delete-icon { color: #dc3545 !important; background-color: rgba(220, 53, 69, 0.15) !important; }
-.btn-delete-icon:hover { background-color: #dc3545 !important; color: white !important; transform: scale(1.1); }
+/* Botón Editar dentro de la tabla */
+.btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+  font-weight: 500;
+}
 
-.gap-3 { gap: 1rem !important; }
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* --- ALERTAS --- */
+.alert-info {
+  background-color: #e2e3e5;
+  color: #383d41;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: none;
+    border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .card-box {
+    padding: 1rem;
+  }
+  h3.section-title {
+    font-size: 1.3rem;
+  }
+}

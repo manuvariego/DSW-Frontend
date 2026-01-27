@@ -19,14 +19,9 @@ export class ServiceService {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  // getGarageWithServices(cuit: number): Observable<any> {
-  //   return this.http.get<any>(`${this.apiUrl}/garages/${cuit}`);
-  // }
-
   createService(serviceData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}`, serviceData);
   }
-
 
   deleteService(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
@@ -39,5 +34,9 @@ export class ServiceService {
   updateGarageServices(cuit: number, servicesIds: number[]): Observable<any> {
     return this.http.put(`${this.testapiUrl}/garages/${cuit}`, { services: servicesIds });
   }
+
+  updateService(service: { id: any; description: string; price: number; garageId: string }) {
+  return this.http.put(`/api/services/${service.id}`, service);
+}
 
 }

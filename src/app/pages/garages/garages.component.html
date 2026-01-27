@@ -107,10 +107,7 @@
          </button>
   </div>
 </div>
-
-
-        
-        <div class="col-md-4 mb-4">
+      <div class="col-md-4 mb-4">
           <div class="card menu-card h-100 text-center p-4" (click)="showSection('getReservations')">
             <div class="icon-container mb-3">
               <i class="fas fa-registered fa-3x"></i>
@@ -120,14 +117,10 @@
             <button class="btn btn-dark-custom mt-2">Ver Listado</button>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
-
 }
-
 
 @if (currentSection == 'getReservations') {
   <div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
@@ -326,7 +319,6 @@
 
           <div class="col-12">
             <label class="text-muted small fw-bold text-uppercase mb-2">Servicios Adicionales</label>
-            
             <div *ngIf="selectedReservation.services && selectedReservation.services.length > 0; else noServices">
               <ul class="list-group list-group-flush rounded-3">
                 <li *ngFor="let service of selectedReservation.services" class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 mb-1 rounded">
@@ -360,120 +352,12 @@
   </div>
 }
 
+@if (currentSection == 'getParkingSpaces') {
 
-@if (currentSection == 'geTaGarage') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 500px;">
-      <h3 class="text-center mb-4 section-title">Buscar Cochera</h3>
-      
-      <form (ngSubmit)="getGarage(garageForm)" #garageForm="ngForm" class="needs-validation" novalidate>
-        <div class="form-group mb-4">
-          <label for="CUIT" class="form-label">CUIT</label>
-          <input type="text" class="form-control modern-input" id="CUIT" name="CUIT" [(ngModel)]="garageCuit" required placeholder="Ingrese CUIT"
-            #cuitField="ngModel" [class.is-invalid]="cuitField.invalid && (cuitField.dirty || cuitField.touched)" />
-          <div class="invalid-feedback">Debe ingresar un CUIT.</div>
-        </div>
-        
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-dark-custom">Encontrar <i class="fas fa-search"></i></button>
-          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Volver</button>
-        </div>
-      </form>
-    </div>
-  </div>
-}
-
-@if (currentSection == 'geTaGarageTable') {
-  <div class="container mt-4 fade-in-anim">
-    <div class="table-responsive shadow-lg rounded bg-white">
-      <table class="table table-hover mb-0">
-        <thead class="thead-dark-custom">
-          <tr>
-            <th scope="col">CUIT</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Dirección</th>
-            <th scope="col">Email</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Locación</th>
-            <th scope="col" class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="font-weight-bold">{{aGarage.cuit}}</td>
-            <td>{{aGarage.name}}</td>
-            <td>{{aGarage.address}}</td>
-            <td>{{aGarage.email}}</td>
-            <td>{{aGarage.phoneNumber}}</td>
-            <td><span class="localidad p-2">{{aGarage.location}}</span></td>
-            <td>
-              <div class="d-flex justify-content-center gap-3">
-                <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarGarage(aGarage)" title="Editar">
-                   <i class="fas fa-pen"></i>
-                </button>
-                <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteGarage(aGarage.cuit, true)" title="Eliminar">
-                   <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mt-4 text-center">
-      <button type="button" class="btn btn-secondary px-5" (click)="showSection('initial')">Volver al Menú</button>
-    </div>
-  </div>
-}
-
-<div *ngIf="currentSection == 'getGarage'" class="container-fluid mt-4 px-4 fade-in-anim">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="section-title">Listado de Sucursales</h3>
-    <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
-      <i class="fas fa-arrow-left"></i> Volver
-    </button>
-  </div>
-
-  <div class="table-responsive shadow-lg rounded bg-white">
-    <table class="table table-hover mb-0 align-middle">
-      <thead class="thead-dark-custom">
-        <tr>
-          <th scope="col">Nombre</th>
-          <th scope="col">Dirección</th>
-          <th scope="col">Email</th>
-          <th scope="col">Teléfono</th>
-          <th scope="col">Locación</th>
-          <th scope="col" class="text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let garage of garageList; let i = index">
-          <td>{{ garage.name }}</td>
-          <td>{{ garage.address }}</td>
-          <td>{{ garage.email }}</td>
-          <td>{{ garage.phoneNumber }}</td>
-          <td><span class="badge-type-custom">{{garage.location}}</span></td>
-          <td>
-            <div class="d-flex justify-content-center gap-3">
-               <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarGarage(garage)" title="Editar">
-                   <i class="fas fa-edit"></i>
-               </button>
-               <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteGarage(garage.cuit, false)" title="Eliminar">
-                   <i class="fas fa-trash"></i>
-               </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div *ngIf="currentSection == 'getParkingSpaces'" class="container-fluid mt-4 px-4 fade-in-anim">
+<div class="container-fluid mt-4 px-4 fade-in-anim">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="section-title">Listado de Parking Spaces</h3>
-    <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
+    <button type="button" class="btn btn-outline-dark" (click)="showSection('gestion')">
       <i class="fas fa-arrow-left"></i> Volver
     </button>
   </div>
@@ -516,104 +400,7 @@
     </button>
   </div>
 </div>
-
-<div *ngIf="currentSection == 'createGarage'" class="container mt-5 fade-in-anim">
-  <div class="card-box p-5 mx-auto" style="max-width: 800px;">
-    <h3 class="text-center mb-4 section-title">Registrar Nueva Cochera</h3>
-
-    <form (ngSubmit)="createGarage(garageForm)" #garageForm="ngForm" class="needs-validation" novalidate>
-      
-      <div class="row">
-        <div class="col-md-6 form-group mb-3">
-          <label for="cuit" class="form-label">CUIT</label>
-          <input id="cuit" name="cuit" type="text" class="form-control modern-input" [(ngModel)]="garageData.cuit" #cuit="ngModel" required [class.is-invalid]="cuit.invalid && (cuit.dirty || cuit.touched)" />
-          <div *ngIf="cuit.errors?.['required'] && (cuit.dirty || cuit.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-
-        <div class="col-md-6 form-group mb-3">
-          <label for="name" class="form-label">Nombre</label>
-          <input id="name" name="name" type="text" class="form-control modern-input" [(ngModel)]="garageData.name" #name="ngModel" required [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
-          <div *ngIf="name.errors?.['required'] && (name.dirty || name.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 form-group mb-3">
-           <label for="address" class="form-label">Dirección</label>
-           <input id="address" name="address" type="text" class="form-control modern-input" [(ngModel)]="garageData.address" #address="ngModel" required [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
-           <div *ngIf="address.errors?.['required'] && (address.dirty || address.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-        
-        <div class="col-md-6 form-group mb-3">
-           <label for="phoneNumber" class="form-label">Teléfono</label>
-           <input id="phoneNumber" name="phoneNumber" type="text" class="form-control modern-input" [(ngModel)]="garageData.phoneNumber" #phoneNumber="ngModel" required [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
-           <div *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">Requerido.</div>
-        </div>
-      </div>
-
-      <div class="row">
-          <div class="col-md-6 form-group mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input id="email" name="email" type="text" class="form-control modern-input" [(ngModel)]="garageData.email" #email="ngModel" required [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
-            <div *ngIf="email.errors?.['required'] && (email.dirty || email.touched)" class="invalid-feedback">Requerido.</div>
-          </div>
-
-          <div class="col-md-6 form-group mb-3">
-             <label for="location" class="form-label">Localidad</label>
-             <select class="form-select modern-input" id="location" name="location" [(ngModel)]="garageData.location" #location="ngModel" required [class.is-invalid]="location.invalid && (location.dirty || location.touched)">
-               <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
-             </select>
-             <div *ngIf="location.errors?.['required'] && (location.dirty || location.touched)" class="invalid-feedback">Seleccione localidad.</div>
-          </div>
-      </div>
-      
-      <div class="form-group mb-4">
-          <label for="password" class="form-label">Contraseña</label>
-          <input id="password" name="password" type="password" class="form-control modern-input" [(ngModel)]="garageData.password" #password="ngModel" required [class.is-invalid]="password.invalid && (password.dirty || password.touched)" />
-          <div *ngIf="password.errors?.['required'] && (password.dirty || password.touched)" class="invalid-feedback">Requerido.</div>
-      </div>
-
-      <div class="d-grid gap-2 mt-4">
-        <button type="submit" class="btn btn-dark-custom btn-lg">Registrar Cochera</button>
-        <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div *ngIf="currentSection == 'editGarage'" class="container mt-5 fade-in-anim">
-  <div class="card-box p-5 mx-auto" style="max-width: 600px;">
-    <h3 class="text-center mb-4 section-title">Modificar Cochera</h3>
-
-    <form (ngSubmit)="updateGarage(garageForm)" #garageForm="ngForm" class="needs-validation" novalidate>
-      
-      <div class="form-group mb-3">
-        <label for="name" class="form-label">Nombre</label>
-        <input id="name" name="name" type="text" class="form-control modern-input" [(ngModel)]="editingGarage.name" required #name="ngModel" [class.is-invalid]="name.invalid && (name.dirty || name.touched)" />
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="address" class="form-label">Dirección</label>
-        <input type="text" class="form-control modern-input" id="address" name="address" [(ngModel)]="editingGarage.address" required #address="ngModel" [class.is-invalid]="address.invalid && (address.dirty || address.touched)" />
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control modern-input" id="email" name="email" [(ngModel)]="editingGarage.email" required #email="ngModel" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" />
-      </div>
-
-      <div class="form-group mb-4">
-        <label for="phoneNumber" class="form-label">Teléfono</label>
-        <input type="text" class="form-control modern-input" id="phoneNumber" name="phoneNumber" [(ngModel)]="editingGarage.phoneNumber" required #phoneNumber="ngModel" [class.is-invalid]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" />
-      </div>
-
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
-        <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>
+}
 
 @if(currentSection == 'editParkingSpace') {
   <div class="container mt-5 fade-in-anim">
