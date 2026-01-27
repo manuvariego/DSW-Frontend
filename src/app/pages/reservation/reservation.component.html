@@ -422,7 +422,7 @@
           </h5>
           <a class="text-primary text-decoration-underline" style="cursor: pointer;" (click)="confirmOpenMaps()">
             <i class="fas fa-map-marker-alt me-1"></i>
-            {{ selectedGarage?.address }}, {{ selectedGarage?.location }}
+            {{ selectedGarage?.address }}, {{ selectedGarage?.location.name }}, {{selectedGarage?.location.province }}
           </a>
         </div>
         <div class="text-end">
@@ -470,7 +470,7 @@
             <span class="fw-bold">{{ theReservation.vehicle?.license_plate }}</span>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <span class="text-muted small">Reserva</span>
+            <span class="text-muted small">Hora de Reservación</span>
             <span class="text-muted small">{{ theReservation.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</span>
           </div>
         </div>

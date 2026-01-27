@@ -56,7 +56,7 @@ export class ReservationComponent implements OnInit {
   Garages: any[] = []
   theReservation: any = null
   availableServices: any[] = [];     // Los servicios que BRINDA la cochera 
-  selectedServicesIds: number[] = []; // Los servicios que ELIGE el cliente 
+  selectedServicesIds: any[] = []; // Los servicios que ELIGE el cliente 
   totalExtra: number = 0; // Para sumar $$ al precio final
   totalEstadia: number = 0;
   totalFinal: number = 0;
@@ -199,6 +199,7 @@ ngOnInit() {
     
     if (isChecked) {
       this.selectedServicesIds.push(service.id);
+      console.log(this.selectedServicesIds)
       this.totalExtra += Number(service.price); 
     } else {
       this.selectedServicesIds = this.selectedServicesIds.filter(id => id !== service.id);
@@ -220,7 +221,8 @@ ngOnInit() {
   createReservation() {
     const finalData = {
       ...this.reservationData, 
-      services: this.selectedServicesIds
+      services: this.selectedServicesIds,
+      totalPrice: this.totalFinal
     };
 
     console.log("Enviando reserva con servicios:", finalData);
