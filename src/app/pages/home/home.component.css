@@ -174,3 +174,42 @@ h1 {
   transform: translateY(-3px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
+
+/* Animación de entrada */
+.fade-in-anim { animation: fadeIn 0.6s ease-out; }
+
+/* Estilo de las tarjetas de acción */
+.card-action {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  border-radius: 15px !important;
+  background: white;
+}
+
+.card-action:hover {
+  transform: translateY(-8px); /* Se levanta un poco */
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Íconos circulares */
+.icon-dashboard {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Centrado */
+  transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse sobre la tarjeta, el ícono cambia */
+.card-action:hover .icon-dashboard {
+  transform: scale(1.1);
+}
+
+/* Títulos */
+h2 {
+  color: #343a40;
+  letter-spacing: -0.5px;
+}

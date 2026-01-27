@@ -1,0 +1,47 @@
+/* Heredar animaciones y estilos base que ya tenés */
+.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+h3.section-title { font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.card-box {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+}
+
+/* Avatar Circular */
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Inputs */
+.form-control {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 12px;
+  border-radius: 8px;
+}
+.form-control:focus {
+  background-color: #fff;
+  border-color: #212529;
+  box-shadow: none;
+}
+
+/* Botón */
+.btn-dark-custom {
+  background: #212529;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-dark-custom:hover {
+  background: #000;
+  transform: translateY(-2px);
+}

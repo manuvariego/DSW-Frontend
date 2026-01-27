@@ -3,20 +3,72 @@
   <section class="hero">
     <h1>¡Bienvenido a ParkEasy!</h1>
     <p>Estacionamiento fácil y rápido en toda la ciudad.</p>
-
-    <a
-      *ngIf="authService.isUser()"
-      class="hero-cta-btn"
-      routerLink="/reservation"
-    >
-      Reservar ahora
-    </a>
-
   </section>
+
+  <section *ngIf="authService.isUser()" class="user-dashboard py-5 bg-light fade-in-anim">
+  <div class="container">
+    
+    <div class="text-center mb-5">
+      <p class="text-muted">Gestioná tu cuenta de forma rápida.</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+      
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/reservation">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-dark text-white mb-3">
+              <i class="fas fa-search-location fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Reservar</h5>
+            <p class="small text-muted mb-0">Buscar cochera disponible</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/vehicles">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-light text-dark border mb-3">
+              <i class="fas fa-car fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Mis Vehículos</h5>
+            <p class="small text-muted mb-0">Agregar o eliminar autos</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/my-reservations">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-light text-dark border mb-3">
+              <i class="fas fa-ticket-alt fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Mis Reservas</h5>
+            <p class="small text-muted mb-0">Historial y reservas activas</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/profile">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-light text-dark border mb-3">
+              <i class="fas fa-user-cog fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Mi Cuenta</h5>
+            <p class="small text-muted mb-0">Datos personales</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
   <section class="contenido">
       <h2>¿Qué es ParkEasy?</h2>
-      <p>Es una aplicacion que va a facilitarte el estacionar tu vehiculo con un solo click.</p>
+      <p>Es una aplicacion que va a facilitarte estacionar tu vehiculo con un solo click.</p>
   </section>
 
 

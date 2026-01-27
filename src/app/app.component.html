@@ -60,6 +60,12 @@
           <ng-container *ngIf="authService.isUser()">
 
             <li class="nav-item">
+              <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
+                Mi Cuenta
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" routerLink="vehicles" data-bs-dismiss="offcanvas">
                 Mis Vehículos
               </a>

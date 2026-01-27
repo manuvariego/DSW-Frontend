@@ -1,0 +1,71 @@
+<div class="container mt-5 fade-in-anim">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="section-title mb-0">Mi Cuenta</h3>
+    <button class="btn btn-outline-dark" routerLink="/menu">
+      <i class="fas fa-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <div *ngIf="message" class="alert text-center shadow-sm mb-4" 
+       [ngClass]="isSuccess ? 'alert-success' : 'alert-danger'">
+    <i class="fas" [ngClass]="isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'"></i> 
+    {{ message }}
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      
+      <div class="card-box p-5 shadow-lg">
+        
+        <div class="text-center mb-4">
+          <div class="avatar-circle mb-3 bg-dark text-white mx-auto d-flex align-items-center justify-content-center">
+            <span class="fs-1 fw-bold">{{ user.name?.charAt(0) | uppercase }}</span>
+          </div>
+          <h5 class="fw-bold">{{ user.name }} {{ user.lastname }}</h5>
+          <span class="badge bg-light text-dark border">Usuario Registrado</span>
+        </div>
+
+        <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
+          
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">NOMBRE</label>
+              <input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">APELLIDO</label>
+              <input type="text" class="form-control" name="lastname" [(ngModel)]="user.lastname" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">EMAIL</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="user.email" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">TELÉFONO</label>
+              <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="user.phoneNumber">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold small text-muted">DNI</label>
+            <input type="text" class="form-control bg-light" name="dni" [(ngModel)]="user.dni" readonly>
+            <div class="form-text"><i class="fas fa-lock me-1"></i> El DNI no se puede modificar.</div>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-dark-custom btn-lg" [disabled]="isLoading || profileForm.invalid">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
