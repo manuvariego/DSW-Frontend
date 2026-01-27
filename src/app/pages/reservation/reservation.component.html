@@ -157,7 +157,7 @@
             <td>{{ garage.address }}</td>
             <td>{{ garage.email }}</td>
             <td>{{ garage.phoneNumber }}</td>
-            <td><span class="badge-type-custom">{{ garage.location .name}}</span></td>
+            <td>{{ garage.location?.name }}</td>
             <td class="fw-bold text-success">${{ garage.precioEstimado }}</td>
             <td class="text-center">
               <button type="button" class="btn btn-dark-custom btn-sm" (click)="saveGarage(garage)">
@@ -332,7 +332,7 @@
               <p class="text-muted">No tenés reservas próximas.</p>
             </td>
           </tr>
-          <tr *ngFor="let reserva of reservasProximas">
+          <tr *ngFor="let reserva of reservasProximas" (click)="viewReservationDetails(reserva)" style="cursor: pointer;">
             <td class="text-primary fw-bold">{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td class="text-primary fw-bold">{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ reserva.garage?.name || reserva.garage }}</td>
@@ -340,7 +340,8 @@
             <td><span class="badge bg-success">{{ reserva.estado | uppercase }}</span></td>
             <td class="fw-bold">${{ reserva.amount}}</td>
             <td class="text-center">
-              <button type="button" class="btn btn-outline-danger btn-sm" (click)="cancelReservation(reserva)">
+              <button type="button" class="btn btn-outline-danger btn-sm"
+                (click)="$event.stopPropagation(); cancelReservation(reserva)">
                 <i class="fas fa-times"></i> Cancelar
               </button>
             </td>
@@ -369,13 +370,14 @@
               <p class="text-muted">No tenés historial de reservas.</p>
             </td>
           </tr>
-          <tr *ngFor="let reserva of reservasHistorial">
+          <tr *ngFor="let reserva of reservasHistorial" (click)="viewReservationDetails(reserva)" style="cursor: pointer;">
             <td>{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ reserva.garage?.name || reserva.garage }}</td>
             <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
             <td>
               <span class="badge" [ngClass]="{
+                'bg-success': reserva.estado === 'activa',
                 'bg-secondary': reserva.estado === 'completada',
                 'bg-danger': reserva.estado === 'cancelada'
               }">{{ reserva.estado | uppercase }}</span>
@@ -484,6 +486,106 @@
       </button>
       <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">
         <i class="fas fa-home me-2"></i> Volver al inicio
+      </button>
+    </div>
+
+  </div>
+</div>
+}
+
+
+@if (currentSection == 'reservationDetails') {
+<div class="container mt-4 fade-in-anim">
+  <div class="card-box p-4 mx-auto" style="max-width: 700px;">
+
+    <!-- Encabezado con animación -->
+    <div class="text-center mb-4">
+      <h3 class="section-title">Detalle de tu Reserva</h3>
+    </div>
+
+    <!-- Tarjeta principal con monto destacado -->
+    <div class="bg-dark text-white rounded p-4 mb-4 text-center">
+      <span class="d-block small text-light opacity-75">Total a pagar</span>
+      <span class="fs-1 fw-bold">${{ selectedReservation.amount }}</span>
+      <div class="mt-2">
+        <span class="badge px-3 py-2" [ngClass]="{
+          'bg-success': selectedReservation.estado === 'activa',
+          'bg-secondary': selectedReservation.estado === 'completada',
+          'bg-danger': selectedReservation.estado === 'cancelada'}">
+          {{ selectedReservation.estado | uppercase }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Info del Garage (destacada) -->
+    <div class="border rounded p-4 mb-4 bg-light">
+      <div class="d-flex align-items-start justify-content-between">
+        <div class="flex-grow-1">
+          <h5 class="mb-1">
+            <i class="fas fa-warehouse me-2 text-primary"></i>
+            {{ selectedReservation.garage?.name }}
+          </h5>
+          <a class="text-primary text-decoration-underline" style="cursor: pointer;" (click)="confirmOpenMaps()">
+            <i class="fas fa-map-marker-alt me-1"></i>
+            {{ selectedReservation.garage?.address }}, {{ selectedReservation.garage?.location?.name }}
+          </a>
+        </div>
+        <div class="text-end">
+          <span class="d-block text-muted small mb-1">Espacio asignado</span>
+          <span class="badge bg-primary fs-5 px-3 py-2">
+            #{{ selectedReservation.parkingSpace?.number }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles en 2 columnas -->
+    <div class="row g-4 mb-4">
+      <!-- Fechas -->
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+          <h6 class="text-muted mb-3">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Horarios
+          </h6>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Ingreso</span>
+            <span class="fw-bold text-success">
+              {{ selectedReservation.check_in_at | date: 'dd/MM/yy HH:mm' }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted small">Salida</span>
+            <span class="fw-bold text-danger">
+              {{ selectedReservation.check_out_at | date: 'dd/MM/yy HH:mm' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehículo -->
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100">
+          <h6 class="text-muted mb-3">
+            <i class="fas fa-car me-2"></i>
+            Tu Vehículo
+          </h6>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small">Patente</span>
+            <span class="fw-bold">{{ selectedReservation.vehicle?.license_plate }}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted small">Reserva</span>
+            <span class="text-muted small">{{ selectedReservation.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="showSection('misReservas')">
+        <i class="fas fa-home me-2"></i> Volver
       </button>
     </div>
 

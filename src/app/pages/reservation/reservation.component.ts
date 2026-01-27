@@ -61,13 +61,14 @@ export class ReservationComponent implements OnInit {
   totalEstadia: number = 0;
   totalFinal: number = 0;
   selectedGarageName: string = '';
-  currentSection: any = 'initial';
+  currentSection: any = 'menu';
   paymentMethod: string = ''; //  efectivo o mercado pago
   selectedGarage: any = null
   myReservations: any[] = []
   reservasProximas: any[] = []
   reservasHistorial: any[] = []
   activeTab: string = 'proximas'
+  selectedReservation: any = null
 
 
 ngOnInit() {
@@ -146,9 +147,17 @@ ngOnInit() {
       return r.estado === 'activa' && fechaIngreso >= ahora;
     });
     
+    this.reservasProximas.sort((a, b) => {
+      return new Date(a.check_in_at).getTime() - new Date(b.check_in_at).getTime();
+    });
+    
     this.reservasHistorial = this.myReservations.filter(r => {
       const fechaIngreso = new Date(r.check_in_at);
       return r.estado !== 'activa' || fechaIngreso < ahora;
+    });
+
+    this.reservasHistorial.sort((a, b) => {
+     return new Date(b.check_in_at).getTime() - new Date(a.check_in_at).getTime();
     });
   }
     
@@ -171,6 +180,11 @@ ngOnInit() {
     }
   }
 
+  viewReservationDetails(reservation: any) {
+    this.selectedReservation = reservation;
+    console.log("Mostrando detalles de la reserva:", reservation);
+    this.currentSection = 'reservationDetails';
+  }
 
 
   saveGarage(aGarage: any) {
@@ -186,9 +200,13 @@ ngOnInit() {
   }
 
   confirmOpenMaps() {
-    if (this.selectedGarage) {
+    // Determinar qué garage usar
+    const garage = this.selectedGarage || this.selectedReservation?.garage;
+    
+    if (garage) {
       if (confirm('¿Querés abrir esta ubicación en Google Maps?')) {
-        const address = encodeURIComponent(`${this.selectedGarage.address}, ${this.selectedGarage.location}`);
+        const locationName = garage.location?.name ? `${garage.location.name}, ${garage.location.province}` : garage.location;
+        const address = encodeURIComponent(`${garage.address}, ${locationName}`);
         window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
       }
     }
