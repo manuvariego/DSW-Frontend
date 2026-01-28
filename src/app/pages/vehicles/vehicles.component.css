@@ -106,21 +106,26 @@ h2.section-title, h3.section-title {
     color: #495057;
 }
 
+
 /* BOTONES */
 .btn-dark-custom {
     background: #343a40;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
 .btn-dark-custom:hover {
-    background: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: #495057;
+    /* más claro que el base */
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .btn-icon-action {

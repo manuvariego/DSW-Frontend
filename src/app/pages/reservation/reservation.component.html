@@ -341,11 +341,8 @@
             <td class="fw-bold">${{ reserva.amount}}</td>
             <td class="text-center">
               <button type="button" class="btn btn-outline-danger btn-sm"
-                (click)="$event.stopPropagation(); cancelReservation(reserva)">
-                <i class="fas fa-times"></i> Cancelar
-              </button>
-              <button type="button" class="btn btn-outline-dark btn-sm" (click)="descargarComprobante(reserva)" title="Descargar Comprobante">
-                <i class="fas fa-file-pdf"></i>
+                (click)="$event.stopPropagation(); cancelReservation(reserva)" title="Cancelar reserva">
+                <i class="fas fa-times-circle"></i>
               </button>
             </td>
           </tr>
@@ -354,7 +351,30 @@
     </div>
 
     <!-- seccion del Historial -->
-    <div *ngIf="activeTab === 'historial'" class="table-responsive shadow-lg rounded bg-white">
+    <div *ngIf="activeTab === 'historial'">
+      <!-- Filters -->
+      <div class="d-flex gap-3 mb-3 align-items-center flex-wrap">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm" [class.btn-dark]="statusFilter === 'all'"
+            [class.btn-outline-dark]="statusFilter !== 'all'" (click)="statusFilter = 'all'">Todas</button>
+          <button type="button" class="btn btn-sm" [class.btn-secondary]="statusFilter === 'completada'"
+            [class.btn-outline-secondary]="statusFilter !== 'completada'"
+            (click)="statusFilter = 'completada'">Completadas</button>
+          <button type="button" class="btn btn-sm" [class.btn-danger]="statusFilter === 'cancelada'"
+            [class.btn-outline-danger]="statusFilter !== 'cancelada'"
+            (click)="statusFilter = 'cancelada'">Canceladas</button>
+        </div>
+    
+        <select *ngIf="userVehicles.length > 1" class="form-select form-select-sm" [(ngModel)]="vehicleFilter"
+          style="width: auto;">
+          <option value="">Todos los vehículos</option>
+          <option *ngFor="let v of userVehicles" [value]="v.license_plate">
+            {{ v.license_plate }}
+          </option>
+        </select>
+      </div>
+    
+      <div class="table-responsive shadow-lg rounded bg-white">
       <table class="table table-hover mb-0 align-middle">
         <thead class="thead-dark-custom">
           <tr>
@@ -367,13 +387,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="reservasHistorial.length === 0">
+          <tr *ngIf="filteredHistory.length === 0">
             <td colspan="6" class="text-center p-5">
               <i class="fas fa-history fa-2x text-muted mb-3"></i>
               <p class="text-muted">No tenés historial de reservas.</p>
             </td>
           </tr>
-          <tr *ngFor="let reserva of reservasHistorial" (click)="viewReservationDetails(reserva)" style="cursor: pointer;">
+          <tr *ngFor="let reserva of filteredHistory" (click)="viewReservationDetails(reserva)" style="cursor: pointer;">
             <td>{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>{{ reserva.garage?.name || reserva.garage }}</td>
@@ -391,6 +411,7 @@
       </table>
     </div>
   </div>
+</div>
 }
 
 @if (currentSection == 'realizada') {
@@ -482,6 +503,43 @@
       </div>
     </div>
 
+    <!-- Servicios contratados -->
+    <div *ngIf="selectedServicesIds.length > 0" class="border rounded p-3 mb-4">
+      <h6 class="text-muted mb-3">
+        <i class="fas fa-concierge-bell me-2"></i>
+        Servicios Contratados
+      </h6>
+      <ul class="list-unstyled mb-0">
+        <ng-container *ngFor="let service of availableServices">
+          <li *ngIf="selectedServicesIds.includes(service.id)" class="d-flex justify-content-between mb-2">
+            <span>{{ service.description || service.name }}</span>
+            <span class="fw-bold text-success">${{ service.price }}</span>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+
+    <!-- Desglose de pago -->
+    <div class="border rounded p-3 mb-4">
+      <h6 class="text-muted mb-3">
+        <i class="fas fa-receipt me-2"></i>
+        Desglose de Pago
+      </h6>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Estadía</span>
+        <span>${{ totalEstadia }}</span>
+      </div>
+      <div *ngIf="totalExtra > 0" class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Servicios</span>
+        <span>+ ${{ totalExtra }}</span>
+      </div>
+      <hr class="my-2">
+      <div class="d-flex justify-content-between">
+        <span class="fw-bold">Total</span>
+        <span class="fw-bold fs-5">${{ totalFinal }}</span>
+      </div>
+    </div>
+
     <!-- Botones de acción -->
     <div class="d-grid gap-2">
       <button type="button" class="btn btn-dark-custom btn-lg" (click)="showSection('misReservas')">
@@ -532,6 +590,15 @@
             <i class="fas fa-map-marker-alt me-1"></i>
             {{ selectedReservation.garage?.address }}, {{ selectedReservation.garage?.location?.name }}
           </a>
+          <div class="mt-2 text-muted small">
+            <span *ngIf="selectedReservation.garage?.phoneNumber">
+              <i class="fas fa-phone me-1"></i> {{ selectedReservation.garage?.phoneNumber }}
+            </span>
+            <span *ngIf="selectedReservation.garage?.phoneNumber && selectedReservation.garage?.email" class="mx-2">|</span>
+            <span *ngIf="selectedReservation.garage?.email">
+              <i class="fas fa-envelope me-1"></i> {{ selectedReservation.garage?.email }}
+            </span>
+          </div>
         </div>
         <div class="text-end">
           <span class="d-block text-muted small mb-1">Espacio asignado</span>
@@ -585,13 +652,50 @@
       </div>
     </div>
 
-    <!-- Botones de acción -->
-    <div class="d-grid gap-2">
-      <button type="button" class="btn btn-outline-secondary" (click)="showSection('misReservas')">
-        <i class="fas fa-home me-2"></i> Volver
-      </button>
+    <!-- Servicios contratados -->
+    <div *ngIf="selectedReservation.services?.length > 0" class="border rounded p-3 mb-4">
+      <h6 class="text-muted mb-3">
+        <i class="fas fa-concierge-bell me-2"></i>
+        Servicios Contratados
+      </h6>
+      <ul class="list-unstyled mb-0">
+        <li *ngFor="let service of selectedReservation.services" class="d-flex justify-content-between mb-2">
+          <span>{{ service.description || service.name }}</span>
+          <span class="fw-bold text-success">${{ service.price }}</span>
+        </li>
+      </ul>
     </div>
 
+    <!-- Desglose de pago -->
+    <div class="border rounded p-3 mb-4">
+      <h6 class="text-muted mb-3">
+        <i class="fas fa-receipt me-2"></i>
+        Desglose de Pago
+      </h6>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Estadía</span>
+        <span>${{ selectedReservation.amount - getServicesTotal(selectedReservation.services) }}</span>
+      </div>
+      <div *ngIf="selectedReservation.services?.length > 0" class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Servicios</span>
+        <span>+ ${{ getServicesTotal(selectedReservation.services) }}</span>
+      </div>
+      <hr class="my-2">
+      <div class="d-flex justify-content-between">
+        <span class="fw-bold">Total</span>
+        <span class="fw-bold fs-5">${{ selectedReservation.amount }}</span>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-dark-custom" (click)="descargarComprobante(selectedReservation)">
+        <i class="fas fa-file-pdf me-2"></i> Descargar Comprobante
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="showSection('misReservas')">
+        <i class="fas fa-arrow-left me-2"></i> Volver
+      </button>
+    </div>
   </div>
 </div>
 }

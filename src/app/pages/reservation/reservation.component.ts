@@ -70,6 +70,9 @@ export class ReservationComponent implements OnInit {
   reservasHistorial: any[] = []
   activeTab: string = 'proximas'
   selectedReservation: any = null
+    // History filters
+  statusFilter: string = 'all';      // 'all' | 'completada' | 'cancelada'
+  vehicleFilter: string = '';        // license plate or empty for all
 
 
 ngOnInit() {
@@ -298,15 +301,33 @@ ngOnInit() {
         }
   }
 
-  // MÉTODO PARA DESCARGAR COMPROBANTE EN PDF
+  get filteredHistory(): any[] {
+    return this.reservasHistorial.filter(reservation => {
+      // Status filter
+      const matchesStatus = this.statusFilter === 'all' ||
+                            reservation.estado === this.statusFilter;
+
+      // Vehicle filter
+      const matchesVehicle = !this.vehicleFilter ||
+                            reservation.vehicle?.license_plate === this.vehicleFilter;
+
+      return matchesStatus && matchesVehicle;
+  });
+}
+
+getServicesTotal(services: any[]): number {
+  if (!services || services.length === 0) return 0;
+  return services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
+}
+
+
 
   descargarComprobante(reserva: any) {
     const doc = new jsPDF();
 
-    // PDF
-    
-    doc.setFillColor(33, 37, 41); 
-    doc.rect(0, 0, 210, 40, 'F'); 
+    // === HEADER ===
+    doc.setFillColor(33, 37, 41);
+    doc.rect(0, 0, 210, 40, 'F');
     
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(22);
@@ -317,80 +338,129 @@ ngOnInit() {
     doc.setFont('helvetica', 'normal');
     doc.text('Comprobante de Reserva', 140, 25);
 
-  
-    doc.setTextColor(0, 0, 0); 
+    // === INFO BÁSICA ===
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
     doc.text(`Fecha de emisión: ${new Date().toLocaleDateString()}`, 20, 50);
     doc.text(`ID Reserva: #${reserva.id}`, 140, 50);
 
-  
     doc.setDrawColor(200, 200, 200);
     doc.line(20, 55, 190, 55);
 
- 
-    let yPos = 70; 
-    
+    let yPos = 65;
 
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Detalles del Estacionamiento', 20, yPos);
-    yPos += 10;
-
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-  
-    const nombreCochera = reserva.garage?.name || 'Cochera ParkEasy';
-    const direccionCochera = reserva.garage?.address || 'Dirección no disponible';
-    
-    doc.text(`Cochera: ${nombreCochera}`, 20, yPos);
-    yPos += 8;
-    doc.text(`Dirección: ${direccionCochera}`, 20, yPos);
-    yPos += 15;
-
-
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Vehículo', 20, yPos);
-    yPos += 10;
-
-    const patente = reserva.vehicle?.license_plate || reserva.vehicle || '---';
-    const modelo = reserva.vehicle?.brand ? `${reserva.vehicle.brand} ${reserva.vehicle.model}` : 'Vehículo registrado';
-
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Patente: ${patente}`, 20, yPos);
-    yPos += 8;
-    doc.text(`Vehículo: ${modelo}`, 20, yPos);
-
- 
-    yPos += 20;
-    doc.setFillColor(248, 249, 250); 
-    doc.rect(20, yPos, 170, 30, 'F');
-    doc.rect(20, yPos, 170, 30, 'S'); 
-
-    doc.setFontSize(10);
-    doc.text('INGRESO', 40, yPos + 10);
-    doc.text('SALIDA', 130, yPos + 10);
-
+    // === DATOS DEL ESTACIONAMIENTO ===
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    
+    doc.text('Datos del Estacionamiento', 20, yPos);
+    yPos += 8;
 
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
+    const nombreCochera = reserva.garage?.name || 'Cochera ParkEasy';
+    const direccion = reserva.garage?.address || 'Dirección no disponible';
+    const localidad = reserva.garage?.location ? 
+      `${reserva.garage.location.name}, ${reserva.garage.location.province}` : '';
+    const telefono = reserva.garage?.phoneNumber || '-';
+    const email = reserva.garage?.email || '-';
+    const espacioNum = reserva.parkingSpace?.number || '-';
+
+    doc.text(`Cochera: ${nombreCochera}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Dirección: ${direccion}${localidad ? ', ' + localidad : ''}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Teléfono: ${telefono}    |    Email: ${email}`, 20, yPos);
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Espacio asignado: #${espacioNum}`, 20, yPos);
+    yPos += 12;
+
+    // === VEHÍCULO ===
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Vehículo', 20, yPos);
+    yPos += 8;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    const patente = reserva.vehicle?.license_plate || '-';
+    doc.text(`Patente: ${patente}`, 20, yPos);
+    yPos += 12;
+
+    // === FECHAS ===
+    doc.setFillColor(248, 249, 250);
+    doc.rect(20, yPos, 170, 28, 'F');
+    doc.rect(20, yPos, 170, 28, 'S');
+
+    doc.setFontSize(9);
+    doc.text('INGRESO', 50, yPos + 8);
+    doc.text('SALIDA', 140, yPos + 8);
+
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
     const checkIn = new Date(reserva.check_in_at).toLocaleString();
     const checkOut = new Date(reserva.check_out_at).toLocaleString();
+    doc.text(checkIn, 35, yPos + 18);
+    doc.text(checkOut, 125, yPos + 18);
+    yPos += 35;
 
-    doc.text(checkIn, 40, yPos + 20);
-    doc.text(checkOut, 130, yPos + 20);
+    // === SERVICIOS (si hay) ===
+    const services = reserva.services || [];
+    if (services.length > 0) {
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Servicios Contratados', 20, yPos);
+      yPos += 8;
 
-  
-    yPos += 50;
-    doc.setFontSize(16);
-    doc.text(`TOTAL ABONADO: $${reserva.amount}`, 120, yPos);
-    doc.setLineWidth(0.5);
-    doc.line(120, yPos + 2, 190, yPos + 2); 
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      
+      let totalServicios = 0;
+      services.forEach((service: any) => {
+        const precio = Number(service.price) || 0;
+        totalServicios += precio;
+        doc.text(`• ${service.description || service.name}`, 25, yPos);
+        doc.text(`$${precio}`, 170, yPos, { align: 'right' });
+        yPos += 6;
+      });
+      yPos += 6;
+    }
 
-  
+    // === DETALLE DE PAGO ===
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPos, 190, yPos);
+    yPos += 8;
+
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    
+    // Calcular subtotales
+    const totalServicios = services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
+    const totalEstadia = reserva.amount - totalServicios;
+
+    doc.text('Estadía:', 120, yPos);
+    doc.text(`$${totalEstadia}`, 180, yPos, { align: 'right' });
+    yPos += 7;
+
+    if (totalServicios > 0) {
+      doc.text('Servicios:', 120, yPos);
+      doc.text(`+ $${totalServicios}`, 180, yPos, { align: 'right' });
+      yPos += 7;
+    }
+
+    doc.setDrawColor(100, 100, 100);
+    doc.line(120, yPos, 190, yPos);
+    yPos += 7;
+
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('TOTAL:', 120, yPos);
+    doc.text(`$${reserva.amount}`, 180, yPos, { align: 'right' });
+
+    // === FOOTER ===
     doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
     doc.setTextColor(100, 100, 100);
     doc.text('Gracias por confiar en ParkEasy.', 20, 280);
     doc.text('Ante cualquier duda, contáctese con soporte.', 20, 285);
