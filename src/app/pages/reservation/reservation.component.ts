@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { GaragesService } from '../../services/garages.service.js';
 import { Router, RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -50,6 +51,7 @@ export class ReservationComponent implements OnInit {
   private _apiservice = inject(UsersService)
   private _apiserviceGarage = inject(GaragesService)
   private _vehiclesService = inject(VehiclesService)
+  private route = inject(ActivatedRoute);
   
 
   userID: string = ''
@@ -62,7 +64,6 @@ export class ReservationComponent implements OnInit {
   totalEstadia: number = 0;
   totalFinal: number = 0;
   selectedGarageName: string = '';
-  currentSection: any = 'menu';
   paymentMethod: string = ''; //  efectivo o mercado pago
   selectedGarage: any = null
   myReservations: any[] = []
@@ -74,6 +75,7 @@ export class ReservationComponent implements OnInit {
   statusFilter: string = 'all';      // 'all' | 'completada' | 'cancelada'
   vehicleFilter: string = '';        // license plate or empty for all
 
+  currentSection: any = 'menu';
 
 ngOnInit() {
     // para saber que usuario es el que está haciendo la reserva
@@ -89,7 +91,6 @@ ngOnInit() {
       console.warn("No hay usuario logueado.");
       this.router.navigate(['/login']); // Si no hay usuario, se va al login
     }
-
   }
 
   getMyReservations() {
@@ -320,9 +321,7 @@ getServicesTotal(services: any[]): number {
   return services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
 }
 
-
-
-  descargarComprobante(reserva: any) {
+  downloadpdf(reserva: any) {
     const doc = new jsPDF();
 
     // === HEADER ===
@@ -358,22 +357,22 @@ getServicesTotal(services: any[]): number {
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     
-    const nombreCochera = reserva.garage?.name || 'Cochera ParkEasy';
-    const direccion = reserva.garage?.address || 'Dirección no disponible';
-    const localidad = reserva.garage?.location ? 
+    const garageName = reserva.garage?.name || 'Cochera ParkEasy';
+    const address = reserva.garage?.address || 'Dirección no disponible';
+    const location = reserva.garage?.location ? 
       `${reserva.garage.location.name}, ${reserva.garage.location.province}` : '';
-    const telefono = reserva.garage?.phoneNumber || '-';
+    const phoneNumber = reserva.garage?.phoneNumber || '-';
     const email = reserva.garage?.email || '-';
-    const espacioNum = reserva.parkingSpace?.number || '-';
+    const parkingSpaceNumber = reserva.parkingSpace?.number || '-';
 
-    doc.text(`Cochera: ${nombreCochera}`, 20, yPos);
+    doc.text(`Cochera: ${garageName}`, 20, yPos);
     yPos += 6;
-    doc.text(`Dirección: ${direccion}${localidad ? ', ' + localidad : ''}`, 20, yPos);
+    doc.text(`Dirección: ${address}${location ? ', ' + location : ''}`, 20, yPos);
     yPos += 6;
-    doc.text(`Teléfono: ${telefono}    |    Email: ${email}`, 20, yPos);
+    doc.text(`Teléfono: ${phoneNumber}    |    Email: ${email}`, 20, yPos);
     yPos += 6;
     doc.setFont('helvetica', 'bold');
-    doc.text(`Espacio asignado: #${espacioNum}`, 20, yPos);
+    doc.text(`Espacio asignado: #${parkingSpaceNumber}`, 20, yPos);
     yPos += 12;
 
     // === VEHÍCULO ===
@@ -384,8 +383,8 @@ getServicesTotal(services: any[]): number {
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    const patente = reserva.vehicle?.license_plate || '-';
-    doc.text(`Patente: ${patente}`, 20, yPos);
+    const licensePlate = reserva.vehicle?.license_plate || '-';
+    doc.text(`Patente: ${licensePlate}`, 20, yPos);
     yPos += 12;
 
     // === FECHAS ===
@@ -416,12 +415,12 @@ getServicesTotal(services: any[]): number {
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
       
-      let totalServicios = 0;
+      let totalServices = 0;
       services.forEach((service: any) => {
-        const precio = Number(service.price) || 0;
-        totalServicios += precio;
+        const price = Number(service.price) || 0;
+        totalServices += price;
         doc.text(`• ${service.description || service.name}`, 25, yPos);
-        doc.text(`$${precio}`, 170, yPos, { align: 'right' });
+        doc.text(`$${price}`, 170, yPos, { align: 'right' });
         yPos += 6;
       });
       yPos += 6;
@@ -436,16 +435,16 @@ getServicesTotal(services: any[]): number {
     doc.setFont('helvetica', 'normal');
     
     // Calcular subtotales
-    const totalServicios = services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
-    const totalEstadia = reserva.amount - totalServicios;
+    const totalServices = services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
+    const totalReservation = reserva.amount - totalServices;
 
     doc.text('Estadía:', 120, yPos);
-    doc.text(`$${totalEstadia}`, 180, yPos, { align: 'right' });
+    doc.text(`$${totalReservation}`, 180, yPos, { align: 'right' });
     yPos += 7;
 
-    if (totalServicios > 0) {
+    if (totalServices > 0) {
       doc.text('Servicios:', 120, yPos);
-      doc.text(`+ $${totalServicios}`, 180, yPos, { align: 'right' });
+      doc.text(`+ $${totalServices}`, 180, yPos, { align: 'right' });
       yPos += 7;
     }
 

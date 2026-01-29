@@ -1,47 +1,92 @@
-/* Heredar animaciones y estilos base que ya tenés */
-.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-h3.section-title { font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 0.5px; }
-
 .card-box {
   background: white;
   border-radius: 16px;
   border: 1px solid #f0f0f0;
 }
 
-/* Avatar Circular */
+.profile-bg-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  border-radius: 16px 16px 50% 50% / 0 0 30px 30px; 
+}
+
 .avatar-circle {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
+  background-color: white; 
   border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  padding: 4px; 
+  position: relative;
 }
 
-/* Inputs */
-.form-control {
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  padding: 12px;
-  border-radius: 8px;
-}
-.form-control:focus {
-  background-color: #fff;
-  border-color: #212529;
-  box-shadow: none;
-}
-
-/* Botón */
-.btn-dark-custom {
-  background: #212529;
+.avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #212529; 
   color: white;
-  border: none;
-  border-radius: 8px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.form-label-custom {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.form-control-modern {
+  background-color: #f8f9fa;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.form-control-modern:focus {
+  background-color: #fff;
+  border-color: #dee2e6;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05); 
+  outline: none;
+}
+
+
+.form-control-modern[readonly] {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn-dark-custom {
+  background-color: #212529;
+  color: white;
+  border-radius: 10px;
   padding: 12px;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: transform 0.2s;
+  border: none;
 }
+
 .btn-dark-custom:hover {
-  background: #000;
+  background-color: #000;
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-dark-custom:disabled {
+  background-color: #6c757d;
+  transform: none;
 }

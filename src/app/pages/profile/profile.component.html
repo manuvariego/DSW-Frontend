@@ -1,71 +1,115 @@
 <div class="container mt-5 fade-in-anim">
   
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="section-title mb-0">Mi Cuenta</h3>
+    <h3 class="section-title mb-0">Mi Perfil</h3>
     <button class="btn btn-outline-dark" routerLink="/menu">
       <i class="fas fa-arrow-left"></i> Volver
     </button>
   </div>
 
-  <div *ngIf="message" class="alert text-center shadow-sm mb-4" 
-       [ngClass]="isSuccess ? 'alert-success' : 'alert-danger'">
-    <i class="fas" [ngClass]="isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'"></i> 
-    {{ message }}
+  <div *ngIf="message" class="alert text-center shadow-sm mb-4" [ngClass]="isSuccess ? 'alert-success' : 'alert-danger'">
+    <i class="fas" [ngClass]="isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle'"></i> {{ message }}
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-      
-      <div class="card-box p-5 shadow-lg">
-        
-        <div class="text-center mb-4">
-          <div class="avatar-circle mb-3 bg-dark text-white mx-auto d-flex align-items-center justify-content-center">
-            <span class="fs-1 fw-bold">{{ user.name?.charAt(0) | uppercase }}</span>
+  <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-primary">
+          <div>
+            <p class="text-muted mb-1 small fw-bold text-uppercase">Inversión Total</p>
+            <h3 class="mb-0 fw-bold text-dark">${{ stats.totalSpent }}</h3>
           </div>
-          <h5 class="fw-bold">{{ user.name }} {{ user.lastname }}</h5>
-          <span class="badge bg-light text-dark border">Usuario Registrado</span>
+          <div class="icon-box bg-primary-light text-primary"><i class="fas fa-wallet fa-2x"></i></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-info">
+          <div>
+            <p class="text-muted mb-1 small fw-bold text-uppercase">Reservas</p>
+            <h3 class="mb-0 fw-bold text-dark">{{ stats.completedReservations }}</h3>
+          </div>
+          <div class="icon-box bg-info-light text-info"><i class="fas fa-car fa-2x"></i></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-warning">
+          <div style="overflow: hidden;">
+            <p class="text-muted mb-1 small fw-bold text-uppercase">Tu Favorita</p>
+            <h5 class="mb-0 fw-bold text-dark text-truncate" title="{{ stats.favoriteGarage }}">{{ stats.favoriteGarage }}</h5>
+          </div>
+          <div class="icon-box bg-warning-light text-warning"><i class="fas fa-star fa-2x"></i></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="row g-4">
+    
+    <div class="col-md-4">
+      <div class="card-box h-100 p-4 text-center shadow-sm position-relative overflow-hidden">
+        <div class="profile-bg-top"></div>
+        
+        <div class="position-relative z-1 mt-4">
+          <div class="avatar-circle mx-auto mb-3 d-flex align-items-center justify-content-center shadow">
+            <span class="avatar-initials">{{ user.name?.charAt(0) | uppercase }}</span>
+          </div>
+          
+          <h4 class="fw-bold mb-1">{{ user.name }} {{ user.lastname }}</h4>
+          <p class="text-muted mb-3">{{ user.email }}</p>
+          
+          <span class="badge bg-dark text-white px-3 py-2 rounded-pill">
+            <i class="fas fa-user-check me-1"></i> Usuario Registrado
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card-box p-4 shadow-sm h-100">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-user-edit me-2"></i> Editar Datos</h5>
         </div>
 
-        <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
-          
-          <div class="row g-3 mb-3">
+        <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+          <div class="row g-3">
+            
             <div class="col-md-6">
-              <label class="form-label fw-bold small text-muted">NOMBRE</label>
-              <input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
+              <label class="form-label-custom">Nombre</label>
+              <input type="text" class="form-control-modern" name="name" [(ngModel)]="user.name" placeholder="Tu nombre">
             </div>
+
             <div class="col-md-6">
-              <label class="form-label fw-bold small text-muted">APELLIDO</label>
-              <input type="text" class="form-control" name="lastname" [(ngModel)]="user.lastname" required>
+              <label class="form-label-custom">Apellido</label>
+              <input type="text" class="form-control-modern" name="lastname" [(ngModel)]="user.lastname" placeholder="Tu apellido">
             </div>
+
+            <div class="col-md-6">
+              <label class="form-label-custom">Email</label>
+              <input type="email" class="form-control-modern" name="email" [(ngModel)]="user.email" placeholder="Tu email">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label-custom">Teléfono</label>
+              <input type="tel" class="form-control-modern" name="phoneNumber" [(ngModel)]="user.phoneNumber" placeholder="Sin guiones">
+            </div>
+
+            <div class="col-12">
+               <label class="form-label-custom">DNI / Documento</label>
+               <input type="text" class="form-control-modern bg-light text-muted" name="dni" [(ngModel)]="user.dni" readonly>
+               <small class="text-muted ms-1"><i class="fas fa-lock me-1"></i> El documento no se puede modificar.</small>
+            </div>
+
           </div>
 
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label class="form-label fw-bold small text-muted">EMAIL</label>
-              <input type="email" class="form-control" name="email" [(ngModel)]="user.email" required>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label fw-bold small text-muted">TELÉFONO</label>
-              <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="user.phoneNumber">
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label fw-bold small text-muted">DNI</label>
-            <input type="text" class="form-control bg-light" name="dni" [(ngModel)]="user.dni" readonly>
-            <div class="form-text"><i class="fas fa-lock me-1"></i> El DNI no se puede modificar.</div>
-          </div>
-
-          <div class="d-grid">
-            <button type="submit" class="btn btn-dark-custom btn-lg" [disabled]="isLoading || profileForm.invalid">
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-dark-custom px-5" [disabled]="isLoading">
               <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
               {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
             </button>
           </div>
 
         </form>
-
       </div>
     </div>
+
   </div>
-</div>
+  
+  <div class="mb-5"></div> </div>
