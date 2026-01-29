@@ -57,34 +57,37 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  updateProfile() {
-    this.isLoading = true;
-    this.message = '';
+updateProfile() {
+  this.isLoading = true;
+  this.message = '';
 
-    const dataToUpdate = {
-        name: this.user.name,
-        lastname: this.user.lastname,
-        phoneNumber: this.user.phoneNumber,
-        email: this.user.email 
-    };
+  const dataToUpdate = {
+    name: this.user.name,
+    lastname: this.user.lastname,
+    phoneNumber: this.user.phoneNumber,
+    email: this.user.email 
+  };
 
-    this._usersService.update(this.user.id).subscribe({
-      next: (res) => {
-        this.message = '¡Datos actualizados correctamente!';
-        this.isSuccess = true;
-        this.isLoading = false;
-        
-        // Ocultar mensaje a los 3 seg
-        setTimeout(() => this.message = '', 3000);
-      },
-      error: (err) => {
-        console.error(err);
-        this.message = 'Error al actualizar los datos.';
-        this.isSuccess = false;
-        this.isLoading = false;
-      }
-    });
-  }
+  this._usersService.update({
+    id: this.user.id,
+    ...dataToUpdate
+  }).subscribe({
+    next: () => {
+      this.message = '¡Datos actualizados correctamente!';
+      this.isSuccess = true;
+      this.isLoading = false;
+
+      setTimeout(() => this.message = '', 3000);
+    },
+    error: (err) => {
+      console.error(err);
+      this.message = 'Error al actualizar los datos.';
+      this.isSuccess = false;
+      this.isLoading = false;
+    }
+  });
+}
+
 
 loadUserStats(userId: string | number) {
     
@@ -92,7 +95,7 @@ loadUserStats(userId: string | number) {
       next: (reservation: any[]) => {
         console.log("Reservas del usuario para estadísticas:", reservation);
         if (!reservation || reservation.length === 0) {
-          this.stats = { totalSpent: 0, completedReservations: 0, favoriteGarage: 'Ninguna' };
+          this.stats = { totalSpent: 0, completedReservations: 0, favoriteGarage: 'Todavía no tenes una cochera favorita' };
           return;
         }
         const completedReservations = reservation.filter(r => 
@@ -113,12 +116,11 @@ loadUserStats(userId: string | number) {
   }
 
   getMostFrequent(arr: string[]): string {
-    if (arr.length === 0) return 'Ninguna';
+    if (arr.length === 0) return 'Todavía no tenes una cochera favorita';
     
     const counts: {[key: string]: number} = {};
     let maxCount = 0;
-    let mostFrequent = 'Ninguna';
-
+    let mostFrequent = 'Todavía no tenes una cochera favorita';
     for (const item of arr) {
         if (item === 'Desconocida') continue; 
         counts[item] = (counts[item] || 0) + 1;
