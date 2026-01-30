@@ -84,23 +84,35 @@
           <ng-container *ngIf="authService.isGarage()">
 
             <li class="nav-item">
+              <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
+                <i class="fas fa-user-circle me-2"></i> Mi Perfil
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" routerLink="garages" data-bs-dismiss="offcanvas">
-                Mi Cochera
+                <i class="fas fa-warehouse me-2"></i> Mi Cochera
               </a>
             </li>
             
             <li class="nav-item">
+              <a class="nav-link" routerLink="parkingSpace" data-bs-dismiss="offcanvas">
+                <i class="fas fa-parking me-2"></i> Espacios de Estacionamiento
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" routerLink="services" data-bs-dismiss="offcanvas">
-                &nbsp; Servicios
+                <i class="fas fa-concierge-bell me-2"></i> Servicios
               </a>
             </li>
 
             <li class="nav-item">
               <a class="nav-link" routerLink="reservationTypes" data-bs-dismiss="offcanvas">
-                &nbsp; Precios por Estadía
+                <i class="fas fa-tags me-2"></i> Precios por Estadía
               </a>
             </li>
-            
+
           </ng-container>
 
           <!-- CERRAR SESIÓN -->
