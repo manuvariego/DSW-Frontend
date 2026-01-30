@@ -1,20 +1,20 @@
-<div class="container mt-5 fade-in-anim">
-  <div class="card-box p-5 mx-auto" style="max-width: 450px;">
-    
-    <div class="text-center mb-4">
-      <div class="icon-circle-login mb-3 mx-auto">
+<div class="login-wrapper">
+  <div class="card-box fade-in-anim">
+
+    <div class="login-header">
+      <div class="icon-circle-login">
         <i class="fas fa-user"></i>
       </div>
       <h2 class="section-title">Bienvenido</h2>
-      <p class="text-muted small">Ingresa tus credenciales para continuar.</p>
+      <p>Ingresa tus credenciales para continuar</p>
     </div>
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
 
-      <div class="form-group mb-3">
+      <div class="form-group">
         <label for="uname" class="form-label">Identificación</label>
         <input type="text" id="uname"
-               class="form-control modern-input"
+               class="modern-input"
                [class.is-invalid]="fieldErrors.username"
                placeholder="DNI (usuarios) o CUIT (garages)"
                name="uname" [(ngModel)]="username">
@@ -23,10 +23,10 @@
         </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group">
         <label for="psw" class="form-label">Contraseña</label>
         <input type="password" id="psw"
-               class="form-control modern-input"
+               class="modern-input"
                [class.is-invalid]="fieldErrors.password"
                placeholder="••••••••"
                name="psw" [(ngModel)]="password">
@@ -35,28 +35,30 @@
         </div>
       </div>
 
-      <div class="form-group form-check mb-4">
+      <div class="form-check">
         <input type="checkbox" class="form-check-input" id="remember" name="remember" [(ngModel)]="remember" checked>
-        <label class="form-check-label text-muted small" for="remember">Recordar sesión</label>
+        <label class="form-check-label" for="remember">Recordar sesión</label>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3 py-2 px-3">
-        <i class="fas fa-exclamation-circle me-1"></i> {{ errorMessage }}
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
       </div>
 
-      <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="isLoading">
+      <button type="submit" class="btn-dark-custom" [disabled]="isLoading">
         <span *ngIf="!isLoading">INICIAR SESIÓN</span>
         <span *ngIf="isLoading">
-          <i class="fas fa-spinner fa-spin me-1"></i> INGRESANDO...
+          <i class="fas fa-spinner"></i>
+          INGRESANDO...
         </span>
       </button>
 
-      <div class="text-center">
-        <span class="text-muted small">¿Olvidaste tu contraseña? <a href="#" class="login-link">Haz click aquí</a></span>
+      <div class="link-section">
+        <span>¿Olvidaste tu contraseña? <a href="#" class="login-link">Recuperar</a></span>
       </div>
 
-      <div class="text-center mt-3">
-        <span class="text-muted small">¿No tienes cuenta? <a routerLink="/register" class="login-link">Regístrate aquí</a></span>
+      <div class="link-section">
+        <span>¿No tienes cuenta? <a routerLink="/register" class="login-link">Regístrate</a></span>
       </div>
 
     </form>

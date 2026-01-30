@@ -1,5 +1,5 @@
-<div class="container mt-5 fade-in-anim">
-  <div class="card-box p-5 mx-auto" style="max-width: 600px;">
+<div class="register-wrapper">
+  <div class="card-box fade-in-anim">
 
     <!-- SELECCIÓN DE TIPO DE CUENTA -->
     <div *ngIf="currentStep === 'selectType'">
@@ -10,7 +10,7 @@
 
       <div class="row g-3">
         <div class="col-md-6">
-          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('user')" style="cursor: pointer;">
+          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('user')">
             <div class="icon-circle-login mb-3 mx-auto bg-primary">
               <i class="fas fa-user"></i>
             </div>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-md-6">
-          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('garage')" style="cursor: pointer;">
+          <div class="card h-100 text-center p-4 account-type-card" (click)="selectAccountType('garage')">
             <div class="icon-circle-login mb-3 mx-auto bg-success">
               <i class="fas fa-warehouse"></i>
             </div>
@@ -100,15 +100,15 @@
           </div>
         </div>
 
-        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
+        <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3">
           <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
         </div>
 
-        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
+        <div *ngIf="successMessage" class="alert alert-success text-center mb-3">
           <i class="fas fa-check-circle"></i> {{ successMessage }}
         </div>
 
-        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="userForm.invalid || successMessage">
+        <button type="submit" class="btn-dark-custom" [disabled]="userForm.invalid || successMessage">
           REGISTRARSE
         </button>
       </form>
@@ -180,15 +180,15 @@
           </div>
         </div>
 
-        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
+        <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3">
           <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
         </div>
 
-        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
+        <div *ngIf="successMessage" class="alert alert-success text-center mb-3">
           <i class="fas fa-check-circle"></i> {{ successMessage }}
         </div>
 
-        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="garageForm.invalid || successMessage">
+        <button type="submit" class="btn-dark-custom" [disabled]="garageForm.invalid || successMessage">
           REGISTRAR COCHERA
         </button>
       </form>
