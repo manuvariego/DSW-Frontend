@@ -10,13 +10,13 @@ import { GaragesService } from '../../services/garages.service.js';
 import { Router, RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, NgxPaginationModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
@@ -74,6 +74,7 @@ export class ReservationComponent implements OnInit {
     // History filters
   statusFilter: string = 'all';      // 'all' | 'completada' | 'cancelada'
   vehicleFilter: string = '';        // license plate or empty for all
+  p: number = 1;
 
   currentSection: any = 'menu';
 
