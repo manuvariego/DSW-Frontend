@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ParkingSpaceService } from '../../services/parking-space.service.js';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
+import { AuthService } from '../../services/auth.service.js';
 
 @Component({
   selector: 'app-parking-space',
@@ -16,13 +17,15 @@ export class ParkingSpaceComponent {
   parkingCreado = false;
   currentSection: string = 'initial'
   typeVehicles: Array<any> = [];
-  ParkingSpaceList: any[] = []
-  aParkingSpace: any = null
+  parkingSpaceList: any[] = []
   private _apiservice = inject(ParkingSpaceService)
   private _typeVehicleService = inject(TypeVehicleService)
-  numberParkingSpace: string = ''
+  private _authService = inject(AuthService);
   cuitGarage: string = ''
-
+  vehicleTypeId: number | string = '';
+  gridMaxNumber: number = 50;
+  selectedSpaces: number[] = [];
+  
   ParkingSpaceData = {
 
     number: '',
@@ -32,44 +35,20 @@ export class ParkingSpaceComponent {
   }
 
   ngOnInit() {
-    this.loadTypeVehicles(); // Cargar los tipos al iniciar
+    this.loadTypeVehicles();
+    this.cuitGarage = this._authService.getCurrentUserId() || '';
+    if (this.cuitGarage) {
+      this.getParkingSpace();
+    }
   }
 
 
+  selectParkingSpaceToEdit(ParkingSpace: any) {
 
-
-  modificarParkingSpace(ParkingSpace: any) {
-
-    this.currentSection = 'editParkingSpace';
+    this.currentSection = 'selectParkingSpaceToEdit';
     this.editingParkingSpace = { ...ParkingSpace };
 
   }
-
-
-  geTaParkingSpace(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return; // Detiene el envío si el formulario no es válido
-    }
-
-    console.log('geTaParkingSpace');
-    this._apiservice.getParkingSpace(this.numberParkingSpace, this.cuitGarage).subscribe(
-      (ParkingSpace: any) => {
-        this.currentSection = "geTaParkingSpaceTable"
-        console.log(ParkingSpace)
-        this.aParkingSpace = ParkingSpace
-        this.numberParkingSpace = ''
-      },
-      (error) => {
-        console.error('Error al obtener un ParkingSpace', error);
-        alert('El ParkingSpace no existe o ocurrió un error al obtener la información.');
-      }
-    );
-  }
-
 
   createParkingSpace(form: NgForm) {
     if (form.invalid) {
@@ -79,9 +58,9 @@ export class ParkingSpaceComponent {
       });
       return;
     }
+    this.ParkingSpaceData.garage = this.cuitGarage;
     this._apiservice.createParkingSpace(this.ParkingSpaceData).subscribe({
-      next: (response) => {
-        console.log('Lugar de Estacionamiento creado exitosamente:', response);
+      next: () => {
         this.parkingCreado = true;
         this.showSection('initial');
         form.resetForm();
@@ -96,46 +75,85 @@ export class ParkingSpaceComponent {
     });
   }
 
-  getParkingSpace() {
-    this._apiservice.getParkingSpaces().subscribe((data: any[]) => {
 
-      if (Array.isArray(data)) {
-        this.ParkingSpaceList = data
+  createMultipleParkingSpaces() {
+    if (this.selectedSpaces.length === 0 || !this.vehicleTypeId) return;
 
-      } else {
+    let created = 0;
+    const total = this.selectedSpaces.length;
 
-        this.ParkingSpaceList = [data]
-      }
+    for (const num of this.selectedSpaces) {
+      const spaceData = {
+        number: num.toString(),
+        garage: this.cuitGarage,
+        TypeVehicle: this.vehicleTypeId
+      };
 
-
-      console.log(data)
-    })
+      this._apiservice.createParkingSpace(spaceData).subscribe({
+        next: () => {
+          created++;
+          if (created === total) {
+            this.parkingCreado = true;
+            this.selectedSpaces = [];
+            this.getParkingSpace();
+            this.showSection('initial');
+            setTimeout(() => this.parkingCreado = false, 3000);
+          }
+        },
+        error: (error) => {
+          console.error(`Error creando espacio ${num}:`, error);
+        }
+      });
+    }
   }
 
 
-  deleteParkingSpace(numberParkingSpace: string, cuitGarage: String, tipo: boolean) {
+  getGridNumbers(): number[] {
+    return Array.from({ length: this.gridMaxNumber }, (_, i) => i + 1);
+  }
+
+  isSpaceExisting(num: number): boolean {
+    return this.parkingSpaceList.some(s => Number(s.number) === num);
+  }
+
+  toggleSpaceSelection(num: number): void {
+    const index = this.selectedSpaces.indexOf(num);
+    if (index === -1) {
+      this.selectedSpaces.push(num);
+    } else {
+      this.selectedSpaces.splice(index, 1);
+    }
+  }
+
+  isSpaceSelected(num: number): boolean {
+    return this.selectedSpaces.includes(num);
+  }
+
+
+  getParkingSpace() {
+    this._apiservice.getParkingSpaceOfGarage(this.cuitGarage).subscribe((data: any[]) => {
+      this.parkingSpaceList = Array.isArray(data) ? data : [data];
+    });
+  }
+
+  deleteParkingSpace(numberParkingSpace: string) {
     const confirmation = confirm('¿Está seguro de que desea eliminar este Lugar de Estacionamiento?');
     if (!confirmation) {
-      return; // Si el Lugar de Estacionamiento cancela, no hacemos nada
+      return;
     }
 
-    this._apiservice.deleteParkingSpace(numberParkingSpace, cuitGarage).subscribe({
-      next: (response) => {
-        console.log('Lugar de Estacionamiento eliminado exitosamente', response);
-        this.getParkingSpace(); // Refrescar la lista de Lugar de Estacionamientos
+    this._apiservice.deleteParkingSpace(numberParkingSpace, this.cuitGarage).subscribe({
+      next: () => {
+        this.getParkingSpace();
+        this.currentSection = 'initial';
       },
       error: (error) => {
         console.error('Error al eliminar el Lugar de Estacionamiento', error);
       }
     });
-
-    if (tipo == true) { this.currentSection = 'initial' }
-
   }
 
   editingParkingSpace: any = null;
-
-
 
 
   updateParkingSpace(form: NgForm) {
@@ -152,12 +170,11 @@ export class ParkingSpaceComponent {
     }
 
     this._apiservice.updateParkingSpace(this.editingParkingSpace).subscribe({
-      next: (response) => {
-        console.log('Lugar de Estacionamiento actualizado exitosamente', response);
-        this.editingParkingSpace = null; // Limpia la variable de edición;
-        this.getParkingSpace(); // Refresca la lista de parkingSpace
+      next: () => {
         this.showSection('initial');
         form.resetForm();
+        this.editingParkingSpace = null;
+        this.getParkingSpace();
       },
       error: (error) => {
         console.error('Error al actualizar el Lugar de Estacionamiento', error);

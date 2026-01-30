@@ -87,3 +87,12 @@ button.btn-icon-action.btn-delete-icon:disabled {
     color: #adb5bd !important;
 }
 
+
+.nav-pills .nav-link.active {
+    background-color: #212529;
+}
+
+.parking-status-grid {
+    max-height: 200px;
+    overflow-y: auto;
+}
