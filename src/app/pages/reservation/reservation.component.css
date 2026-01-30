@@ -6,6 +6,32 @@ h2.section-title, h3.section-title {
     font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.8rem;
 }
 
+.menu-card {
+    border: none;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    overflow: hidden;
+    border-bottom: 4px solid transparent;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    border-bottom: 4px solid #343a40;
+}
+
+.icon-container {
+    color: #495057;
+    transition: color 0.3s ease;
+}
+
+.menu-card:hover .icon-container {
+    color: #b08d57 ;
+}
+
 /* FORMULARIOS */
 .card-box { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
 .modern-input {
