@@ -31,7 +31,7 @@
                   <i class="fas fa-dollar-sign fa-2x"></i>
                 </div>
                 <h2 class="fw-bold mb-1">{{ totalMoneyEarned }}</h2>
-                <p class="text-muted mb-0 small text-uppercase fw-bold">Ingresos Hoy</p>
+                <p class="text-muted mb-0 small text-uppercase fw-bold">Ingresos del Mes</p>
               </div>
             </div>
           </div>
@@ -49,6 +49,41 @@
           </div>
         </div>
 
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 col-lg-10">
+            <div class="card border-0 shadow-sm p-3">
+        
+              <h6 class="fw-bold text-center mb-1">
+                Ocupación actual de los espacios
+              </h6>
+              <p class="text-muted text-center small mb-3">
+                Disponibilidad en tiempo real
+              </p>
+        
+              <div class="d-flex flex-wrap gap-2 justify-content-center parking-status-grid">
+                @for (space of parkingSpaces; track space.number) {
+                <div class="rounded-3 d-flex align-items-center justify-content-center fw-semibold text-white"
+                  [class.bg-danger]="isSpaceOccupied(space.number)" [class.bg-success]="!isSpaceOccupied(space.number)"
+                  style="width: 44px; height: 38px; font-size: 0.8rem;"
+                  [title]="isSpaceOccupied(space.number) ? 'Ocupado' : 'Libre'">
+                  {{ space.number }}
+                </div>
+                }
+              </div>
+        
+              <div class="d-flex justify-content-center gap-3 mt-2">
+                <small class="d-flex align-items-center gap-1">
+                  <span class="badge bg-success">&nbsp;</span> Libre
+                </small>
+                <small class="d-flex align-items-center gap-1">
+                  <span class="badge bg-danger">&nbsp;</span> Ocupado
+                </small>
+              </div>
+        
+            </div>
+          </div>
+        </div>
+
         <div class="row mb-5 mt-4 text-center">
           <div class="col-12">
             <p class="text-muted" style="font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">Reservas realizadas hasta la fecha con ParkEasy: {{totalReservationsAlltime}}</p>
@@ -57,67 +92,12 @@
 
         <div class="row justify-content-center mb-4">
           <div class="col-auto">
-            <button class="btn btn-dark-custom rounded-pill px-5 py-3 shadow-sm" (click)="showSection('gestion')">
-              <i class="fas fa-cogs me-2"></i> Gestión y Operaciones
+            <button class="btn btn-dark-custom rounded-pill px-5 py-3 shadow-sm" (click)="showSection('getReservations')">
+              <i class="fas fa-clipboard-list me-2"></i> Ver Reservas
             </button>
           </div>
         </div>
        </div>
-    </div>
-  </div>
-}
-
-@if (currentSection == 'gestion') {
-  <div class="fade-in-anim">
-    <div *ngIf="garageCreado" class="alert alert-success shadow-sm text-center mb-4">
-      <i class="fas fa-check-circle"></i> Cochera creada exitosamente.
-    </div>
-
-    <div class="container mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-5">
-        <button class="btn btn-outline-secondary" (click)="showSection('initial')">
-           <i class="fas fa-arrow-left"></i> Volver
-        </button>
-        <h2 class="section-title text-center m-0 flex-grow-1">Gestión de Cocheras</h2>
-        <div style="width: 100px;"></div>
-      </div>
-
-
-      <div class="row justify-content-center">
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getParkingSpaces')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-parking fa-3x"></i>
-            </div>
-            <h5 class="card-title">Listado de Slots</h5>
-            <p class="text-muted small">Administra y edita los Parking Spaces existentes</p>
-            <button class="btn btn-dark-custom mt-2">Ver Listado</button>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4"> <div class="icon-container mb-3">
-           <i class="fas fa-list-ul fa-3x"></i> 
-         </div>
-         <h5 class="card-title">Listado de Servicios</h5>
-         <p class="text-muted small">Administra y edita los servicios existentes</p>
-    
-         <button class="btn btn-dark-custom mt-2" routerLink="/services">
-           Ver Listado
-         </button>
-  </div>
-</div>
-      <div class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4" (click)="showSection('getReservations')">
-            <div class="icon-container mb-3">
-              <i class="fas fa-registered fa-3x"></i>
-            </div>
-            <h5 class="card-title">Listado de Reservas</h5>
-            <p class="text-muted small">Ver todas las reservas registradas.</p>
-            <button class="btn btn-dark-custom mt-2">Ver Listado</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 }
@@ -127,69 +107,54 @@
     
     <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
       <h3 class="section-title">Listado de Reservas</h3>
-      <button type="button" class="btn btn-outline-dark" (click)="showSection('gestion')">
+      <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
         <i class="fas fa-arrow-left"></i> Volver
       </button>
     </div>
 
-    <div class="card shadow-lg border-0 rounded-4 mb-4 fade-in-anim">
-      <div class="card-body p-4">
-        <div class="d-flex align-items-center mb-3">
-          <div class="icon-square bg-light text-dark rounded-circle p-2 me-2">
-            <i class="fas fa-filter"></i>
-          </div>
-          <h5 class="card-title mb-0 fw-bold text-dark">Filtrar Búsqueda</h5>
-        </div>
-
-        <div class="row g-3">
-          <div class="col-md-3">
-            <label for="filterVehicle" class="form-label fw-bold text-muted small">
-              <i class="fas fa-car me-1"></i> Vehículo (Patente)
-            </label>
-            <input type="text" class="form-control modern-input" id="filterVehicle" 
-                   [(ngModel)]="reservationFilters.vehicleLicensePlate" placeholder="Ej: ABC123">
-          </div>
-
-          <div class="col-md-3">
-            <label for="filterStatus" class="form-label fw-bold text-muted small">
-              <i class="fas fa-info-circle me-1"></i> Estado
-            </label>
-            <select class="form-select modern-input" id="filterStatus" [(ngModel)]="reservationFilters.status">
-              <option value="">Todos los estados</option>
-              <option value="confirmada">Confirmada</option>
-              <option value="pendiente">Pendiente</option>
-              <option value="cancelada">Cancelada</option>
-              <option value="finalizada">Finalizada</option>
-            </select>
-          </div>
-
-          <div class="col-md-3">
-            <label for="filterCheckInDate" class="form-label fw-bold text-muted small">
-              <i class="fas fa-clock me-1"></i> Fecha/Hora Ingreso
-            </label>
-            <input type="datetime-local" step="1" class="form-control modern-input" 
-                   id="filterCheckInDate" 
-                   [(ngModel)]="reservationFilters.checkInDate">
-          </div>
-
-          <div class="col-md-3">
-            <label for="filterCheckOutDate" class="form-label fw-bold text-muted small">
-              <i class="fas fa-clock me-1"></i> Fecha/Hora Salida
-            </label>
-            <input type="datetime-local" step="1" class="form-control modern-input" 
-                   id="filterCheckOutDate" 
-                   [(ngModel)]="reservationFilters.checkOutDate">
-          </div>
-
-          <div class="col-12 d-flex justify-content-end mt-4">
-             <button type="button" class="btn btn-outline-secondary me-2" (click)="reservationFilters = { vehicleLicensePlate: '', status: '', checkInDate: '', checkOutDate: '' }; applyReservationFilters()">
-                Limpiar
-             </button>
-             <button type="button" class="btn btn-dark-custom px-4" (click)="applyReservationFilters()">
-                <i class="fas fa-search me-2"></i> Buscar
-             </button>
-          </div>
-        </div>
+    <!-- Tabs -->
+    <ul class="nav nav-pills mb-4">
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeTab === 'activas'" (click)="setActiveTab('activas')">
+          <i class="fas fa-car-side me-1"></i> Activas
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeTab === 'canceladas'" (click)="setActiveTab('canceladas')">
+          <i class="fas fa-ban me-1"></i> Canceladas
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeTab === 'historial'" (click)="setActiveTab('historial')">
+          <i class="fas fa-history me-1"></i> Historial
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="activeTab === 'todas'" (click)="setActiveTab('todas')">
+          <i class="fas fa-list me-1"></i> Todas
+        </button>
+      </li>
+    </ul>
+    
+    <!-- Filtros -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Buscar por patente..." [(ngModel)]="filterLicensePlate"
+          (keyup.enter)="applyReservationFilters()">
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filterDateFrom" placeholder="Desde">
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filterDateTo" placeholder="Hasta">
+      </div>
+      <div class="col-md-2 d-flex gap-2">
+        <button class="btn btn-dark-custom flex-grow-1" (click)="applyReservationFilters()">
+          <i class="fas fa-search"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="clearFilters()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
 
@@ -214,9 +179,9 @@
               <td class="text-primary fw-bold">{{ res.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
               <td class="text-primary fw-bold">{{ res.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
               <td>
-                <span class="badge rounded-pill" 
-                  [ngClass]="res.estado === 'confirmada' ? 'bg-success' : 
-                             res.estado === 'pendiente' ? 'bg-warning text-dark' : 'bg-secondary'">
+                <span class="badge rounded-pill" [ngClass]="res.estado === 'activa' ? 'bg-success' : 
+                            res.estado === 'cancelada' ? 'bg-danger' : 
+                            res.estado === 'completada' ? 'bg-secondary' : 'bg-warning'">
                   {{ res.estado | uppercase }}
                 </span>
               </td>
@@ -234,8 +199,8 @@
                   </button>
                   <button type="button" 
                           class="btn-icon-action btn-delete-icon" 
-                          [title]="res.estado !== 'confirmada' ? 'Solo se pueden cancelar reservas confirmadas' : 'Cancelar Reserva'" 
-                          [disabled]="res.estado !== 'confirmada'"
+                          [title]="res.estado !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
+                          [disabled]="res.estado !== 'activa'"
                           (click) = "deleteReservation(res.id)">
                       <i class="fas fa-trash"></i>
                   </button>                    
@@ -352,113 +317,3 @@
   </div>
 }
 
-@if (currentSection == 'getParkingSpaces') {
-
-<div class="container-fluid mt-4 px-4 fade-in-anim">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="section-title">Listado de Parking Spaces</h3>
-    <button type="button" class="btn btn-outline-dark" (click)="showSection('gestion')">
-      <i class="fas fa-arrow-left"></i> Volver
-    </button>
-  </div>
-
-  <div class="table-responsive shadow-lg rounded bg-white">
-    <table class="table table-hover mb-0 align-middle">
-      <thead class="thead-dark-custom">
-        <tr>
-          <th scope="col">Numero</th>
-          <th scope="col">Tipo de vehiculo</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Servicios</th>
-          <th scope="col" class="text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let parkingSlot of garageList; let i = index">
-          <td class="fw-bold text-muted">{{ parkingSlot.number }}</td>
-          <td>{{ getTypeVehicleName(parkingSlot.TypeVehicle) }}</td>
-          <td>{{ parkingSlot.status }}</td>
-          <td>"{{ 'sin servicios' }}"</td>
-          <td>
-            <div class="d-flex justify-content-center gap-3">
-               <button type="button" class="btn-icon-action btn-edit-icon" (click)="modificarParkingSpace(parkingSlot)" title="Editar">
-                   <i class="fas fa-edit"></i>
-               </button>
-               <button type="button" class="btn-icon-action btn-delete-icon" (click)="deleteParkingSpace(parkingSlot.number, false)" title="Eliminar">
-                   <i class="fas fa-trash"></i>
-               </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="mt-4 text-center">
-    <button class="btn btn-dark-custom" (click)="showSection('createParkingSpace')">
-      <i class="fas fa-plus me-2"></i> Crear Nuevo Espacio
-    </button>
-  </div>
-</div>
-}
-
-@if(currentSection == 'editParkingSpace') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
-      <h3 class="text-center mb-4 section-title">Modificar Espacio</h3>
-
-      <form (ngSubmit)="updateParkingSpace(parkingSpaceForm)" #parkingSpaceForm="ngForm" class="needs-validation" novalidate>
-
-        <div class="form-group mb-4">
-          <label for="TypeVehicle" class="form-label">Tipo de Vehículo</label>
-          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="editingParkingSpace.TypeVehicle" #TypeVehicle="ngModel" required
-            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
-            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
-          </select>
-          <div class="invalid-feedback">Seleccione un tipo.</div>
-        </div>
-
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-dark-custom btn-block">Guardar Cambios</button>
-          <button type="button" class="btn btn-secondary btn-block mt-2" (click)="showSection('initial')">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-}
-
-@if (currentSection == 'createParkingSpace') {
-  <div class="container mt-5 fade-in-anim">
-    <div class="card-box p-5 mx-auto" style="max-width: 600px;">
-      <h3 class="text-center mb-4 section-title">Registrar Nuevo Lugar</h3>
-
-      <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation" novalidate>
-
-        <div class="row">
-           <div class="col-md-6 form-group mb-3">
-              <label for="number" class="form-label">Número</label>
-              <input type="text" class="form-control modern-input" id="number" name="number" [(ngModel)]="ParkingSpaceData.number" required placeholder="Ej: 10"
-                #numberParkingSpace="ngModel" [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
-              <div class="invalid-feedback">Requerido.</div>
-           </div>
-
-
-        </div>
-
-        <div class="form-group mb-4">
-          <label for="TypeVehicle" class="form-label">Tipo de Vehículo Aceptado</label>
-          <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle" [(ngModel)]="ParkingSpaceData.TypeVehicle" #TypeVehicle="ngModel" required
-            [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
-            <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">{{ typeVehicle.name }}</option>
-          </select>
-          <div class="invalid-feedback">Seleccione un tipo.</div>
-        </div>
-
-        <div class="d-grid gap-2 mt-4">
-          <button type="submit" class="btn btn-dark-custom btn-lg">Dar de Alta</button>
-          <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-}

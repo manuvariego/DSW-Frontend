@@ -151,3 +151,13 @@ h2.section-title, h3.section-title {
 .btn-delete-icon:hover { background-color: #dc3545 !important; color: white !important; transform: scale(1.1); }
 
 .gap-3 { gap: 1rem !important; }
+
+/* Cuando el botón tiene la clase disabled-btn o el atributo disabled */
+.btn-delete-icon:disabled,
+.disabled-btn {
+  background-color: #e9ecef !important; 
+  color: #adb5bd !important; 
+  border-color: transparent;
+  opacity: 0.6;
+}
+

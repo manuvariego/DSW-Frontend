@@ -5,6 +5,8 @@ import { runInThisContext } from 'vm';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
+import { ReservationService } from '../../services/reservation.service.js';
+
 
 @Component({
   selector: 'app-vehicle',
@@ -19,11 +21,14 @@ export class VehiclesComponent {
   private _apiservice = inject(VehiclesService)
   private _typeVehicleService = inject(TypeVehicleService)
   private _authService = inject(AuthService)
+  private _reservationService = inject(ReservationService)
   vehiclesList: any[] = []
   typeVehicles: Array<any> = [];
   licensePlate: string = ''
   aVehicle: any = null
   editingVehicle: any = null
+  blockedPlates: string[] = [];
+
   currentSection: String = 'initVehicles'
 
   vehicleData = {
@@ -34,11 +39,31 @@ export class VehiclesComponent {
 
   }
 
+
   ngOnInit() {
+    const userId = this._authService.getCurrentUserId();
+    if (userId) {
     this.loadTypeVehicles(); // Cargar los tipos al iniciar
+    this.checkBlockedVehicles(userId);
   }
+}
 
+// método para saber cuales son los vehiculos que tienen reservas para que no se puedan eliminar
+checkBlockedVehicles(userId: number | string) {
+  this._reservationService.getReservationsByUser(userId).subscribe({
+    next: (reservas: any[]) => {
+      const patentesUsadas = reservas.map(r => r.vehicle?.license_plate || r.vehicle);
+      this.blockedPlates = [...new Set(patentesUsadas)];
+      
+      console.log("Patentes bloqueadas por reservas:", this.blockedPlates);
+    }
+  });
+}
 
+// Función auxiliar para el HTML
+isVehicleBlocked(plate: string): boolean {
+  return this.blockedPlates.includes(plate);
+}
 
   getAvehicle(form: NgForm) {
     if (form.invalid) {

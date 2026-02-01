@@ -32,7 +32,7 @@ export class ReservationService {
     return this._http.put(`${this.apiUrl}/${reservationData.id}`, reservationData);
   }
 
-  getReservationsByUser(userId: number): Observable<any[]> {
+  getReservationsByUser(userId: number | string): Observable<any[]> {
     return this._http.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
   getReservationsOfGarage(cuit: string, condition:boolean, filters?: any): Observable<any[]> {
@@ -54,7 +54,7 @@ export class ReservationService {
     return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/${condition}`, { params });
   }  
   
-  cancelReservation(reservationId: number): Observable<any> {
+  cancelReservation(reservationId: number | string): Observable<any> {
     return this._http.patch(`${this.apiUrl}/${reservationId}/cancel`, {});
   }
 
