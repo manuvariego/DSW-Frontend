@@ -201,7 +201,7 @@
                           class="btn-icon-action btn-delete-icon" 
                           [title]="res.estado !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
                           [disabled]="res.estado !== 'activa'"
-                          (click) = "deleteReservation(res.id)">
+                          (click) = "cancelReservation(res)">
                       <i class="fas fa-trash"></i>
                   </button>                    
                   

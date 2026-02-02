@@ -327,6 +327,7 @@
               <th scope="col">Vehículo</th>
               <th scope="col">Estado</th>
               <th scope="col">Monto</th>
+              <th scope="col">Método de Pago</th>
               <th scope="col" class="text-center">Acciones</th>
             </tr>
           </thead>
@@ -344,6 +345,18 @@
               <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
               <td><span class="badge bg-success">{{ reserva.estado | uppercase }}</span></td>
               <td class="fw-bold">${{ reserva.amount}}</td>
+              <td>
+              <span *ngIf="reserva.paymentMethod === 'CASH'" class="badge bg-light text-success border border-success">
+                <i class="fas fa-money-bill-wave me-1"></i> Efectivo
+              </span>
+
+              <span *ngIf="reserva.paymentMethod === 'MP'" class="badge bg-light text-primary border border-primary">
+                <i class="fas fa-qrcode me-1"></i> Mercado Pago
+              </span>
+
+              <span *ngIf="!reserva.paymentMethod" class="text-muted small"> -
+              </span>
+              </td>
               <td class="text-center">
                 <button type="button" class="btn btn-outline-danger btn-sm"
                   (click)="$event.stopPropagation(); cancelReservation(reserva)" title="Cancelar reserva">

@@ -36,6 +36,7 @@ export class GaragesComponent {
   activeTab: string = 'activas';
   parkingSpaces: any[] = [];
   activeReservations: any[] = [];
+  errorMessage: string = '';
 
   ngOnInit() {
     this.loadReservationsOnProgress();
@@ -108,21 +109,34 @@ export class GaragesComponent {
     });
   }
 
-  deleteReservation(reservationId: number) {
-    const confirmation = confirm('¿Está seguro de que desea cancelar esta reserva?');
-    if (!confirmation) {
+cancelReservation(reserva: any) {
+    const ahora = new Date();
+    const checkIn = new Date(reserva.check_in_at);
+    const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
+    const enCurso = ahora >= new Date(reserva.check_in_at) && ahora <= new Date(reserva.check_out_at);
+
+    if (enCurso) {
+      alert('No podés cancelar una reserva que ya está en curso.');
+      return;
+    } 
+
+    if (diferenciaMinutos < 30) {
+      alert('No podés cancelar una reserva con menos de 30 minutos de anticipación.');
       return;
     }
 
-    this._reservationService.cancelReservation(reservationId).subscribe({
-      next: (response) => {
-        console.log('Reserva cancelada exitosamente', response);
-        this.getReservation();
-      },
-      error: (error) => {
-        console.error('Error al cancelar la reserva', error);
-      }
-    });
+    if (confirm('¿Estás seguro de que querés cancelar esta reserva?')) {
+          this._reservationService.cancelReservation(reserva.id).subscribe({
+            next: () => {
+              console.log('Reserva cancelada exitosamente');
+              this.getReservation();
+            },
+            error: (error) => {
+              console.error('Error al cancelar la reserva:', error);
+              this.errorMessage = 'No se pudo cancelar la reserva.';
+            }
+          });
+        }
   }
 
   getReservation() {
