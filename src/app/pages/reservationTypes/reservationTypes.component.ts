@@ -2,13 +2,13 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservationTypesService } from '../../services/reservationTypes.service.js';
 import { AuthService } from '../../services/auth.service.js';
-import { runInThisContext } from 'vm'; 
 import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-reservationTypes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './reservationTypes.component.html',
   styleUrl: './reservationTypes.component.css'
 })
@@ -96,17 +96,23 @@ export class ReservationTypesComponent {
     );
   }
 
+  private ordenTipos = ['HOUR', 'HALF_DAY', 'DAY', 'WEEKLY', 'HALF_MONTH', 'MONTH'];
+
   getReservationTypes(){
     // Si es garage, obtener solo sus precios
     if (this._authService.isGarage() && this.garageCuit) {
       this._apiservice.getReservationTypesByGarage(this.garageCuit).subscribe((data: any[]) => {
-        this.reservationTypeList = Array.isArray(data) ? data : [data];
+        this.reservationTypeList = this.ordenarPorTipo(Array.isArray(data) ? data : [data]);
       });
     } else {
       this._apiservice.getReservationTypes().subscribe((data: any[]) => {
-        this.reservationTypeList = Array.isArray(data) ? data : [data];
+        this.reservationTypeList = this.ordenarPorTipo(Array.isArray(data) ? data : [data]);
       });
     }
+  }
+
+  private ordenarPorTipo(list: any[]): any[] {
+    return list.sort((a, b) => this.ordenTipos.indexOf(a.description) - this.ordenTipos.indexOf(b.description));
   }
 
   changeTipodeReserva(reservationType:any){
@@ -147,6 +153,10 @@ export class ReservationTypesComponent {
       'MONTH': 'Mensual'
     };
     return nombres[description] || description;
+  }
+
+  tiposFaltantesTraducidos(): string[] {
+    return this.tiposFaltantes.map(tipo => this.getNombreTipo(tipo));
   }
 
   deleteReservationType(desc: string, cuit:string,  type:boolean) {

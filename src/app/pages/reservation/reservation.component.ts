@@ -270,10 +270,12 @@ ngOnInit() {
 
   showSection(section: string) {
     this.currentSection = section;
-
     if (this.currentSection == 'garages') {
+      this.filters.check_in_at = this.reservationData.check_in_at;
+      this.filters.check_out_at = this.reservationData.check_out_at;
+      this.filters.license_plate = this.reservationData.license_plate;
       this.getGaragesAvailables();
-    } 
+    }
     if (section == 'misReservas') {
       this.getMyReservations();
     }

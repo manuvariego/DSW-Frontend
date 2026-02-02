@@ -1,7 +1,12 @@
   @if (currentSection == 'menu') {
 
       <div class="container mt-4">
-        <h2 class="section-title text-center mb-5">Gestión de Reservas</h2>
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="section-title mb-0">Gestión de Reservas</h2>
+          <button class="btn btn-outline-dark" routerLink="/">
+            <i class="fas fa-arrow-left"></i> Volver
+          </button>
+        </div>
       
         <div class="row justify-content-center">
           <div class="col-md-5 mb-4">
@@ -62,7 +67,7 @@
         <form>
           <div class="form-group mb-3">
             <label class="form-label">Tu Vehículo</label>
-            <select class="form-select modern-input" [(ngModel)]="reservationData.license_plate" [(ngModel)]="filters.license_plate"
+            <select class="form-select modern-input" [(ngModel)]="reservationData.license_plate"
               name="vehicle" required #license_plate="ngModel"
               [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
               <option value="" disabled selected>Seleccioná tu Vehículo...</option>
@@ -79,7 +84,7 @@
               <div class="col-md-6 form-group mb-3">
                 <label class="form-label">Fecha y Hora de Ingreso</label>
                 <input type="datetime-local" class="form-control modern-input" [(ngModel)]="reservationData.check_in_at"
-                  [(ngModel)]="filters.check_in_at" name="checkIn" required (change)="validateDates()"
+                   name="checkIn" required (change)="validateDates()"
                   #check_in_at="ngModel"
                   [class.is-invalid]="check_in_at.invalid && (check_in_at.dirty || check_in_at.touched) || isDateInvalid" />
                 <div *ngIf="check_in_at.errors?.['required'] && (check_in_at.dirty || check_in_at.touched)" class="invalid-feedback">
@@ -90,7 +95,7 @@
               <div class="col-md-6 form-group mb-3">
                 <label class="form-label">Fecha y Hora de Salida</label>
                 <input type="datetime-local" class="form-control modern-input" [(ngModel)]="reservationData.check_out_at"
-                  [(ngModel)]="filters.check_out_at" name="checkOut" required (change)="validateDates()"
+                  name="checkOut" required (change)="validateDates()"
                   #check_out_at="ngModel"
                   [class.is-invalid]="check_out_at.invalid && (check_out_at.dirty || check_out_at.touched) || isDateInvalid" />
                 <div *ngIf="check_out_at.errors?.['required'] && (check_out_at.dirty || check_out_at.touched)" class="invalid-feedback">
