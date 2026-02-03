@@ -37,6 +37,7 @@ export class GaragesComponent {
   parkingSpaces: any[] = [];
   activeReservations: any[] = [];
   errorMessage: string = '';
+  paymentMethod: string = ''; //  efectivo o mercado pago
 
   ngOnInit() {
     this.loadReservationsOnProgress();

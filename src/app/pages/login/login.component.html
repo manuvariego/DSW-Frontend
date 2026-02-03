@@ -51,13 +51,14 @@
         </span>
       </button>
 
-      <div class="text-center">
-        <span class="text-muted small">¿Olvidaste tu contraseña? <a href="#" class="login-link">Haz click aquí</a></span>
-      </div>
+<div class="text-center mt-2">
+  <a (click)="onForgotPassword()" style="cursor: pointer;" class="text-muted text-decoration-underline">
+    ¿Olvidaste tu contraseña?</a> 
+</div>
 
-      <div class="text-center mt-3">
-        <span class="text-muted small">¿No tienes cuenta? <a routerLink="/register" class="login-link">Regístrate aquí</a></span>
-      </div>
+<div class="text-center mt-3">
+    <span class="text-muted small">¿No tienes cuenta? <a routerLink="/register" class="login-link">Regístrate aquí</a></span>
+</div>
 
     </form>
   </div>

@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-login',
@@ -93,4 +94,48 @@ export class LoginComponent {
       }
     });
   }
-}
+
+async onForgotPassword() {
+  const { value: email } = await Swal.fire({
+    title: 'Recuperar Contraseña',
+    input: 'email',
+    inputLabel: 'Ingresá tu correo electrónico',
+    inputPlaceholder: 'ejemplo@correo.com',
+    showCancelButton: true,
+    confirmButtonText: 'Enviar Link',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#212529', 
+    inputValidator: (value: string) => {
+      if (!value) {
+        return '¡Necesitás escribir un email!';
+      }
+      return null;
+    }
+  });
+
+  if (email) {
+    Swal.fire({
+      title: 'Enviando...',
+      text: 'Por favor esperá un momento',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); 
+      }
+    });
+
+    this.authService.forgotPassword(email).subscribe({
+      next: () => {
+        Swal.fire(
+          '¡Enviado!',
+          'Revisá tu correo para seguir los pasos.',
+          'success'
+        );
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire('Error', 'No se pudo enviar el correo.', 'error');
+      }
+    });
+  }
+
+}}
