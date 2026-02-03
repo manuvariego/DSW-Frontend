@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router'
+import { RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-service',
@@ -133,21 +134,50 @@ export class ServiceComponent implements OnInit {
   }
 
   deleteService(serviceId: number) {
-    if (!confirm('¿Eliminar este servicio?')) return;
+  Swal.fire({
+    title: '¿Eliminar este servicio?',
+    text: "Esta acción no se puede deshacer.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6', 
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    
+    if (result.isConfirmed) {
+      this.isLoading = true; 
+      this.serviceService.deleteService(serviceId).subscribe({
+        next: () => {
+          this.isLoading = false;
+          
+          this.loadData(); 
+          Swal.fire(
+            '¡Eliminado!',
+            'El servicio ha sido eliminado correctamente.',
+            'success'
+          );
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error(err);
 
-    this.isLoading = true;
-
-    this.serviceService.deleteService(serviceId).subscribe({
-      next: () => {
-        this.message = 'Servicio eliminado.';
-        this.loadData();
-        setTimeout(() => this.message = '', 3000);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.message = 'Error al eliminar.';
-        console.error(err);
-      }
-    });
-  }
+          if (err.status === 400) {
+            Swal.fire({
+              icon: 'error',
+              title: 'No se puede eliminar',
+              text: err.error.message || 'El servicio está siendo usado en una reserva.'
+            });
+          } else {
+            Swal.fire(
+              'Error',
+              'Ocurrió un error inesperado al intentar eliminar.',
+              'error'
+            );
+          }
+        }
+      });
+    }
+  });
+}
 }

@@ -173,7 +173,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (res of ReservationsList; track res.id) {
+          @for (res of ReservationsList | paginate: { itemsPerPage: 5, currentPage: p }; track res.id) {
             <tr>
               <td class="ps-4 text-muted">{{ res.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</td>
               <td class="text-primary fw-bold">{{ res.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
@@ -212,7 +212,7 @@
             <tr>
               <td colspan="8" class="text-center p-5 text-muted">
                 <i class="fas fa-folder-open fa-2x mb-3 d-block"></i>
-                No se encontraron reservas que coincidan con los filtros.
+                No se encontraron reservas.
               </td>
             </tr>
           }
@@ -315,5 +315,14 @@
     
     <div class="mb-5"></div>
   </div>
+
+<div class="pagination-wrapper mt-4">
+  <pagination-controls 
+    (pageChange)="p = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    class="my-custom-pagination">
+  </pagination-controls>
+</div>
 }
 

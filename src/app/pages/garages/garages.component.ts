@@ -6,11 +6,12 @@ import { ParkingSpaceService } from '../../services/parking-space.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
 import { forkJoin } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-garages',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './garages.component.html',
   styleUrl: './garages.component.css'
 })
@@ -38,6 +39,7 @@ export class GaragesComponent {
   activeReservations: any[] = [];
   errorMessage: string = '';
   paymentMethod: string = ''; //  efectivo o mercado pago
+  p: number = 1; // Página actual para paginación
 
   ngOnInit() {
     this.loadReservationsOnProgress();
