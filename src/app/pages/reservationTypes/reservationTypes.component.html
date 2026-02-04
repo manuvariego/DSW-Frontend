@@ -1,65 +1,79 @@
 @if (currentSection == 'initReservationType') {
-  <div class="fade-in-anim">
+  <div class="container mt-4 fade-in-anim">
+
     <div *ngIf="resTypeCreado" class="alert alert-success shadow-sm text-center mb-4">
       <i class="fas fa-check-circle"></i> Tipo de estadía creado exitosamente.
     </div>
 
-    <div class="container mt-4">
-      <h2 class="section-title text-center mb-5">Precios por Estadía</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-title mb-0">Precios por Estadía</h2>
+      <button class="btn btn-outline-dark" routerLink="/garages">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
 
-      <div class="row justify-content-center">
-        <!-- Alerta si faltan precios - como una tarjeta centrada -->
-        <div *ngIf="pricingStatus && !pricingStatus.completo" class="col-md-4 mb-4">
-          <div class="card menu-card h-100 text-center p-4 border-warning" style="border: 2px solid #ffc107;">
-            <div class="icon-container mb-3">
-              <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
-            </div>
-            <h5 class="card-title text-warning">¡Atención!</h5>
-            <p class="text-muted small">Tu cochera no aparecerá en las búsquedas hasta que completes todos los precios.</p>
-            <p class="small"><strong>Faltan:</strong> {{ tiposFaltantes.join(', ') }}</p>
-            <button class="btn btn-warning mt-2" (click)="showSection('configurarPrecios')">
-              <i class="fas fa-cog"></i> Configurar Precios
-            </button>
-          </div>
+    <!-- Sin precios cargados -->
+    <div *ngIf="reservationTypeList.length === 0" class="text-center py-5">
+      <div class="mb-4">
+        <i class="fas fa-tags fa-4x text-muted"></i>
+      </div>
+      <h4 class="fw-bold mb-3">Configurá tus precios para empezar</h4>
+      <p class="text-muted mb-2" style="max-width: 500px; margin: 0 auto;">
+        Tu cochera no aparecerá en las búsquedas hasta que configures los precios para cada tipo de estadía.
+      </p>
+      <p class="text-muted small mb-4" style="max-width: 500px; margin: 0 auto;">
+        Necesitás cargar: Por Hora, Medio Día, Por Día, Semanal, Quincenal y Mensual.
+      </p>
+      <button class="btn btn-dark-custom btn-lg" (click)="showSection('configurarPrecios')">
+        <i class="fas fa-cog me-2"></i> Configurar Precios
+      </button>
+    </div>
+
+    <!-- Con precios cargados -->
+    <div *ngIf="reservationTypeList.length > 0">
+
+      <!-- Banner si faltan algunos precios -->
+      <div *ngIf="pricingStatus && !pricingStatus.completo" class="alert alert-warning d-flex align-items-center mb-4">
+        <i class="fas fa-exclamation-triangle me-3 fa-lg"></i>
+        <div class="flex-grow-1">
+          <strong>Faltan precios por configurar:</strong>
+          {{ tiposFaltantesTraducidos().join(', ') }}.
+          <br>
+          <small class="text-muted">Tu cochera no aparecerá en las búsquedas hasta completarlos.</small>
+        </div>
+        <button class="btn btn-warning btn-sm ms-3" (click)="showSection('configurarPrecios')">
+          <i class="fas fa-cog me-1"></i> Completar
+        </button>
+      </div>
+
+      <!-- Tabla de precios -->
+      <div class="card-box p-4 mx-auto" style="max-width: 800px;">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="thead-dark-custom">
+              <tr>
+                <th scope="col">Tipo de Estadía</th>
+                <th scope="col">Precio</th>
+                <th scope="col" class="text-center">Editar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reservation of reservationTypeList">
+                <td class="fw-bold">{{ getNombreTipo(reservation.description) }}</td>
+                <td class="text-success fw-bold">${{ reservation.price }}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="changeTipodeReserva(reservation)" title="Editar precio">
+                    <i class="fas fa-pen"></i> Editar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+
   </div>
-
-  <div class="container mt-4 fade-in-anim">
-    <div class="card-box p-4 mx-auto" style="max-width: 800px;">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-      </div>
-
-      <div *ngIf="reservationTypeList.length === 0" class="alert alert-info text-center">
-        <i class="fas fa-info-circle"></i> No tenés precios configurados todavía.
-      </div>
-
-      <div *ngIf="reservationTypeList.length > 0" class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
-          <thead class="thead-dark-custom">
-            <tr>
-              <th scope="col">Tipo de Estadía</th>
-              <th scope="col">Precio</th>
-              <th scope="col" class="text-center">Editar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let reservation of reservationTypeList">
-              <td class="fw-bold">{{ getNombreTipo(reservation.description) }}</td>
-              <td class="text-success fw-bold">${{reservation.price}}</td>
-              <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-primary" (click)="changeTipodeReserva(reservation)" title="Editar precio">
-                  <i class="fas fa-pen"></i> Editar
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
 }
 
 @if (currentSection == 'editReservationType') {
@@ -87,6 +101,7 @@
               <span *ngIf="editPrice.errors?.['min']">El precio debe ser mayor a 0.</span>
             </div>
           </div>
+          <div class="form-text"><i class="fas fa-info-circle me-1"></i>Ingresá el precio sin puntos ni comas. Ej: 2100, no 2.100</div>
         </div>
 
         <div class="d-grid gap-2">
@@ -106,7 +121,8 @@
 <div class="container mt-4 fade-in-anim">
   <div class="card-box p-4 mx-auto" style="max-width: 600px;">
     <h3 class="text-center mb-4 section-title">Configurar Precios de Estadía</h3>
-    <p class="text-muted text-center mb-4">Completá todos los precios para que tu cochera aparezca en las búsquedas. No se permiten precios negativos ni cero.</p>
+    <p class="text-muted text-center mb-2">Completá todos los precios para que tu cochera aparezca en las búsquedas.</p>
+    <p class="text-muted text-center small mb-4"><i class="fas fa-info-circle me-1"></i>Ingresá el precio sin puntos ni comas. Ej: 2100, no 2.100</p>
 
     <form #preciosForm="ngForm" (ngSubmit)="guardarTodosLosPrecios(preciosForm)">
       <!-- Por Hora -->

@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VehiclesService } from '../../services/vehicles.service.js';
-import { runInThisContext } from 'vm';
 import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
@@ -11,7 +11,7 @@ import { ReservationService } from '../../services/reservation.service.js';
 @Component({
   selector: 'app-vehicle',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './vehicles.component.html',
   styleUrl: './vehicles.component.css'
 })

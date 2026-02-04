@@ -246,7 +246,9 @@ ngOnInit() {
     const finalData = {
       ...this.reservationData, 
       services: this.selectedServicesIds,
-      totalPrice: this.totalFinal
+      totalPrice: this.totalFinal, 
+      paymentMethod: this.paymentMethod
+
     };
 
     console.log("Enviando reserva con servicios:", finalData);
@@ -256,6 +258,10 @@ ngOnInit() {
       next: (response) => {
         console.log('Reserva creada exitosamente:', response);
         this.theReservation = response;
+        if (this.paymentMethod === 'MP') {
+            const linkMercadoPago = 'https://link.mercadopago.com.ar'; 
+            window.open(linkMercadoPago, '_blank');
+        }
         this.currentSection = 'realizada'; 
         this.reservationData = { check_in_at: '', check_out_at: '', license_plate: '', cuitGarage: '' };
         this.filters = { check_in_at: '', check_out_at: '', license_plate: '' };
@@ -270,10 +276,12 @@ ngOnInit() {
 
   showSection(section: string) {
     this.currentSection = section;
-
     if (this.currentSection == 'garages') {
+      this.filters.check_in_at = this.reservationData.check_in_at;
+      this.filters.check_out_at = this.reservationData.check_out_at;
+      this.filters.license_plate = this.reservationData.license_plate;
       this.getGaragesAvailables();
-    } 
+    }
     if (section == 'misReservas') {
       this.getMyReservations();
     }
@@ -283,6 +291,12 @@ ngOnInit() {
     const ahora = new Date();
     const checkIn = new Date(reserva.check_in_at);
     const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
+    const enCurso = ahora >= new Date(reserva.check_in_at) && ahora <= new Date(reserva.check_out_at);
+
+    if (enCurso) {
+      alert('No podés cancelar una reserva que ya está en curso.');
+      return;
+    } 
 
     if (diferenciaMinutos < 30) {
       alert('No podés cancelar una reserva con menos de 30 minutos de anticipación.');

@@ -84,8 +84,12 @@
             <button class="btn btn-sm btn-light border me-2" (click)="editService(srv)" title="Editar">
               <i class="fas fa-pen text-warning"></i>
             </button>
-            <button class="btn btn-sm btn-light border" (click)="deleteService(srv.id)" title="Borrar">
-              <i class="fas fa-trash-alt text-danger"></i>
+            <button 
+              class="btn btn-danger btn-sm" 
+              (click)="deleteService(srv.id)"
+              [disabled]="isLoading">
+              
+              <i class="bi bi-trash"></i>
             </button>
           </td>
 

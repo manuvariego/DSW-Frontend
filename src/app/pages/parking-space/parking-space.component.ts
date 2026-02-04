@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ParkingSpaceService } from '../../services/parking-space.service.js';
-import { TypeVehicleService } from '../../services/type-vehicle.service.js';
-import { AuthService } from '../../services/auth.service.js';
+import { ParkingSpaceService } from '../../services/parking-space.service';
+import { TypeVehicleService } from '../../services/type-vehicle.service';
+import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-parking-space',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './parking-space.component.html',
   styleUrl: './parking-space.component.css'
 })
