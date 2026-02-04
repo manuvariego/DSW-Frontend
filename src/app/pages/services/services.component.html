@@ -84,15 +84,15 @@
             <button class="btn btn-sm btn-light border me-2" (click)="editService(srv)" title="Editar">
               <i class="fas fa-pen text-warning"></i>
             </button>
-            <button 
-              class="btn btn-danger btn-sm" 
-              (click)="deleteService(srv.id)"
-              [disabled]="isLoading">
-              
-              <i class="bi bi-trash"></i>
+           <button type="button" 
+                  class="btn-icon-action btn-delete-icon" 
+                  [disabled]="isServiceBlocked(srv.id)"
+                  [class.disabled-btn]="isServiceBlocked(srv.id)"
+                  [title]="isServiceBlocked(srv.id) ? 'No se puede eliminar un servicio que tiene reservas asociadas' : 'Eliminar'"
+                  (click)="deleteService(srv.id)">
+                  <i class="fas fa-trash-alt"></i>
             </button>
           </td>
-
         </tr>
       </tbody>
     </table>

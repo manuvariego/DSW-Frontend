@@ -5,6 +5,7 @@ import { ParkingSpaceService } from '../../services/parking-space.service.js';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { RouterLink } from '@angular/router';
+import { ReservationService } from '../../services/reservation.service.js';
 
 @Component({
   selector: 'app-parking-space',
@@ -19,13 +20,16 @@ export class ParkingSpaceComponent {
   currentSection: string = 'initial'
   typeVehicles: Array<any> = [];
   parkingSpaceList: any[] = []
-  private _apiservice = inject(ParkingSpaceService)
-  private _typeVehicleService = inject(TypeVehicleService)
-  private _authService = inject(AuthService);
   cuitGarage: string = ''
   vehicleTypeId: number | string = '';
   gridMaxNumber: number = 50;
   selectedSpaces: number[] = [];
+  blockedSpaceIds: number[] = [];
+
+  private _apiservice = inject(ParkingSpaceService)
+  private _typeVehicleService = inject(TypeVehicleService)
+  private _authService = inject(AuthService);
+  private reservationService = inject(ReservationService);
   
   ParkingSpaceData = {
 
@@ -41,6 +45,8 @@ export class ParkingSpaceComponent {
     if (this.cuitGarage) {
       this.getParkingSpace();
     }
+    console.log("🚀 Iniciando búsqueda de bloqueos para:", this.cuitGarage);
+    this.checkBlockedSpaces(this.cuitGarage, true);
   }
 
 
@@ -201,4 +207,30 @@ export class ParkingSpaceComponent {
     });
   }
 
+checkBlockedSpaces(garageCuit: string, active: boolean) {
+  this.reservationService. BlockedSpacesByGarage(garageCuit).subscribe({
+    next: (response: any) => {
+      const listaDeReservas = response.data || response;
+      if (!Array.isArray(listaDeReservas)) {
+        return;
+      }
+
+      const blockedSet = new Set<number>();
+
+      listaDeReservas.forEach((r: any) => {
+        const espacio = r.parkingSpace || r.parking_space || r.garage;
+
+        if (espacio && espacio.number) {
+          blockedSet.add((espacio.number));
+        }
+      });
+
+      this.blockedSpaceIds = Array.from(blockedSet);},
+    error: (err) => console.error("Error de conexión:", err)
+  });
+}
+// Función para el HTML
+isSpaceBlocked(numberParkingSpace: number): boolean {
+  return this.blockedSpaceIds.includes((numberParkingSpace));
+}
 }

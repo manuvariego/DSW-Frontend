@@ -41,3 +41,12 @@ h4.section-subtitle { font-size: 1.1rem; color: #6c757d; font-weight: 600; text-
 
 /* Texto de precio */
 .text-success { color: #198754 !important; font-weight: 700; }
+
+/* Cuando el botón tiene la clase disabled-btn o el atributo disabled */
+.btn-delete-icon:disabled,
+.disabled-btn {
+  background-color: #e9ecef !important; 
+  color: #adb5bd !important; 
+  border-color: transparent;
+  opacity: 0.6;
+}

@@ -58,4 +58,7 @@ export class ReservationService {
     return this._http.patch(`${this.apiUrl}/${reservationId}/cancel`, {});
   }
 
+  BlockedSpacesByGarage(cuit: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/list`);
+  }
 }

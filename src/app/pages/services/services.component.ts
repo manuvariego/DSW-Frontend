@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ReservationService } from '../../services/reservation.service.js';
 
 @Component({
   selector: 'app-service',
@@ -18,6 +19,7 @@ export class ServiceComponent implements OnInit {
   garageCuit: any = '';
   isEditing: boolean = false; 
   editingId: number | null = null; 
+  blockedServiceIds: string[] = [];
 
   newService = {
     description: '',
@@ -27,7 +29,7 @@ export class ServiceComponent implements OnInit {
   isLoading = true;
   message = '';
 
-  constructor(private serviceService: ServiceService) { }
+  constructor(private serviceService: ServiceService, private reservationService: ReservationService) { }
 
   ngOnInit(): void {
     const cuit = localStorage.getItem('userId');
@@ -37,6 +39,7 @@ export class ServiceComponent implements OnInit {
     // Usamos el CUIT del localStorage o uno por defecto para probar
     this.garageCuit = cuit ? Number(cuit) : 55555;
     this.loadData();
+    this.checkBlockedServices(this.garageCuit);
   }
 
   loadData() {
@@ -180,4 +183,34 @@ export class ServiceComponent implements OnInit {
     }
   });
 }
+
+checkBlockedServices(garageCuit: string) {
+  this.reservationService.getReservationsOfGarage(garageCuit, true).subscribe({
+    next: (reservations) => {
+      console.log("📦 Buscando servicios ocupados en", reservations.length, "reservas...");
+
+      const blockedSet = new Set<string>();
+
+      reservations.forEach(r => {
+        if (r.services && Array.isArray(r.services)) {
+          r.services.forEach((servicio: any) => {
+             if (servicio.id) {
+              blockedSet.add(String(servicio.id));
+             }
+          });
+        }
+      });
+
+      this.blockedServiceIds = Array.from(blockedSet);
+      console.log("🛠️ Servicios Bloqueados:", this.blockedServiceIds);
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+// Función auxiliar para el HTML
+isServiceBlocked(serviceId: any): boolean {
+  return this.blockedServiceIds.includes(String(serviceId));
+}
+
 }
