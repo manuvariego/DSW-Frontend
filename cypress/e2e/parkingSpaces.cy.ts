@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('Gestión de Espacios de Estacionamiento', () => {
-  const mockGarageCuit = '45638487'; // CUIT Simulado
+  const mockGarageCuit = '11'; // CUIT Simulado
 
   beforeEach(() => {
     // ---------------------------------------------------------------

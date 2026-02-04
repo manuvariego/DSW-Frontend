@@ -61,4 +61,8 @@ export class ReservationService {
   BlockedSpacesByGarage(cuit: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/list`);
   }
+
+  getReservationsForBlocking(cuit: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
+}
 }

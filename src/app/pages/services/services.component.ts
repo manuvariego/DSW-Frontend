@@ -184,31 +184,30 @@ export class ServiceComponent implements OnInit {
   });
 }
 
-checkBlockedServices(garageCuit: string) {
-  this.reservationService.getReservationsOfGarage(garageCuit, true).subscribe({
+checkBlockedServices(cuit: string) {
+  this.reservationService.getReservationsForBlocking(cuit).subscribe({
     next: (reservations) => {
-      console.log("📦 Buscando servicios ocupados en", reservations.length, "reservas...");
+      console.log("Reservas para bloqueo:", reservations);
 
       const blockedSet = new Set<string>();
 
       reservations.forEach(r => {
-        if (r.services && Array.isArray(r.services)) {
+        if (r.services && r.services.length > 0) {
           r.services.forEach((servicio: any) => {
-             if (servicio.id) {
-              blockedSet.add(String(servicio.id));
-             }
+            // Guardamos el ID del servicio
+            blockedSet.add(String(servicio.id));
           });
         }
       });
 
       this.blockedServiceIds = Array.from(blockedSet);
-      console.log("🛠️ Servicios Bloqueados:", this.blockedServiceIds);
+      console.log("Servicios bloqueados:", this.blockedServiceIds);
     },
-    error: (err) => console.error(err)
+    error: (err) => console.error("Error trayendo bloqueos:", err)
   });
 }
 
-// Función auxiliar para el HTML
+// Función para el HTML
 isServiceBlocked(serviceId: any): boolean {
   return this.blockedServiceIds.includes(String(serviceId));
 }
