@@ -1,3 +1,10 @@
+<!-- MENSAJE TOAST -->
+<div *ngIf="message" class="toast-message shadow-sm"
+  [ngClass]="messageType === 'success' ? 'toast-success' : 'toast-error'">
+  <i class="fas me-2" [ngClass]="messageType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+  {{ message }}
+</div>
+
 <div class="container mt-5 fade-in-anim">
   <div class="card-box p-5 mx-auto" style="max-width: 600px;">
 
@@ -100,15 +107,7 @@
           </div>
         </div>
 
-        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
-          <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
-        </div>
-
-        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
-          <i class="fas fa-check-circle"></i> {{ successMessage }}
-        </div>
-
-        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="userForm.invalid || successMessage">
+        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="userForm.invalid || message">
           REGISTRARSE
         </button>
       </form>
@@ -180,15 +179,7 @@
           </div>
         </div>
 
-        <div *ngIf="errorMessage" class="alert alert-danger shadow-sm text-center mb-3 p-2 small">
-          <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
-        </div>
-
-        <div *ngIf="successMessage" class="alert alert-success shadow-sm text-center mb-3 p-2 small">
-          <i class="fas fa-check-circle"></i> {{ successMessage }}
-        </div>
-
-        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="garageForm.invalid || successMessage">
+        <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="garageForm.invalid || message">
           REGISTRAR COCHERA
         </button>
       </form>

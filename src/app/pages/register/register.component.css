@@ -1,58 +1,321 @@
-/* ANIMACIONES */
-.fade-in-anim { animation: fadeIn 0.6s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* ========================================
+   REGISTER PAGE STYLES
+   ======================================== */
 
-/* Títulos */
-h2.section-title {
-    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.5rem;
+.register-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-/* CAJA DE REGISTRO */
+/* Background decoration */
+.register-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201, 166, 107, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.register-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(232, 93, 4, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* CARD CONTAINER */
 .card-box {
-    background: white; border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border: 1px solid #f0f0f0;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: 50px 40px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.6s ease forwards;
 }
 
-/* Inputs Modernos */
-.modern-input {
-    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
-}
-.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
-.form-label { font-weight: 600; color: #555; margin-bottom: 5px; font-size: 0.9rem; }
-
-/* Círculo del ícono */
-.icon-circle-login {
-    width: 70px; height: 70px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    color: white;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Enlaces */
-.login-link { color: #007bff; text-decoration: none; font-weight: 600; transition: color 0.2s; }
-.login-link:hover { color: #0056b3; text-decoration: underline; }
-
-/* BOTONES */
-.btn-dark-custom {
-    background: #343a40; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 700; transition: all 0.3s ease; letter-spacing: 1px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-/* TARJETAS DE TIPO DE CUENTA */
+.fade-in-anim {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+/* HEADER */
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+}
+
+/* ACCOUNT TYPE CARDS */
 .account-type-card {
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    cursor: pointer;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.account-type-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
 }
 
 .account-type-card:hover {
-    border-color: #007bff;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+  border-color: var(--color-primary);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
 }
 
-.account-type-card:active {
-    transform: translateY(-2px);
+.account-type-card:hover::before {
+  transform: scaleX(1);
+}
+
+.account-type-card .icon-circle-login {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 6px 20px rgba(201, 166, 107, 0.3);
+  transition: all var(--transition-base);
+}
+
+.account-type-card:hover .icon-circle-login {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(201, 166, 107, 0.4);
+}
+
+.account-type-card.bg-primary .icon-circle-login {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+}
+
+.account-type-card.bg-success .icon-circle-login {
+  background: linear-gradient(135deg, var(--color-success), #3a8c4d);
+}
+
+.account-type-card .icon-circle-login i {
+  font-size: 1.75rem;
+  color: white;
+}
+
+.account-type-card h5 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+}
+
+.account-type-card p {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* FORM ELEMENTS */
+.form-label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.modern-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: all var(--transition-base);
+}
+
+.modern-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.modern-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
+}
+
+/* BUTTONS */
+.btn-dark-custom {
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-dark-custom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201, 166, 107, 0.2), transparent);
+  transition: left var(--transition-slow);
+}
+
+.btn-dark-custom:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-dark-custom:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.btn-dark-custom:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ALERTS */
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.alert-danger {
+  background: rgba(214, 69, 69, 0.1);
+  color: var(--color-error);
+  border: 1px solid rgba(214, 69, 69, 0.2);
+}
+
+.alert-success {
+  background: rgba(74, 156, 93, 0.1);
+  color: var(--color-success);
+  border: 1px solid rgba(74, 156, 93, 0.2);
+}
+
+/* LINKS */
+.login-link {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.login-link:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+  padding: 8px 0;
+}
+
+.btn-link:hover {
+  color: var(--color-primary-dark);
+}
+
+/* BACK BUTTON */
+.btn-link.text-muted {
+  color: var(--color-text-muted);
+}
+
+.btn-link.text-muted:hover {
+  color: var(--color-primary-dark);
+}
+
+/* RESPONSIVE */
+@media (max-width: 576px) {
+  .card-box {
+    padding: 36px 24px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .account-type-card {
+    padding: 24px 20px;
+  }
 }

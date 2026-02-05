@@ -1,142 +1,306 @@
+/* ========================================
+   PRICING / RESERVATION TYPE PAGE STYLES
+   ======================================== */
+
+/* ANIMACIONES */
 .fade-in-anim {
-  animation: fadeIn 0.5s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: fadeIn 0.4s ease-in-out;
 }
 
-h2.section-title, h3.section-title {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TITULOS */
+h2.section-title,
+h3.section-title {
+  font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  color: #343a40;
+  color: var(--color-dark);
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 3 rem; 
-  margin-bottom: 0 !important;
+  font-size: 1.8rem;
 }
 
+/* Subtítulo grande (debajo del h2/h3) */
+h4.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Subtítulo chico bajo el título principal */
+.section-subtitle-sm {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* Header con subrayado dorado (reutilizado como en Servicios) */
+.services-header {
+  gap: 1rem;
+}
+
+.services-header .section-title {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.services-header .section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+/* Empty state precios */
+.empty-state-pricing h4 {
+  font-size: 1.25rem;
+}
+
+.empty-state-pricing i {
+  opacity: 0.7;
+}
+
+/* TOAST DE MENSAJE (por si lo usás luego) */
+.toast-message {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 1050;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: toastSlideIn 0.35s ease-out, toastFadeOut 0.4s ease-in 2.5s forwards;
+}
+
+.toast-success {
+  background-color: #e8f5e9;
+  border-left: 4px solid #43a047;
+  color: #2e7d32;
+}
+
+.toast-error {
+  background-color: #fce4ec;
+  border-left: 4px solid #e53935;
+  color: #c62828;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toastFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* FORMULARIO / CARD */
 .card-box {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  border: 1px solid #f0f0f0;
-  padding: 1.5rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-base);
 }
 
+.border-editing {
+  border: 2px solid var(--color-warning) !important;
+  background-color: rgba(229, 166, 50, 0.05);
+  box-shadow: 0 0 0 3px rgba(229, 166, 50, 0.12);
+}
+
+/* Icon circle (si lo usás en este módulo en algún momento) */
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-dark-light {
+  background-color: var(--color-bg-alt);
+}
+
+.bg-warning-light {
+  background-color: rgba(229, 166, 50, 0.15);
+}
+
+.text-warning-dark {
+  color: var(--color-primary-dark);
+}
+
+/* INPUTS */
+.form-control,
 .input-group-text {
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  font-weight: bold;
-}
-
-.form-control {
-  border: 1px solid #ced4da;
-  border-radius: 0 8px 8px 0;
-  padding: 12px;
-  background-color: #f8f9fa;
-  transition: all 0.3s ease;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-border);
+  padding: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
 }
 
 .form-control:focus {
-  background-color: #ffffff;
-  border-color: #343a40;
-  box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1);
-  z-index: 2;
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
 }
 
-.form-label {
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.invalid-feedback {
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
-
-/* --- TABLAS --- */
-.table-responsive {
-  border-radius: 12px;
-  overflow: hidden;
-  background: white;
-  box-shadow: none; 
-  margin-top: 10px  ; 
-}
-
-.thead-dark-custom th {
-  background: linear-gradient(135deg, #343a40, #212529);
+/* BOTONES */
+.btn-dark-custom {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
   color: white;
-  padding: 12px 15px; 
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+}
+
+.btn-dark-custom:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Botón dorado (lo usás en el banner de faltan precios) */
+.btn-warning {
+  background-color: var(--color-warning);
+  border: none;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-warning:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Botón de cancelar edición (reutilizable) */
+.btn-cancel-edit {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TABLA */
+.table-responsive {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Header oscuro de tabla */
+.thead-dark-custom th {
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
+  color: white;
+  padding: 12px 15px;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 0.85rem;
   border: none;
 }
 
-.table td {
-  vertical-align: middle;
-  padding: 12px 15px;
-  color: #495057;
-}
-
-/* --- BOTONES --- */
-.btn-dark-custom {
-  background: #343a40;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+.table thead th {
   font-weight: 600;
-  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--color-border);
 }
 
-.btn-dark-custom:hover {
-  background: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+.table-hover tbody tr:hover {
+  background-color: var(--color-bg);
 }
 
-.btn-dark-custom:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+/* Botones de acción simples (si usás .btn-light en algún lado) */
+.btn-light {
+  background: var(--color-surface);
+  transition: all 0.2s;
+  color: var(--color-text-muted);
 }
 
-/* Botón Editar dentro de la tabla */
-.btn-outline-primary {
-  color: #0d6efd;
-  border-color: #0d6efd;
-  font-weight: 500;
+.btn-light:hover {
+  background: var(--color-bg-alt);
+  transform: translateY(-1px);
 }
 
-.btn-outline-primary:hover {
-  background-color: #0d6efd;
-  color: white;
+/* Fila activa (si en algún momento marcás alguna) */
+.table-active {
+  background-color: rgba(229, 166, 50, 0.1) !important;
+  --bs-table-accent-bg: rgba(229, 166, 50, 0.1) !important;
 }
 
-/* --- ALERTAS --- */
-.alert-info {
-  background-color: #e2e3e5;
-  color: #383d41;
+/* Precio */
+.text-success {
+  color: var(--color-success) !important;
+  font-weight: 700;
+}
+
+/* Action icons */
+.btn-icon-action {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 8px;
-  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  cursor: pointer;
 }
 
-.alert-success {
-    background-color: #d1e7dd;
-    color: #0f5132;
-    border: none;
-    border-radius: 8px;
+.btn-icon-action i {
+  font-size: 1.1rem;
+  pointer-events: none;
 }
 
-@media (max-width: 576px) {
-  .card-box {
-    padding: 1rem;
-  }
-  h3.section-title {
-    font-size: 1.3rem;
-  }
+.btn-edit-icon {
+  color: var(--color-warning) !important;
+  background-color: rgba(229, 166, 50, 0.15) !important;
+}
+
+.btn-edit-icon:hover {
+  background-color: var(--color-warning) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.btn-delete-icon {
+  color: var(--color-error) !important;
+  background-color: rgba(214, 69, 69, 0.15) !important;
+}
+
+.btn-delete-icon:hover {
+  background-color: var(--color-error) !important;
+  color: white !important;
+  transform: scale(1.1);
 }

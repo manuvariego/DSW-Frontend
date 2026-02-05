@@ -1,48 +1,78 @@
 <div class="container mt-5 fade-in-anim">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="section-title mb-0">Mi Perfil</h3>
-    <button class="btn btn-outline-dark" [routerLink]="isGarage ? '/garages' : '/'">
-      <i class="fas fa-arrow-left"></i> Volver
-    </button>
+  <div *ngIf="message" class="alert shadow-sm text-center mb-4" [class.alert-success]="isSuccess"
+    [class.alert-danger]="!isSuccess">
+    <i class="fas" [class.fa-check-circle]="isSuccess" [class.fa-times-circle]="!isSuccess"></i>
+    {{ message }}
   </div>
 
-  <div *ngIf="message" class="alert text-center shadow-sm mb-4" [ngClass]="isSuccess ? 'alert-success' : 'alert-danger'">
-    <i class="fas" [ngClass]="isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle'"></i> {{ message }}
-  </div>
+  <!-- ===== HEADER PERFIL ===== -->
+  <div class="profile-header mb-4 p-4 rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+      <div>
+        <h3 class="fw-bold mb-1">
+          {{ isGarage ? 'Mi Cochera' : 'Mi Perfil' }}
+        </h3>
+        <p class="text-muted mb-0">
+          {{ isGarage
+          ? 'Gestioná los datos de tu cochera'
+          : 'Resumen de tu cuenta y datos personales' }}
+        </p>
+      </div>
 
-  @if (!isGarage) {
-  <div class="row g-4 mb-5">
+      <button class="btn btn-outline-dark" [routerLink]="isGarage ? '/garages' : '/'">
+        <i class="fas fa-arrow-left me-2"></i> Volver
+      </button>
+    </div>
+
+    <!-- MÉTRICAS PARA USUARIO -->
+    @if (!isGarage) {
+    <div class="row g-3 mt-2">
       <div class="col-md-4">
-        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-primary">
+        <div
+          class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-primary">
           <div>
             <p class="text-muted mb-1 small fw-bold text-uppercase">Inversión Total</p>
             <h3 class="mb-0 fw-bold text-dark">${{ stats.totalSpent }}</h3>
           </div>
-          <div class="icon-box bg-primary-light text-primary"><i class="fas fa-wallet fa-2x"></i></div>
+          <div class="icon-box bg-primary-light text-primary">
+            <i class="fas fa-wallet fa-2x"></i>
+          </div>
         </div>
       </div>
+
       <div class="col-md-4">
-        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-info">
+        <div
+          class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-info">
           <div>
-            <p class="text-muted mb-1 small fw-bold text-uppercase">Reservas</p>
+            <p class="text-muted mb-1 small fw-bold text-uppercase">Cantidad de Reservas</p>
             <h3 class="mb-0 fw-bold text-dark">{{ stats.completedReservations }}</h3>
           </div>
-          <div class="icon-box bg-info-light text-info"><i class="fas fa-car fa-2x"></i></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-warning">
-          <div style="overflow: hidden;">
-            <p class="text-muted mb-1 small fw-bold text-uppercase">Tu Favorita</p>
-            <h5 class="mb-0 fw-bold text-dark text-truncate" title="{{ stats.favoriteGarage }}">{{ stats.favoriteGarage }}</h5>
+          <div class="icon-box bg-info-light text-info">
+            <i class="fas fa-car fa-2x"></i>
           </div>
-          <div class="icon-box bg-warning-light text-warning"><i class="fas fa-star fa-2x"></i></div>
         </div>
       </div>
-  </div>
-  }
 
+      <div class="col-md-4">
+        <div
+          class="stat-card bg-white p-3 h-100 d-flex align-items-center justify-content-between shadow-sm border-start-warning">
+          <div style="overflow: hidden;">
+            <p class="text-muted mb-1 small fw-bold text-uppercase">Cochera Favorita</p>
+            <h5 class="mb-0 fw-bold text-dark text-truncate" title="{{ stats.favoriteGarage }}">
+              {{ stats.favoriteGarage || '-' }}
+            </h5>
+          </div>
+          <div class="icon-box bg-warning-light text-warning">
+            <i class="fas fa-star fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- ===== CONTENIDO PRINCIPAL PERFIL ===== -->
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
 
@@ -50,226 +80,231 @@
 
         <!-- ===== USER PROFILE ===== -->
         @if (!isGarage) {
-          <div class="text-center mb-4">
-            <div class="avatar-circle mb-3 bg-dark text-white mx-auto d-flex align-items-center justify-content-center">
-              <span class="fs-1 fw-bold">{{ user.name?.charAt(0) | uppercase }}</span>
+        <div class="text-center mb-4">
+          <div class="avatar-circle mb-3 bg-dark text-white mx-auto d-flex align-items-center justify-content-center" style="border: 3px solid var(--color-primary);">
+            <span class="fs-1 fw-bold">{{ user.name?.charAt(0) | uppercase }}</span>
+          </div>
+          <h5 class="fw-bold">{{ user.name }} {{ user.lastname }}</h5>
+          <span class="badge text-dark" style="background-color: var(--color-primary);">Usuario Registrado</span>
+        </div>
+
+        <!-- === VIEW MODE (USER) === -->
+        @if (!isEditing) {
+        <div class="profile-info">
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">NOMBRE</span>
+              <span class="fw-semibold">{{ user.name || '-' }}</span>
             </div>
-            <h5 class="fw-bold">{{ user.name }} {{ user.lastname }}</h5>
-            <span class="badge bg-light text-dark border">Usuario Registrado</span>
           </div>
 
-          <!-- === VIEW MODE === -->
-          @if (!isEditing) {
-            <div class="profile-info">
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">NOMBRE</span>
-                  <span class="fw-semibold">{{ user.name || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">APELLIDO</span>
-                  <span class="fw-semibold">{{ user.lastname || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">EMAIL</span>
-                  <span class="fw-semibold">{{ user.email || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">TELÉFONO</span>
-                  <span class="fw-semibold">{{ user.phoneNumber || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-4">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">DNI</span>
-                  <span class="fw-semibold">{{ user.dni }}</span>
-                </div>
-              </div>
-
-              <div class="d-grid">
-                <button type="button" class="btn btn-dark btn-lg" (click)="startEditingUser()">
-                  <i class="fas fa-edit me-2"></i> Modificar Datos
-                </button>
-              </div>
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">APELLIDO</span>
+              <span class="fw-semibold">{{ user.lastname || '-' }}</span>
             </div>
-          }
+          </div>
 
-          <!-- === EDIT MODE === -->
-          @if (isEditing) {
-            <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">EMAIL</span>
+              <span class="fw-semibold">{{ user.email || '-' }}</span>
+            </div>
+          </div>
 
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">NOMBRE</label>
-                  <input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">APELLIDO</label>
-                  <input type="text" class="form-control" name="lastname" [(ngModel)]="user.lastname" required>
-                </div>
-              </div>
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">TELÉFONO</span>
+              <span class="fw-semibold">{{ user.phoneNumber || '-' }}</span>
+            </div>
+          </div>
 
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">EMAIL</label>
-                  <input type="email" class="form-control" name="email" [(ngModel)]="user.email">
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">TELÉFONO</label>
-                  <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="user.phoneNumber">
-                </div>
-              </div>
+          <div class="info-row mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">DNI</span>
+              <span class="fw-semibold">{{ user.dni }}</span>
+            </div>
+          </div>
 
-              <div class="mb-4">
-                <label class="form-label fw-bold small text-muted">DNI</label>
-                <input type="text" class="form-control bg-light" name="dni" [(ngModel)]="user.dni" readonly>
-                <div class="form-text"><i class="fas fa-lock me-1"></i> El DNI no se puede modificar.</div>
-              </div>
+          <div class="d-grid">
+            <button type="button" class="btn btn-dark btn-lg" (click)="startEditingUser()">
+              <i class="fas fa-edit me-2"></i> Modificar Datos
+            </button>
+          </div>
+        </div>
+        }
 
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelEditingUser()">
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-success flex-fill" [disabled]="isLoading || profileForm.invalid">
-                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                  {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
-                </button>
-              </div>
+        <!-- === EDIT MODE (USER) === -->
+        @if (isEditing) {
+        <form #profileForm="ngForm" (ngSubmit)="updateProfile()">
 
-            </form>
-          }
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">NOMBRE</label>
+              <input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">APELLIDO</label>
+              <input type="text" class="form-control" name="lastname" [(ngModel)]="user.lastname" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">EMAIL</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="user.email">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">TELÉFONO</label>
+              <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="user.phoneNumber">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold small text-muted">DNI</label>
+            <input type="text" class="form-control bg-light" name="dni" [(ngModel)]="user.dni" readonly>
+            <div class="form-text">
+              <i class="fas fa-lock me-1"></i> El DNI no se puede modificar.
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelEditingUser()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-dark-custom flex-fill" [disabled]="isLoading || profileForm.invalid">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+
+        </form>
+        }
         }
 
         <!-- ===== GARAGE PROFILE ===== -->
         @if (isGarage) {
-          <div class="text-center mb-4">
-            <div class="avatar-circle mb-3 bg-primary text-white mx-auto d-flex align-items-center justify-content-center">
-              <span class="fs-1 fw-bold">{{ garage.name?.charAt(0) | uppercase }}</span>
+        <div class="text-center mb-4">
+          <div
+            class="avatar-circle mb-3 bg-dark text-white mx-auto d-flex align-items-center justify-content-center" style="border: 3px solid var(--color-primary);">
+            <span class="fs-1 fw-bold">{{ garage.name?.charAt(0) | uppercase }}</span>
+          </div>
+          <h5 class="fw-bold">{{ garage.name }}</h5>
+          <span class="badge text-dark" style="background-color: var(--color-primary);">Cochera Registrada</span>
+        </div>
+
+        <!-- === VIEW MODE (GARAGE) === -->
+        @if (!isEditing) {
+        <div class="profile-info">
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">NOMBRE</span>
+              <span class="fw-semibold">{{ garage.name || '-' }}</span>
             </div>
-            <h5 class="fw-bold">{{ garage.name }}</h5>
-            <span class="badge bg-primary text-white">Cochera Registrada</span>
           </div>
 
-          <!-- === VIEW MODE === -->
-          @if (!isEditing) {
-            <div class="profile-info">
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">NOMBRE</span>
-                  <span class="fw-semibold">{{ garage.name || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">TELÉFONO</span>
-                  <span class="fw-semibold">{{ garage.phoneNumber || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">EMAIL</span>
-                  <span class="fw-semibold">{{ garage.email || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">DIRECCIÓN</span>
-                  <span class="fw-semibold">{{ garage.address || '-' }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-3 pb-3 border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">LOCALIDAD</span>
-                  <span class="fw-semibold">{{ getLocationName() }}</span>
-                </div>
-              </div>
-
-              <div class="info-row mb-4">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-muted small">CUIT</span>
-                  <span class="fw-semibold">{{ garage.cuit }}</span>
-                </div>
-              </div>
-
-              <div class="d-grid">
-                <button type="button" class="btn btn-dark btn-lg" (click)="startEditing()">
-                  <i class="fas fa-edit me-2"></i> Modificar Datos
-                </button>
-              </div>
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">TELÉFONO</span>
+              <span class="fw-semibold">{{ garage.phoneNumber || '-' }}</span>
             </div>
-          }
+          </div>
 
-          <!-- === EDIT MODE === -->
-          @if (isEditing) {
-            <form #garageForm="ngForm" (ngSubmit)="updateGarageProfile()">
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">EMAIL</span>
+              <span class="fw-semibold">{{ garage.email || '-' }}</span>
+            </div>
+          </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small text-muted">NOMBRE DEL ESTABLECIMIENTO</label>
-                <input type="text" class="form-control" name="name" [(ngModel)]="garage.name" required>
-              </div>
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">DIRECCIÓN</span>
+              <span class="fw-semibold">{{ garage.address || '-' }}</span>
+            </div>
+          </div>
 
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">TELÉFONO</label>
-                  <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="garage.phoneNumber" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-bold small text-muted">EMAIL</label>
-                  <input type="email" class="form-control" name="email" [(ngModel)]="garage.email" required>
-                </div>
-              </div>
+          <div class="info-row mb-3 pb-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">LOCALIDAD</span>
+              <span class="fw-semibold">{{ getLocationName() }}</span>
+            </div>
+          </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small text-muted">DIRECCIÓN</label>
-                <input type="text" class="form-control" name="address" [(ngModel)]="garage.address" required>
-              </div>
+          <div class="info-row mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">CUIT</span>
+              <span class="fw-semibold">{{ garage.cuit }}</span>
+            </div>
+          </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-bold small text-muted">LOCALIDAD</label>
-                <select class="form-select" name="location" [(ngModel)]="garage.location" required>
-                  <option *ngFor="let loc of locations" [ngValue]="loc.id">
-                    {{ loc.name }}, {{ loc.province }}
-                  </option>
-                </select>
-              </div>
+          <div class="d-grid">
+            <button type="button" class="btn btn-dark btn-lg" (click)="startEditing()">
+              <i class="fas fa-edit me-2"></i> Modificar Datos
+            </button>
+          </div>
+        </div>
+        }
 
-              <div class="mb-4">
-                <label class="form-label fw-bold small text-muted">CUIT</label>
-                <input type="text" class="form-control bg-light" name="cuit" [value]="garage.cuit" readonly>
-                <div class="form-text"><i class="fas fa-lock me-1"></i> El CUIT no se puede modificar.</div>
-              </div>
+        <!-- === EDIT MODE (GARAGE) === -->
+        @if (isEditing) {
+        <form #garageForm="ngForm" (ngSubmit)="updateGarageProfile()">
 
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelEditing()">
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-success flex-fill" [disabled]="isLoading || garageForm.invalid">
-                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                  {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
-                </button>
-              </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold small text-muted">NOMBRE DEL ESTABLECIMIENTO</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="garage.name" required>
+          </div>
 
-            </form>
-          }
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">TELÉFONO</label>
+              <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="garage.phoneNumber" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small text-muted">EMAIL</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="garage.email" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold small text-muted">DIRECCIÓN</label>
+            <input type="text" class="form-control" name="address" [(ngModel)]="garage.address" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold small text-muted">LOCALIDAD</label>
+            <select class="form-select" name="location" [(ngModel)]="garage.location" required>
+              <option *ngFor="let loc of locations" [ngValue]="loc.id">
+                {{ loc.name }}, {{ loc.province }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold small text-muted">CUIT</label>
+            <input type="text" class="form-control bg-light" name="cuit" [value]="garage.cuit" readonly>
+            <div class="form-text">
+              <i class="fas fa-lock me-1"></i> El CUIT no se puede modificar.
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill" (click)="cancelEditing()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-dark-custom flex-fill" [disabled]="isLoading || garageForm.invalid">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+
+        </form>
+        }
         }
 
       </div>
     </div>
-
   </div>
-  
-  <div class="mb-5"></div> </div>
+
+  <div class="mb-5"></div>
+</div>

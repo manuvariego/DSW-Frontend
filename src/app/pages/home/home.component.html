@@ -1,49 +1,41 @@
-<body>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Tu cochera ideal,<br><span>un click de distancia</span></h1>
+    <p>Encontrá y reservá estacionamiento seguro, rápido, fácil en toda la ciudad.</p>
 
-  <section class="hero">
-    <h1>¡Bienvenido a ParkEasy!</h1>
-    <p>Estacionamiento fácil y rápido en toda la ciudad.</p>
-  </section>
+    <a
+      *ngIf="authService.isUser()"
+      class="hero-cta-btn"
+      routerLink="/reservation"
+      [queryParams]="{ section: 'initial' }"
+    >
+      <i class="fas fa-calendar-check"></i>
+      Reservar ahora
+    </a>
 
-  <section *ngIf="authService.isUser()" class="user-dashboard py-5 bg-light fade-in-anim">
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">200+</div>
+      <div class="stat-label">Cocheras</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Disponibilidad</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5k+</div>
+      <div class="stat-label">Usuarios</div>
+    </div>
+  </div>
+</section>
+
+<!-- User Dashboard -->
+<section *ngIf="authService.isUser()" class="user-dashboard fade-in-anim">
   <div class="container">
-    
     <div class="row justify-content-center g-4">
-      <div class="col-md-4 col-lg-3">
-        <div class="card card-action h-100 shadow-sm border-0" routerLink="/reservation" [queryParams]="{ section: 'initial' }">
-          <div class="card-body text-center p-4">
-            <div class="icon-dashboard bg-dark text-white mb-3">
-              <i class="fas fa-search-location fa-2x"></i>
-            </div>
-            <h5 class="fw-bold">Reservar</h5>
-            <p class="small text-muted mb-0">Buscar cochera disponible</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-lg-3">
-        <div class="card card-action h-100 shadow-sm border-0" routerLink="/vehicles">
-          <div class="card-body text-center p-4">
-            <div class="icon-dashboard bg-light text-dark border mb-3">
-              <i class="fas fa-car fa-2x"></i>
-            </div>
-            <h5 class="fw-bold">Mis Vehículos</h5>
-            <p class="small text-muted mb-0">Agregar o eliminar autos</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-lg-3">
-        <div class="card card-action h-100 shadow-sm border-0" routerLink="/reservation" [queryParams]="{ section: 'misReservas' }">
-          <div class="card-body text-center p-4">
-            <div class="icon-dashboard bg-light text-dark border mb-3">
-              <i class="fas fa-ticket-alt fa-2x"></i>
-            </div>
-            <h5 class="fw-bold">Mis Reservas</h5>
-            <p class="small text-muted mb-0">Historial y reservas activas</p>
-          </div>
-        </div>
-      </div>
 
       <div class="col-md-4 col-lg-3">
         <div class="card card-action h-100 shadow-sm border-0" routerLink="/profile">
@@ -56,80 +48,105 @@
           </div>
         </div>
       </div>
+      
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/reservation" [queryParams]="{ section: 'misReservas' }">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-light text-dark border mb-3">
+              <i class="fas fa-ticket-alt fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Mis Reservas</h5>
+            <p class="small text-muted mb-0">Historial y reservas activas</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 col-lg-3">
+        <div class="card card-action h-100 shadow-sm border-0" routerLink="/vehicles">
+          <div class="card-body text-center p-4">
+            <div class="icon-dashboard bg-light text-dark border mb-3">
+              <i class="fas fa-car fa-2x"></i>
+            </div>
+            <h5 class="fw-bold">Mis Vehículos</h5>
+            <p class="small text-muted mb-0">Agregar o eliminar autos</p>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
 </section>
 
-  <section class="contenido">
-      <h2>¿Qué es ParkEasy?</h2>
-      <p>Es una aplicacion que va a facilitarte estacionar tu vehiculo con un solo click.</p>
-  </section>
+<section class="contenido">
+  <h2>¿Qué es ParkEasy?</h2>
+  <p>Es una aplicacion que va a facilitarte estacionar tu vehiculo con un solo click.</p>
+</section>
 
-
-  <section class="info-seccion py-5">
-    <div class="container">
-      <div class="row text-center">
-        <div class="col-md-3">
-          <i class="bi bi-calculator display-4 mb-3"></i>
+<section class="info-seccion">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3">
+        <div class="info-card">
+          <i class="bi bi-calculator"></i>
           <h4>Cotización en 1'</h4>
           <p>Calcula el costo de tu estadía al instante!</p>
         </div>
-        <div class="col-md-3">
-          <i class="bi bi-car-front display-4 mb-3"></i>
+      </div>
+      <div class="col-md-3">
+        <div class="info-card">
+          <i class="bi bi-car-front"></i>
           <h4>Servicios</h4>
           <p>Opciones de lavado y mantenimiento disponibles</p>
         </div>
-        <div class="col-md-3">
-          <i class="bi bi-geo-alt display-4 mb-3"></i>
+      </div>
+      <div class="col-md-3">
+        <div class="info-card">
+          <i class="bi bi-geo-alt"></i>
           <h4>+ 200 cocheras</h4>
           <p>Amplia red de estacionamientos techados y seguros</p>
         </div>
-        <div class="col-md-3">
-          <i class="bi bi-airplane display-4 mb-3"></i>
+      </div>
+      <div class="col-md-3">
+        <div class="info-card">
+          <i class="bi bi-airplane"></i>
           <h4>Park to Fly</h4>
           <p>Cocheras exclusivas a solo 10' del Aeropuerto</p>
         </div>
       </div>
     </div>
-  </section>
-    
-  <section class="ubicacion py-5">
-    <div class="container">
-      <h3 class="text-center mb-4">Encontrá tu cochera mas cercana</h3>
-      <p class="text-center">
-        ¡Tenemos todas estas opciones!
-      </p>
-      <div id="map" style="height: 400px; margin-top: 20px;"></div>
-    </div>
-  </section>
-  
-
- <section class="contacto">
-    <div class="container">
-        <div class="footer-logo mb-3">
-            <div class="icon-circle">
-                <i class="fas fa-parking"></i>
-            </div>
-            <h3>PARKEASY</h3>
-        </div>
-
-        <h4 class="mb-4 font-weight-light">Para consultas y más información</h4>
-
-        <div class="contact-buttons-container">
-            <a href="mailto:est.parkeasy@gmail.com" class="btn-outline-custom">
-                <i class="fas fa-envelope"></i> est.parkeasy&#64;gmail.com
-            </a>
-            <a href="https://wa.me/5493406518223" target="_blank" class="btn-outline-custom">
-                <i class="fab fa-whatsapp"></i> +54 9 3406-518223
-            </a>
-        </div>
-        
-        <p class="copyright mt-5 text-muted small">© 2024 ParkEasy. Todos los derechos reservados.</p>
-    </div>
+  </div>
 </section>
-     
-</body>
 
+<section class="ubicacion">
+  <div class="container">
+    <h3>Encontrá tu cochera mas cercana</h3>
+    <p>¡Tenemos todas estas opciones!</p>
+    <div id="map"></div>
+  </div>
+</section>
 
+<section class="contacto">
+  <div class="container">
+    <div class="footer-logo">
+      <div class="icon-circle">
+        <i class="fas fa-parking"></i>
+      </div>
+      <h3>PARKEASY</h3>
+    </div>
 
+    <h4>¿Tenés dudas? Contactanos</h4>
+
+    <div class="contact-buttons-container">
+      <a href="mailto:est.parkeasy&#64;gmail.com" class="btn-outline-custom">
+        <i class="fas fa-envelope"></i>
+        est.parkeasy&#64;gmail.com
+      </a>
+      <a href="https://wa.me/5493406518223" target="_blank" class="btn-outline-custom">
+        <i class="fab fa-whatsapp"></i>
+        +54 9 3406-518223
+      </a>
+    </div>
+
+    <p class="copyright">© 2026 ParkEasy. Todos los derechos reservados.</p>
+  </div>
+</section>

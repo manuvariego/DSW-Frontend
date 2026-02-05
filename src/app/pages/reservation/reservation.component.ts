@@ -80,14 +80,20 @@ export class ReservationComponent implements OnInit {
 
 ngOnInit() {
     // para saber que usuario es el que está haciendo la reserva
-    const storedId = this.authService.getCurrentUserId(); 
+    const storedId = this.authService.getCurrentUserId();
 
     if (storedId) {
       this.userID = storedId;
       console.log("Usuario detectado ID:", this.userID);
-      
+
       // buscamos los vehículos de ese usuario
       this.getUserVehicles();
+
+      // Leer query param para ir directo a una sección
+      const section = this.route.snapshot.queryParamMap.get('section');
+      if (section) {
+        this.showSection(section);
+      }
     } else {
       console.warn("No hay usuario logueado.");
       this.router.navigate(['/login']); // Si no hay usuario, se va al login
@@ -172,8 +178,6 @@ ngOnInit() {
     const checkIn = new Date(this.reservationData.check_in_at);
     const checkOut = new Date(this.reservationData.check_out_at);
 
-
-    // Opcional: Si hay un campo específico para mostrar errores de fecha
     if (checkIn > checkOut) {
       this.errorDateInvalid = 'La fecha de entrada no puede ser posterior a la fecha de salida.';
       this.isDateInvalid = true;
@@ -181,8 +185,38 @@ ngOnInit() {
       this.errorDateInvalid = 'La fecha de entrada no puede ser anterior a hoy';
       this.isDateInvalid = true;
     } else {
-      this.errorDateInvalid = ''; // Limpia el mensaje de error si las fechas son válidas
+      this.errorDateInvalid = '';
       this.isDateInvalid = false;
+    }
+  }
+
+
+  get minCheckIn(): string {
+    return this.formatDateTimeLocal(new Date());
+  }
+
+  get minCheckOut(): string {
+    if (this.reservationData.check_in_at) {
+      return this.reservationData.check_in_at;
+    }
+    return this.minCheckIn;
+  }
+
+  private formatDateTimeLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const mins = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${mins}`;
+  }
+
+  onCheckInChange() {
+    this.validateDates();
+    if (this.reservationData.check_out_at && this.reservationData.check_in_at) {
+      if (this.reservationData.check_out_at < this.reservationData.check_in_at) {
+        this.reservationData.check_out_at = '';
+      }
     }
   }
 
@@ -199,7 +233,7 @@ ngOnInit() {
     this.selectedGarageName = aGarage.name
     this.availableServices = aGarage.services || [];
     this.selectedServicesIds = [];
-    this.totalEstadia = aGarage.precioEstimado || 0;
+    this.totalEstadia = Math.round(aGarage.precioEstimado || 0);
     this.totalExtra = 0;
     this.totalFinal = this.totalEstadia;
     this.currentSection = 'services';
@@ -229,7 +263,7 @@ ngOnInit() {
       this.selectedServicesIds = this.selectedServicesIds.filter(id => id !== service.id);
       this.totalExtra -= Number(service.price);
     }
-    this.totalFinal = this.totalEstadia + this.totalExtra;
+    this.totalFinal = Math.round(this.totalEstadia + this.totalExtra);
   }
 
   // métodos para que se haga el pago 

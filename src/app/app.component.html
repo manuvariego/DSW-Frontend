@@ -1,9 +1,7 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
 
-    <a class="navbar-brand"
-       routerLink=""
-       (click)="onOption('home')">
+    <a class="navbar-brand" [routerLink]="authService.isGarage() ? '/garages' : '/'" (click)="onOption('home')">
       ParkEasy
     </a>
 
@@ -22,7 +20,7 @@
          *ngIf="!authService.isLoggedIn()"
          routerLink="login"
          (click)="onOption('login')">
-        Ingresar
+        <span>Ingresar</span>
       </a>
 
       <!-- Saludo al usuario -->
@@ -41,94 +39,89 @@
       </button>
     </div>
 
-    <!-- MENÚ LATERAL -->
-    <div class="offcanvas offcanvas-end"
-         tabindex="-1"
-         id="offcanvasNavbar">
-
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Menú</h5>
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="offcanvas"></button>
-      </div>
-
-      <div class="offcanvas-body">
-        <ul class="navbar-nav">
-
-          <!-- ===== MENÚ USUARIO ===== -->
-          <ng-container *ngIf="authService.isUser()">
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
-                <i class="fas fa-user-circle me-2"></i>Mi Perfil
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="vehicles" data-bs-dismiss="offcanvas">
-                <i class="fas fa-car-side me-2"></i>Mis Vehículos
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="reservation" data-bs-dismiss="offcanvas">
-                <i class="fas fa-calendar-check me-2"></i>Mis Reservas
-              </a>
-            </li>
-
-
-          </ng-container>
-
-          <!-- ===== MENÚ COCHERA (GARAGE) ===== -->
-          <ng-container *ngIf="authService.isGarage()">
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
-                <i class="fas fa-user-circle me-2"></i> Mi Perfil
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="garages" data-bs-dismiss="offcanvas">
-                <i class="fas fa-warehouse me-2"></i> Mi Cochera
-              </a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" routerLink="parkingSpace" data-bs-dismiss="offcanvas">
-                <i class="fas fa-parking me-2"></i> Espacios de Estacionamiento
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="services" data-bs-dismiss="offcanvas">
-                <i class="fas fa-concierge-bell me-2"></i> Servicios
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="reservationTypes" data-bs-dismiss="offcanvas">
-                <i class="fas fa-tags me-2"></i> Precios por Estadía
-              </a>
-            </li>
-
-          </ng-container>
-
-          <!-- CERRAR SESIÓN -->
-          <li class="nav-item mt-3">
-            <button class="btn btn-outline-danger w-100"
-                    (click)="logout()"
-                    data-bs-dismiss="offcanvas">
-              Cerrar sesión
-            </button>
-          </li>
-
-        </ul>
-      </div>
-    </div>
   </div>
 </nav>
+
+<!-- MENÚ LATERAL (fuera del navbar para evitar conflicto con backdrop-filter) -->
+<div class="offcanvas offcanvas-end"
+     tabindex="-1"
+     id="offcanvasNavbar">
+
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Menú</h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <ul class="navbar-nav">
+
+      <!-- ===== MENÚ USUARIO ===== -->
+      <ng-container *ngIf="authService.isUser()">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
+            <i class="fas fa-user-circle me-2"></i>Mi Perfil
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="vehicles" data-bs-dismiss="offcanvas">
+            <i class="fas fa-car-side me-2"></i>Mis Vehículos
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="reservation" data-bs-dismiss="offcanvas">
+            <i class="fas fa-calendar-check me-2"></i>Mis Reservas
+          </a>
+        </li>
+
+
+      </ng-container>
+
+      <!-- ===== MENÚ COCHERA (GARAGE) ===== -->
+      <ng-container *ngIf="authService.isGarage()">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="profile" data-bs-dismiss="offcanvas">
+            <i class="fas fa-user-circle me-2"></i> Mi Perfil
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="services" data-bs-dismiss="offcanvas">
+            <i class="fas fa-concierge-bell me-2"></i>Mis Servicios
+          </a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" routerLink="parkingSpace" data-bs-dismiss="offcanvas">
+            <i class="fas fa-parking me-2"></i>Espacios de Estacionamiento
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="reservationTypes" data-bs-dismiss="offcanvas">
+            <i class="fas fa-tags me-2"></i>Precios Estadía
+          </a>
+        </li>
+
+      </ng-container>
+
+      <!-- CERRAR SESIÓN -->
+      <li class="nav-item mt-3">
+        <button class="btn btn-outline-danger w-100"
+                (click)="logout()"
+                data-bs-dismiss="offcanvas">
+          Cerrar sesión
+        </button>
+      </li>
+
+    </ul>
+  </div>
+</div>
 
 
 

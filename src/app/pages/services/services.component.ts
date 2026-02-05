@@ -28,6 +28,7 @@ export class ServiceComponent implements OnInit {
 
   isLoading = true;
   message = '';
+  messageType: 'success' | 'error' = 'success';
 
   constructor(private serviceService: ServiceService, private reservationService: ReservationService) { }
 
@@ -52,6 +53,7 @@ export class ServiceComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando cochera', err);
+        this.messageType = 'error';
         this.message = 'Error al cargar los datos.';
         this.isLoading = false;
       }
@@ -89,15 +91,17 @@ export class ServiceComponent implements OnInit {
     this.serviceService.updateService(serviceToUpdate).subscribe({
       next: (response) => {
         console.log('Servicio actualizado:', response);
-        this.message = '¡Servicio actualizado correctamente!';
-   
-        this.loadData(); 
+        this.messageType = 'success';
+        this.message = 'Servicio actualizado correctamente.';
+
+        this.loadData();
         this.cancelEdit();
         this.isLoading = false;
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
         console.error('Error al actualizar:', error);
+        this.messageType = 'error';
         this.message = 'Error al actualizar el servicio. Intenta nuevamente.';
         this.isLoading = false;
       }
@@ -106,6 +110,7 @@ export class ServiceComponent implements OnInit {
 
   addService() {
     if (!this.newService.description || !this.newService.price) {
+      this.messageType = 'error';
       this.message = 'Por favor completa descripción y precio.';
       return;
     }
@@ -120,7 +125,8 @@ export class ServiceComponent implements OnInit {
 
     this.serviceService.createService(dataToSend).subscribe({
       next: (response) => {
-        this.message = '¡Servicio agregado!';
+        this.messageType = 'success';
+        this.message = 'Servicio agregado correctamente.';
 
         this.newService = { description: '', price: null };
 
@@ -130,6 +136,7 @@ export class ServiceComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
+        this.messageType = 'error';
         this.message = 'Error al crear el servicio.';
         console.error(err);
       }

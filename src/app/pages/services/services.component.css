@@ -1,46 +1,300 @@
-/* --- ANIMACIONES --- */
-.fade-in-anim { animation: fadeIn 0.4s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* ========================================
+   SERVICES PAGE STYLES
+   ======================================== */
 
-/* --- TÍTULOS --- */
-h3.section-title { font-weight: 500; color: #212529; letter-spacing: -0.5px; }
-h4.section-subtitle { font-size: 1.1rem; color: #6c757d; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+/* ANIMACIONES */
+.fade-in-anim {
+  animation: fadeIn 0.4s ease-in-out;
+}
 
-/* --- CONTENEDOR FORMULARIO --- */
-.card-box { background: white; border-radius: 12px; border: 1px solid #e9ecef; transition: all 0.3s ease; }
-.border-editing { border: 2px solid #ffc107 !important; background-color: #fffdf5; }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 
-/* Icono circular del formulario */
-.icon-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.bg-dark-light { background-color: #f1f3f5; }
-.bg-warning-light { background-color: #fff3cd; }
-.text-warning-dark { color: #856404; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-/* --- INPUTS --- */
-.form-control, .input-group-text { background-color: #f8f9fa; border: 1px solid #ced4da; padding: 10px; font-weight: 500; }
-.form-control:focus { background-color: #fff; border-color: #212529; box-shadow: none; }
+/* TITULOS */
+h2.section-title,
+h3.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+}
 
-/* --- BOTONES --- */
-.btn-dark-custom { background: #212529; color: white; border: none; padding: 10px; border-radius: 6px; transition: 0.2s; }
-.btn-dark-custom:hover { background: #000; transform: translateY(-1px); }
+/* Subtítulo grande (debajo del h2/h3) */
+h4.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
-.btn-warning { background-color: #ffc107; border: none; font-weight: 700; padding: 10px; border-radius: 6px; }
-.btn-warning:hover { background-color: #e0a800; }
+/* Subtítulo chico bajo el título principal */
+.section-subtitle-sm {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
 
-/* --- TABLA --- */
-.table-responsive { border-radius: 10px; overflow: hidden; }
-.table thead th { font-weight: 600; letter-spacing: 0.5px; border-bottom: 2px solid #f1f1f1; }
-.table-hover tbody tr:hover { background-color: #f8f9fa; }
+/* Header con subrayado dorado */
+.services-header {
+  gap: 1rem;
+}
 
-/* Botones de acción en tabla */
-.btn-light { background: white; transition: all 0.2s; color: #495057; }
-.btn-light:hover { background: #f1f3f5; transform: translateY(-1px); }
+.services-header .section-title {
+  position: relative;
+  padding-bottom: 4px;
+}
 
-/* Fila activa cuando se edita */
-.table-active { background-color: #fff3cd !important; --bs-table-accent-bg: #fff3cd !important; }
+.services-header .section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
 
-/* Texto de precio */
-.text-success { color: #198754 !important; font-weight: 700; }
+/* TOAST DE MENSAJE */
+.toast-message {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 1050;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: toastSlideIn 0.35s ease-out, toastFadeOut 0.4s ease-in 2.5s forwards;
+}
+
+.toast-success {
+  background-color: #e8f5e9;
+  border-left: 4px solid #43a047;
+  color: #2e7d32;
+}
+
+.toast-error {
+  background-color: #fce4ec;
+  border-left: 4px solid #e53935;
+  color: #c62828;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toastFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* FORMULARIO */
+.card-box {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-base);
+}
+
+.border-editing {
+  border: 2px solid var(--color-warning) !important;
+  background-color: rgba(229, 166, 50, 0.05);
+  box-shadow: 0 0 0 3px rgba(229, 166, 50, 0.12);
+}
+
+/* Icon circle */
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-dark-light {
+  background-color: var(--color-bg-alt);
+}
+
+.bg-warning-light {
+  background-color: rgba(229, 166, 50, 0.15);
+}
+
+.text-warning-dark {
+  color: var(--color-primary-dark);
+}
+
+/* INPUTS */
+.form-control,
+.input-group-text {
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-border);
+  padding: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+.form-control:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
+}
+
+/* BOTONES */
+.btn-dark-custom {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+}
+
+.btn-dark-custom:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Botón dorado de edición (Bootstrap .btn-warning customizado) */
+.btn-warning {
+  background-color: var(--color-warning);
+  border: none;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-warning:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Botón de cancelar edición */
+.btn-cancel-edit {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TABLA */
+.table-responsive {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Por si no está global, definimos thead-dark-custom */
+.thead-dark-custom th {
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
+  color: white;
+  padding: 12px 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border: none;
+}
+
+.table thead th {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--color-bg);
+}
+
+/* Botones de accion */
+.btn-light {
+  background: var(--color-surface);
+  transition: all 0.2s;
+  color: var(--color-text-muted);
+}
+
+.btn-light:hover {
+  background: var(--color-bg-alt);
+  transform: translateY(-1px);
+}
+
+/* Fila activa */
+.table-active {
+  background-color: rgba(229, 166, 50, 0.1) !important;
+  --bs-table-accent-bg: rgba(229, 166, 50, 0.1) !important;
+}
+
+/* Precio */
+.text-success {
+  color: var(--color-success) !important;
+  font-weight: 700;
+}
+
+/* Action icons */
+.btn-icon-action {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.btn-icon-action i {
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.btn-edit-icon {
+  color: var(--color-warning) !important;
+  background-color: rgba(229, 166, 50, 0.15) !important;
+}
+
+.btn-edit-icon:hover {
+  background-color: var(--color-warning) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.btn-delete-icon {
+  color: var(--color-error) !important;
+  background-color: rgba(214, 69, 69, 0.15) !important;
+}
+
+.btn-delete-icon:hover {
+  background-color: var(--color-error) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
 
 /* Cuando el botón tiene la clase disabled-btn o el atributo disabled */
 .btn-delete-icon:disabled,

@@ -109,6 +109,7 @@ updateProfile() {
       this.isSuccess = true;
       this.isLoading = false;
       this.isEditing = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       setTimeout(() => this.message = '', 3000);
     },
@@ -230,6 +231,7 @@ loadUserStats(userId: string | number) {
         this.isSuccess = true;
         this.isLoading = false;
         this.isEditing = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         // Update navbar name if changed
         if (this.garage.name) {

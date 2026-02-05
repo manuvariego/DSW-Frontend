@@ -1,66 +1,256 @@
+/* ========================================
+   PARKING SPACE PAGE STYLES
+   ======================================== */
+
 /* ANIMACIONES */
-.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-h2.section-title, h3.section-title {
-    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.8rem;
+.fade-in-anim {
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-/* MENÚ INICIAL */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2.section-title,
+h3.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+}
+
+/* HEADER PRINCIPAL DE ESPACIOS */
+.spaces-header {
+  gap: 1rem;
+}
+
+.spaces-header .section-title {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.spaces-header .section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+.spaces-subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* ALERTA DE CREACIÓN */
+.alert-success-spaces {
+  border-radius: var(--radius-md);
+  background: rgba(40, 167, 69, 0.08);
+  border: 1px solid rgba(40, 167, 69, 0.4);
+  color: #155724;
+  font-weight: 500;
+}
+
+/* MENU CARDS */
 .menu-card {
-    border: none; border-radius: 15px; background: #ffffff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer; overflow: hidden; border-bottom: 4px solid transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: 4px solid transparent;
 }
-.menu-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); border-bottom: 4px solid #343a40; }
-.icon-container { color: #495057; transition: color 0.3s ease; }
-.menu-card:hover .icon-container { color: #b08d57; }
+
+.menu-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+  border-bottom: 4px solid var(--color-dark);
+}
+
+.icon-container {
+  color: var(--color-text-muted);
+  transition: color var(--transition-base);
+}
+
+.menu-card:hover .icon-container {
+  color: var(--color-primary);
+}
 
 /* FORMULARIOS */
-.card-box { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
-.modern-input {
-    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
+.card-box {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
 }
-.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
-.form-label { font-weight: 600; color: #555; margin-bottom: 8px; }
-.invalid-feedback { font-size: 0.8rem; margin-top: 5px; }
+
+.modern-input {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  background-color: var(--color-bg);
+  transition: all var(--transition-base);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modern-input:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: var(--color-error);
+}
 
 /* TABLAS */
-.table-responsive { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.thead-dark-custom th {
-    background: linear-gradient(135deg, #343a40, #212529); color: white; padding: 15px; font-weight: 500;
-    text-transform: uppercase; font-size: 0.9rem; border: none;
+.table-responsive {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
-.table td { vertical-align: middle; padding: 15px; color: #495057; }
 
-/* Badge */
+.card-table-spaces {
+  border-radius: var(--radius-md);
+}
+
+.thead-dark-custom th {
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
+  color: white;
+  padding: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  border: none;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 15px;
+  color: var(--color-text-muted);
+}
+
+/* Badge opcional */
 .badge-type-custom {
-    background-color: #4a5568; color: white; font-weight: 500; padding: 6px 12px; border-radius: 12px;
-    font-size: 0.85rem; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--color-dark-alt);
+  color: white;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
 }
 
 /* BOTONES */
 .btn-dark-custom {
-    background: #343a40; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all var(--transition-base);
 }
-.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-/* Íconos de acción (Lápiz y Tacho) */
+.btn-dark-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Action icons */
 .btn-icon-action {
-    width: 38px !important; height: 38px !important; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: none; transition: all 0.2s ease-in-out; background-color: transparent; cursor: pointer;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  cursor: pointer;
 }
-.btn-icon-action i { font-size: 1.1rem; pointer-events: none; }
 
-/* Editar */
-.btn-edit-icon { color: #f0ad4e !important; background-color: rgba(240, 173, 78, 0.15) !important; }
-.btn-edit-icon:hover { background-color: #f0ad4e !important; color: white !important; transform: scale(1.1); }
+.btn-icon-action i {
+  font-size: 1.1rem;
+  pointer-events: none;
+}
 
-/* Eliminar */
-.btn-delete-icon { color: #dc3545 !important; background-color: rgba(220, 53, 69, 0.15) !important; }
-.btn-delete-icon:hover { background-color: #dc3545 !important; color: white !important; transform: scale(1.1); }
+.btn-edit-icon {
+  color: var(--color-warning) !important;
+  background-color: rgba(229, 166, 50, 0.15) !important;
+}
 
-.gap-3 { gap: 1rem !important; }
+.btn-edit-icon:hover {
+  background-color: var(--color-warning) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.btn-delete-icon {
+  color: var(--color-error) !important;
+  background-color: rgba(214, 69, 69, 0.15) !important;
+}
+
+.btn-delete-icon:hover {
+  background-color: var(--color-error) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.gap-3 {
+  gap: 1rem !important;
+}
+
+/* BOTONES GRILLA ESPACIOS */
+.space-grid-btn {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.space-grid-btn.btn-secondary {
+  cursor: not-allowed;
+}
+
+/* LEYENDA GRILLA */
+.grid-legend {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* FIN PARKING SPACE PAGE */
 
 /* Cuando el botón tiene la clase disabled-btn o el atributo disabled */
 .btn-delete-icon:disabled,
