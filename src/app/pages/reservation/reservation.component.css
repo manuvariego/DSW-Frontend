@@ -1,101 +1,214 @@
-/* ANIMACIONES */
-.fade-in-anim { animation: fadeIn 0.5s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* ========================================
+   RESERVATION PAGE STYLES
+   ======================================== */
 
-h2.section-title, h3.section-title {
-    font-weight: 700; color: #343a40; text-transform: uppercase; letter-spacing: 1px; font-size: 1.8rem;
+/* ANIMACIONES */
+.fade-in-anim {
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TÍTULOS */
+h2.section-title,
+h3.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+}
+
+/* Subtítulo chico bajo el título principal */
+.section-subtitle-sm {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+/* HEADER CON SUBRAYADO DORADO (para todos los headers de reservas) */
+.reservations-header {
+  gap: 1rem;
+}
+
+.reservations-header .section-title {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.reservations-header .section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+/* MENU CARDS */
 .menu-card {
-    border: none;
-    border-radius: 15px;
-    background: #ffffff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer;
-    overflow: hidden;
-    border-bottom: 4px solid transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: 4px solid transparent;
 }
 
 .menu-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    border-bottom: 4px solid #343a40;
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+  border-bottom: 4px solid var(--color-dark);
 }
 
 .icon-container {
-    color: #495057;
-    transition: color 0.3s ease;
+  color: var(--color-text-muted);
+  transition: color var(--transition-base);
 }
 
 .menu-card:hover .icon-container {
-    color: #b08d57 ;
+  color: var(--color-primary);
 }
 
-/* FORMULARIOS */
-.card-box { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 1px solid #f0f0f0; }
-.modern-input {
-    border: 1px solid #ced4da; border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: all 0.3s ease;
+/* FORMULARIOS / CARDS */
+.card-box {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
 }
-.modern-input:focus { background-color: #ffffff; border-color: #343a40; box-shadow: 0 0 0 3px rgba(52, 58, 64, 0.1); }
-.form-label { font-weight: 600; color: #555; margin-bottom: 8px; }
-.invalid-feedback { font-size: 0.8rem; margin-top: 5px; }
+
+.modern-input {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  background-color: var(--color-bg);
+  transition: all var(--transition-base);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modern-input:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: var(--color-error);
+}
 
 /* TABLAS */
-.table-responsive { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.table-responsive {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
 .thead-dark-custom th {
-    background: linear-gradient(135deg, #343a40, #212529); color: white; padding: 15px; font-weight: 500;
-    text-transform: uppercase; font-size: 0.9rem; border: none;
-}
-.table td { vertical-align: middle; padding: 15px; color: #495057; }
-
-/* Badge para Locación */
-.badge-type-custom {
-    background-color: #4a5568; color: white; font-weight: 500; padding: 6px 12px; border-radius: 12px;
-    font-size: 0.85rem; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
+  color: white;
+  padding: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  border: none;
 }
 
-/*BOTONES*/
+.table td {
+  vertical-align: middle;
+  padding: 15px;
+  color: var(--color-text-muted);
+}
+
+/* BOTONES */
 .btn-dark-custom {
-    background: #343a40; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all var(--transition-base);
 }
-.btn-dark-custom:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-.btn-dark-custom:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* Botón grande para volver en el ticket */
-.btn-lg { padding: 12px 24px; font-size: 1.1rem; }
+.btn-dark-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
 
+.btn-dark-custom:disabled {
+  background: var(--color-text-light);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+}
+
+/* PAYMENT CARDS */
 .cursor-pointer {
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .payment-card:hover {
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Cuando está seleccionado, borde azul y fondo suave */
 .selected-method {
-  border-color: #0d6efd !important;
-  background-color: #f0f8ff;
+  border-color: var(--color-primary) !important;
+  background-color: rgba(201, 166, 107, 0.05);
   border-width: 2px !important;
 }
 
-.animate-bounce {
-  animation: bounce 2s infinite;
+/* NAV TABS (Mis reservas) */
+.nav-tabs .nav-link {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-  40% {transform: translateY(-10px);}
-  60% {transform: translateY(-5px);}
+.nav-tabs .nav-link:hover {
+  border-color: transparent;
+  color: var(--color-dark);
 }
 
-/* --- PAGINACIÓN PREMIUM PARKEASY --- */
+.nav-tabs .nav-link.active {
+  color: var(--color-dark);
+  border-color: var(--color-primary);
+  font-weight: 600;
+}
 
-/* Contenedor principal centrado */
+/* PAGINATION */
 .pagination-wrapper {
   display: flex;
   justify-content: center;
@@ -103,53 +216,72 @@ h2.section-title, h3.section-title {
   margin-bottom: 20px;
 }
 
-/* Reseteamos la lista de ngx-pagination */
 ::ng-deep .my-custom-pagination .ngx-pagination {
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 6px; /* Espacio entre los botones */
+  gap: 6px;
   align-items: center;
 }
 
-/* --- ESTILO DE LOS NÚMEROS Y FLECHAS (Links) --- */
 ::ng-deep .my-custom-pagination .ngx-pagination a,
 ::ng-deep .my-custom-pagination .ngx-pagination button {
-  color: #888; /* Gris medio */
+  color: var(--color-text-muted);
   font-weight: 600;
-  padding: 8px 16px; /* Más ancho para parecer botón */
-  border-radius: 50px; /* ¡Forma de pastilla! */
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  background: white; /* Fondo blanco limpio */
-  border: 1px solid #f0f0f0; /* Borde muy sutil */
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   font-size: 0.9rem;
 }
 
-/* --- EFECTO HOVER (Al pasar el mouse) --- */
 ::ng-deep .my-custom-pagination .ngx-pagination a:hover,
 ::ng-deep .my-custom-pagination .ngx-pagination button:hover {
-  background-color: #f8f9fa;
-  color: #000;
-  border-color: #ddd;
-  transform: translateY(-2px); /* Se levanta un poquito */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  background-color: var(--color-bg);
+  color: var(--color-dark);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
-/* --- PÁGINA ACTUAL (La "Activa") --- */
 ::ng-deep .my-custom-pagination .ngx-pagination .current {
-  background-color: #212529 !important; /* NEGRO (Chau Azul) */
+  background-color: var(--color-dark) !important;
   color: #fff !important;
-  border-radius: 50px; /* Forma de pastilla */
+  border-radius: var(--radius-full);
   padding: 8px 16px;
   font-weight: bold;
-  border: 1px solid #212529;
-  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3); /* Sombra elegante negra */
+  border: 1px solid var(--color-dark);
+  box-shadow: 0 4px 12px rgba(26, 24, 20, 0.3);
 }
 
-/* --- ESTADO DESHABILITADO (Ej: Anterior en pág 1) --- */
 ::ng-deep .my-custom-pagination .ngx-pagination .disabled {
-  color: #e0e0e0 !important;
+  color: var(--color-text-light) !important;
   padding: 8px 16px;
   font-style: italic;
+}
+
+/* BOUNCE ANIMATION (si la usás en algún icono) */
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
 }

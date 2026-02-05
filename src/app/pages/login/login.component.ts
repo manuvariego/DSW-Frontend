@@ -90,6 +90,7 @@ export class LoginComponent {
         } else {
           this.errorMessage = 'Ocurrió un error. Intenta nuevamente';
         }
+        setTimeout(() => this.errorMessage = '', 3000);
       }
     });
   }

@@ -15,7 +15,8 @@ import { RouterLink } from '@angular/router';
 
 export class ReservationTypesComponent {
 
-  resTypeCreado = false
+  message = '';
+  isSuccess = false;
   private _apiservice = inject(ReservationTypesService) 
   reservationTypeList: any[] = [] 
 
@@ -130,7 +131,10 @@ export class ReservationTypesComponent {
       next: (response) => {
         console.log('Precio actualizado exitosamente', response);
         this.editingReservationType = null;
+        this.message = '¡Precio actualizado correctamente!';
+        this.isSuccess = true;
         this.showSection('initReservationType');
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
         console.error('Error al actualizar el precio', error);
@@ -191,13 +195,11 @@ export class ReservationTypesComponent {
     this._apiservice.createReservationType(this.reservationTypeData).subscribe({
       next: (response) => {
         console.log('Tipo de reserva creado exitosamente:', response);
-        this.resTypeCreado = true;
-        this.showSection('initial');
+        this.message = '¡Tipo de estadía creado exitosamente!';
+        this.isSuccess = true;
+        this.showSection('initReservationType');
         form.resetForm();
-      // Oculta el mensaje después de 3 segundos
-    setTimeout(() => {
-      this.resTypeCreado = false;
-    }, 3000); 
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
         console.error('Error al crear el tipo de reserva:', error);
@@ -251,9 +253,12 @@ export class ReservationTypesComponent {
     Promise.all(promesas)
       .then(() => {
         console.log('Todos los precios guardados exitosamente');
+        this.message = '¡Todos los precios fueron guardados correctamente!';
+        this.isSuccess = true;
         this.loadPricingStatus();
         this.showSection('initReservationType');
-        // Limpiar formulario
+        setTimeout(() => this.message = '', 3000);
+        // Limpiar formulario ...
         this.preciosNuevos = {
           HOUR: null,
           HALF_DAY: null,

@@ -40,8 +40,8 @@
         <label class="form-check-label text-muted small" for="remember">Recordar sesión</label>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3 py-2 px-3">
-        <i class="fas fa-exclamation-circle me-1"></i> {{ errorMessage }}
+      <div *ngIf="errorMessage" class="toast-message toast-error shadow-sm">
+        <i class="fas fa-exclamation-circle me-2"></i> {{ errorMessage }}
       </div>
 
       <button type="submit" class="btn btn-dark-custom w-100 btn-lg mb-3" [disabled]="isLoading">

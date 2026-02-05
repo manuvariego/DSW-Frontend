@@ -193,6 +193,7 @@ cancelReservation(reserva: any) {
   }
 
   showSection(section: string) {
+    scrollTo(0, 0);
     this.currentSection = section;
 
     if (section == 'getReservations') {

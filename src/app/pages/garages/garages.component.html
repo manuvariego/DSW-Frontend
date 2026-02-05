@@ -1,111 +1,141 @@
 @if (currentSection == 'initial') {
-  <div class="container mt-5 fade-in-anim position-relative initial-section-bg" style="min-height: 80vh;">
-    
-    <div class="position-relative" style="z-index: 2;">
-       
-      <div class="p-3 rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.5);">
-        <div class="row mb-4 text-center mt-4">
-          <div class="col-12">
-            <h1 class="display-5 fw-bold mb-1">BIENVENIDO</h1>
-            <p class="text-muted lead">Resumen general y estadísticas de tu negocio.</p>
-          </div>
+<div class="container mt-5 fade-in-anim position-relative initial-section-bg"
+  style="min-height: 80vh; margin-top: 0px !important;">
+
+  <div class="position-relative" style="z-index: 2;">
+
+    <!-- PANEL PRINCIPAL TIPO DASHBOARD -->
+    <div class="dashboard-glass p-4 p-md-5 rounded-4 shadow-lg">
+
+      <!-- ENCABEZADO / HERO -->
+      <div class="row mb-4 text-center text-lg-start align-items-center">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-1">BIENVENIDO</h1>
+          <p class="text-muted lead mb-0">
+            Resumen general y estadísticas de tu negocio.
+          </p>
         </div>
+        <div class="col-lg-4 mt-3 mt-lg-0 text-center text-lg-end">
+          <span class="badge rounded-pill badge-panel-cochera px-3 py-2">
+            <i class="fas fa-parking me-1"></i> Panel de Cochera
+          </span>
+        </div>
+      </div>
 
-        <div class="row justify-content-center mb-3 g-2">
-          <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm h-100 text-center py-4">
-              <div class="card-body">
-                <div class="mb-3 text-primary">
-                  <i class="fas fa-car-side fa-2x"></i>
-                </div>
-                <h2 class="fw-bold mb-1">{{ totalResevartionsOnProgress }}</h2>
-                <p class="text-muted mb-0 small text-uppercase fw-bold">Reservas Activas</p>
+      <!-- CARDS DE ESTADÍSTICAS -->
+      <div class="row justify-content-center mb-4 g-2 g-md-3">
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 shadow-sm h-100 text-center py-4 stat-kpi">
+            <div class="card-body">
+              <div class="mb-3">
+                <i class="fas fa-car-side fa-2x"></i>
               </div>
-            </div>
-          </div>
-
-          <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm h-100 text-center py-4">
-              <div class="card-body">
-                <div class="mb-3 text-success">
-                  <i class="fas fa-dollar-sign fa-2x"></i>
-                </div>
-                <h2 class="fw-bold mb-1">{{ totalMoneyEarned }}</h2>
-                <p class="text-muted mb-0 small text-uppercase fw-bold">Ingresos del Mes</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm h-100 text-center py-4">
-              <div class="card-body">
-                <div class="mb-3 text-warning">
-                  <i class="fas fa-parking fa-2x"></i>
-                </div>
-                <h2 class="fw-bold mb-1">{{ totalParkingSpacesAvailable }}</h2>
-                <p class="text-muted mb-0 small text-uppercase fw-bold">Disponibilidad</p>
-              </div>
+              <h2 class="fw-bold mb-1">{{ totalResevartionsOnProgress }}</h2>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">Reservas Activas</p>
             </div>
           </div>
         </div>
 
-        <div class="row justify-content-center mb-3">
-          <div class="col-12 col-lg-10">
-            <div class="card border-0 shadow-sm p-3">
-        
-              <h6 class="fw-bold text-center mb-1">
-                Ocupación actual de los espacios
-              </h6>
-              <p class="text-muted text-center small mb-3">
-                Disponibilidad en tiempo real
-              </p>
-        
-              <div class="d-flex flex-wrap gap-2 justify-content-center parking-status-grid">
-                @for (space of parkingSpaces; track space.number) {
-                <div class="rounded-3 d-flex align-items-center justify-content-center fw-semibold text-white"
-                  [class.bg-danger]="isSpaceOccupied(space.number)" [class.bg-success]="!isSpaceOccupied(space.number)"
-                  style="width: 44px; height: 38px; font-size: 0.8rem;"
-                  [title]="isSpaceOccupied(space.number) ? 'Ocupado' : 'Libre'">
-                  {{ space.number }}
-                </div>
-                }
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 shadow-sm h-100 text-center py-4 stat-kpi">
+            <div class="card-body">
+              <div class="mb-3">
+                <i class="fas fa-dollar-sign fa-2x"></i>
               </div>
-        
-              <div class="d-flex justify-content-center gap-3 mt-2">
-                <small class="d-flex align-items-center gap-1">
-                  <span class="badge bg-success">&nbsp;</span> Libre
-                </small>
-                <small class="d-flex align-items-center gap-1">
-                  <span class="badge bg-danger">&nbsp;</span> Ocupado
-                </small>
-              </div>
-        
+              <h2 class="fw-bold mb-1">{{ totalMoneyEarned }}</h2>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">Ingresos del Mes</p>
             </div>
           </div>
         </div>
 
-        <div class="row mb-5 mt-4 text-center">
-          <div class="col-12">
-            <p class="text-muted" style="font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">Reservas realizadas hasta la fecha con ParkEasy: {{totalReservationsAlltime}}</p>
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 shadow-sm h-100 text-center py-4 stat-kpi">
+            <div class="card-body">
+              <div class="mb-3">
+                <i class="fas fa-parking fa-2x"></i>
+              </div>
+              <h2 class="fw-bold mb-1">{{ totalParkingSpacesAvailable }}</h2>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">Disponibilidad</p>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="row justify-content-center mb-4">
-          <div class="col-auto">
-            <button class="btn btn-dark-custom rounded-pill px-5 py-3 shadow-sm" (click)="showSection('getReservations')">
-              <i class="fas fa-clipboard-list me-2"></i> Ver Reservas
-            </button>
+      <!-- OCUPACIÓN ACTUAL -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-10">
+          <div class="card card-ocupacion border-0 shadow-sm p-3 p-md-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2">
+              <div>
+                <h6 class="fw-bold mb-1">
+                  Ocupación actual de los espacios
+                </h6>
+                <p class="text-muted small mb-0">
+                  Disponibilidad en tiempo real
+                </p>
+              </div>
+              <div class="mt-2 mt-md-0">
+                <span class="badge rounded-pill bg-dark text-white px-3 py-2">
+                  Total espacios: {{ parkingSpaces.length }}
+                </span>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 justify-content-center parking-status-grid mt-3">
+              @for (space of parkingSpaces; track space.number) {
+              <div class="rounded-3 d-flex align-items-center justify-content-center fw-semibold text-white"
+                [class.bg-danger]="isSpaceOccupied(space.number)" [class.bg-success]="!isSpaceOccupied(space.number)"
+                style="width: 44px; height: 38px; font-size: 0.8rem;"
+                [title]="isSpaceOccupied(space.number) ? 'Ocupado' : 'Libre'">
+                {{ space.number }}
+              </div>
+              }
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-3">
+              <small class="d-flex align-items-center gap-1">
+                <span class="badge bg-success">&nbsp;</span> Libre
+              </small>
+              <small class="d-flex align-items-center gap-1">
+                <span class="badge bg-danger">&nbsp;</span> Ocupado
+              </small>
+            </div>
+
           </div>
         </div>
-       </div>
+      </div>
+
+      <!-- RESUMEN TOTAL RESERVAS -->
+      <div class="row mb-4 text-center">
+        <div class="col-12">
+          <p class="text-muted" style="font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">
+            Reservas realizadas hasta la fecha con ParkEasy:
+            <span class="fw-bold text-dark">{{totalReservationsAlltime}}</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- BOTÓN IR A RESERVAS -->
+      <div class="row justify-content-center mb-2">
+        <div class="col-auto">
+          <button class="btn btn-dark rounded-pill px-5 py-3 shadow-sm"
+            (click)="showSection('getReservations')">
+            <i class="fas fa-clipboard-list me-2"></i> Ver Reservas
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 }
 
 @if (currentSection == 'getReservations') {
-  <div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
-    
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+<div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
+  <div class="container-lg flex-grow-1 d-flex flex-column">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-2 reservas-header">
       <h3 class="section-title">Listado de Reservas</h3>
       <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
         <i class="fas fa-arrow-left"></i> Volver
@@ -135,26 +165,31 @@
         </button>
       </li>
     </ul>
-    
+
     <!-- Filtros -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="Buscar por patente..." [(ngModel)]="filterLicensePlate"
-          (keyup.enter)="applyReservationFilters()">
-      </div>
-      <div class="col-md-3">
-        <input type="date" class="form-control" [(ngModel)]="filterDateFrom" placeholder="Desde">
-      </div>
-      <div class="col-md-3">
-        <input type="date" class="form-control" [(ngModel)]="filterDateTo" placeholder="Hasta">
-      </div>
-      <div class="col-md-2 d-flex gap-2">
-        <button class="btn btn-dark-custom flex-grow-1" (click)="applyReservationFilters()">
-          <i class="fas fa-search"></i>
-        </button>
-        <button class="btn btn-outline-secondary" (click)="clearFilters()">
-          <i class="fas fa-times"></i>
-        </button>
+    <div class="card card-box mb-4 p-3 p-md-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label mb-1 small text-muted fw-bold text-uppercase">Patente</label>
+          <input type="text" class="form-control" placeholder="Buscar por patente..." [(ngModel)]="filterLicensePlate"
+            (keyup.enter)="applyReservationFilters()">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label mb-1 small text-muted fw-bold text-uppercase">Desde</label>
+          <input type="date" class="form-control" [(ngModel)]="filterDateFrom" placeholder="Desde">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label mb-1 small text-muted fw-bold text-uppercase">Hasta</label>
+          <input type="date" class="form-control" [(ngModel)]="filterDateTo" placeholder="Hasta">
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+          <button class="btn btn-dark-custom flex-grow-1" (click)="applyReservationFilters()">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -168,152 +203,152 @@
             <th scope="col">Estado</th>
             <th scope="col">Monto</th>
             <th scope="col">Vehículo</th>
-            <th scope="col">Espacio #</th>
+            <th scope="col">Espacio</th>
             <th scope="col" class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           @for (res of ReservationsList; track res.id) {
-            <tr>
-              <td class="ps-4 text-muted">{{ res.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</td>
-              <td class="text-primary fw-bold">{{ res.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
-              <td class="text-primary fw-bold">{{ res.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
-              <td>
-                <span class="badge rounded-pill" [ngClass]="res.estado === 'activa' ? 'bg-success' : 
-                            res.estado === 'cancelada' ? 'bg-danger' : 
-                            res.estado === 'completada' ? 'bg-secondary' : 'bg-warning'">
-                  {{ res.estado | uppercase }}
-                </span>
-              </td>
-              <td class="fw-bold text-dark">${{ res.amount }}</td>
-              <td><span class="fw-bold text-dark">{{ res.vehicle?.license_plate || res.vehicle }}</span></td>
-              <td><span class="badge bg-secondary">#{{ res.parkingSpace?.number || res.parking_space_number }}</span></td>
-              <td>
-                <div class="d-flex justify-content-center gap-3">
-                  <button type="button" 
-                          class="btn-icon-action btn-edit-icon" 
-                          (click)="viewReservationDetails(res)"
-                          data-bs-toggle="modal" 
-                          data-bs-target="#modalDetalle">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  <button type="button" 
-                          class="btn-icon-action btn-delete-icon" 
-                          [title]="res.estado !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
-                          [disabled]="res.estado !== 'activa'"
-                          (click) = "cancelReservation(res)">
-                      <i class="fas fa-trash"></i>
-                  </button>                    
-                  
-                </div>
-              </td>
-            </tr>
+          <tr>
+            <td class="ps-4 text-muted">{{ res.date_time_reservation | date: 'dd/MM/yy HH:mm' }}</td>
+            <td class="text-primary fw-bold">{{ res.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td class="text-primary fw-bold">{{ res.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
+            <td>
+              <span class="badge rounded-pill" [ngClass]="res.estado === 'activa' ? 'bg-success' : 
+                              res.estado === 'cancelada' ? 'bg-danger' : 
+                              res.estado === 'completada' ? 'bg-secondary' : 'bg-warning'">
+                {{ res.estado | uppercase }}
+              </span>
+            </td>
+            <td class="fw-bold text-dark">${{ res.amount }}</td>
+            <td><span class="fw-bold text-dark">{{ res.vehicle?.license_plate || res.vehicle }}</span></td>
+            <td><span class="badge bg-secondary">#{{ res.parkingSpace?.number || res.parking_space_number }}</span></td>
+            <td>
+              <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn-icon-action btn-edit-icon" (click)="viewReservationDetails(res)"
+                  data-bs-toggle="modal" data-bs-target="#modalDetalle">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button type="button" class="btn-icon-action btn-delete-icon"
+                  [title]="res.estado !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
+                  [disabled]="res.estado !== 'activa'" (click)="cancelReservation(res)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
           } @empty {
-            <tr>
-              <td colspan="8" class="text-center p-5 text-muted">
-                <i class="fas fa-folder-open fa-2x mb-3 d-block"></i>
-                No se encontraron reservas que coincidan con los filtros.
-              </td>
-            </tr>
+          <tr>
+            <td colspan="8" class="text-center p-5 text-muted">
+              <i class="fas fa-folder-open fa-2x mb-3 d-block"></i>
+              No se encontraron reservas que coincidan con los filtros.
+            </td>
+          </tr>
           }
         </tbody>
       </table>
     </div>
 
+    <!-- MODAL DETALLE -->
     <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg rounded-4" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
-      
-      <div class="modal-header bg-dark text-white rounded-top-4">
-        <h5 class="modal-title">Detalle de la Reserva</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <div class="modal-body p-4" *ngIf="selectedReservation">
-        <div class="row g-3">
-          
-          <div class="col-6">
-            <label class="text-muted small fw-bold text-uppercase">Patente</label>
-            <p class="fw-bold fs-5 mb-0">{{ selectedReservation.vehicle?.license_plate || 'N/A' }}</p>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4"
+          style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+
+          <div class="modal-header bg-dark text-white rounded-top-4">
+            <h5 class="modal-title">Detalle de la Reserva</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
-          <div class="col-6 text-end">
-            <label class="text-muted small fw-bold text-uppercase d-block">Estado</label>
-            <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                'bg-success': selectedReservation.estado === 'confirmada',
-                'bg-warning text-dark': selectedReservation.estado === 'pendiente',
-                'bg-danger': selectedReservation.estado === 'cancelada'
-              }">
-              {{ selectedReservation.estado | uppercase }}
-            </span>
-          </div>
+          <div class="modal-body p-4" *ngIf="selectedReservation">
+            <div class="row g-3">
 
-          <div class="col-12">
-            <label class="text-muted small fw-bold text-uppercase">Propietario / Cliente</label>
-            <div class="d-flex align-items-center mt-1">
-              <div class="bg-light rounded-circle p-2 me-2 text-secondary">
-                <i class="fas fa-user"></i>
+              <div class="col-6">
+                <label class="text-muted small fw-bold text-uppercase">Patente</label>
+                <p class="fw-bold fs-5 mb-0">{{ selectedReservation.vehicle?.license_plate || 'N/A' }}</p>
               </div>
-              <p class="fw-bold mb-0">
-                {{ selectedReservation.vehicle?.owner?.name || 'Desconocido' }} 
-                {{ selectedReservation.vehicle?.owner?.surname || '' }}
-              </p>
+
+              <div class="col-6 text-end">
+                <label class="text-muted small fw-bold text-uppercase d-block">Estado</label>
+                <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                      'bg-success': selectedReservation.estado === 'activa',
+                      'bg-secondary': selectedReservation.estado === 'completada',
+                      'bg-danger': selectedReservation.estado === 'cancelada'
+                    }">
+                  {{ selectedReservation.estado | uppercase }}
+                </span>
+              </div>
+
+              <div class="col-12">
+                <label class="text-muted small fw-bold text-uppercase">Propietario / Cliente</label>
+                <div class="d-flex align-items-center mt-1">
+                  <div class="bg-light rounded-circle p-2 me-2 text-secondary">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <p class="fw-bold mb-0">
+                    {{ selectedReservation.vehicle?.owner?.name || 'Desconocido' }}
+                    {{ selectedReservation.vehicle?.owner?.surname || '' }}
+                  </p>
+                </div>
+              </div>
+
+              <hr class="text-muted opacity-25">
+
+              <div class="col-6">
+                <label class="text-muted small fw-bold text-uppercase">Entrada</label>
+                <p class="mb-0">{{ selectedReservation.check_in_at | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+              <div class="col-6">
+                <label class="text-muted small fw-bold text-uppercase">Salida</label>
+                <p class="mb-0">{{ selectedReservation.check_out_at | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+
+              <div class="col-12 mt-3">
+                <label class="text-muted small fw-bold text-uppercase">Cochera Asignada</label>
+                <p class="fw-bold">N° {{ selectedReservation.parkingSpace?.number || 'Sin asignar'}}</p>
+              </div>
+
+              <div class="col-12 mt-3">
+                <label class="text-muted small fw-bold text-uppercase">Monto</label>
+                <p class="fw-bold">${{ selectedReservation.amount || 'Sin asignar'}}</p>
+              </div>
+
+              <div class="col-12">
+                <label class="text-muted small fw-bold text-uppercase mb-2">Servicios Adicionales</label>
+                <div *ngIf="selectedReservation.services && selectedReservation.services.length > 0; else noServices">
+                  <ul class="list-group list-group-flush rounded-3">
+                    <li *ngFor="let service of selectedReservation.services"
+                      class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 mb-1 rounded">
+                      <span>
+                        <i class="fas fa-tools text-primary me-2"></i>
+                        {{ service.description }}
+                      </span>
+                      <span class="badge bg-dark rounded-pill">${{ service.price }}</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <ng-template #noServices>
+                  <div class="p-3 bg-light rounded text-center text-muted fst-italic border border-light">
+                    <small>No hay servicios contratados para esta reserva.</small>
+                  </div>
+                </ng-template>
+              </div>
+
             </div>
           </div>
 
-          <hr class="text-muted opacity-25">
-
-          <div class="col-6">
-            <label class="text-muted small fw-bold text-uppercase">Entrada</label>
-            <p class="mb-0">{{ selectedReservation.check_in_at | date:'dd/MM/yyyy HH:mm' }}</p>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">
+              Cerrar
+            </button>
           </div>
-          <div class="col-6">
-            <label class="text-muted small fw-bold text-uppercase">Salida</label>
-            <p class="mb-0">{{ selectedReservation.check_out_at | date:'dd/MM/yyyy HH:mm' }}</p>
-          </div>
-
-          <div class="col-12 mt-3">
-            <label class="text-muted small fw-bold text-uppercase">Cochera Asignada</label>
-            <p class="fw-bold">N° {{ selectedReservation.parkingSpace?.number || 'Sin asignar'}}</p>
-          </div>
-
-          <div class="col-12 mt-3">
-            <label class="text-muted small fw-bold text-uppercase">Monto</label>
-            <p class="fw-bold">{{ selectedReservation.amount || 'Sin asignar'}}</p>
-          </div>
-
-          <div class="col-12">
-            <label class="text-muted small fw-bold text-uppercase mb-2">Servicios Adicionales</label>
-            <div *ngIf="selectedReservation.services && selectedReservation.services.length > 0; else noServices">
-              <ul class="list-group list-group-flush rounded-3">
-                <li *ngFor="let service of selectedReservation.services" class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 mb-1 rounded">
-                  <span>
-                    <i class="fas fa-tools text-primary me-2"></i> 
-                    {{ service.description }}
-                  </span>
-                  <span class="badge bg-dark rounded-pill">${{ service.price }}</span>
-                </li>
-              </ul>
-            </div>
-
-            <ng-template #noServices>
-              <div class="p-3 bg-light rounded text-center text-muted fst-italic border border-light">
-                <small>No hay servicios contratados para esta reserva.</small>
-              </div>
-            </ng-template>
-          </div>
-
         </div>
       </div>
-      
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
-      </div>
     </div>
-  </div>
-</div>
-    
+
     <div class="mb-5"></div>
   </div>
+</div>
 }
-

@@ -1,1 +1,476 @@
-/* You can add global styles to this file, and also import other style files */
+/* ========================================
+   PARKEASY DESIGN SYSTEM
+   Urban Parking • Modern • Sophisticated
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* CSS VARIABLES */
+:root {
+  /* Primary Colors */
+  --color-primary: #c9a66b;
+  --color-primary-dark: #b8924f;
+  --color-primary-light: #e0c48f;
+
+  /* Accent Colors */
+  --color-accent: #e85d04;
+  --color-accent-hover: #d04d00;
+
+  /* Neutral Colors */
+  --color-bg: #faf9f7;
+  --color-bg-alt: #f0ede7;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b6b;
+  --color-text-light: #9a9a9a;
+  --color-border: #e8e4dd;
+
+  /* Dark Theme Colors */
+  --color-dark: #1a1814;
+  --color-dark-alt: #2d2924;
+  --color-dark-surface: #24211d;
+
+  /* Semantic Colors */
+  --color-success: #4a9c5d;
+  --color-warning: #e5a632;
+  --color-error: #d64545;
+  --color-info: #4a8ec9;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(26, 24, 20, 0.06);
+  --shadow-md: 0 4px 16px rgba(26, 24, 20, 0.1);
+  --shadow-lg: 0 8px 32px rgba(26, 24, 20, 0.12);
+  --shadow-xl: 0 16px 48px rgba(26, 24, 20, 0.16);
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* RESET & BASE */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+h4 { font-size: clamp(1rem, 2.5vw, 1.35rem); }
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* UTILITIES */
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.6s ease forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.6s ease forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.5s ease forwards;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* FOCUS STYLES */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* BUTTONS */
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* SPINNER */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* CARD BASE */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* BADGE */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-primary {
+  background: var(--color-primary);
+  color: var(--color-dark);
+}
+
+.badge-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.badge-warning {
+  background: var(--color-warning);
+  color: var(--color-dark);
+}
+
+.badge-error {
+  background: var(--color-error);
+  color: white;
+}
+
+/* ========================================
+   BOOTSTRAP OVERRIDES
+   Align Bootstrap utilities with ParkEasy
+   ======================================== */
+
+/* --- Focus ring: gold instead of blue --- */
+.btn:focus,
+.btn:focus-visible {
+  box-shadow: 0 0 0 0.25rem rgba(201, 166, 107, 0.3) !important;
+  outline: none !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(201, 166, 107, 0.15) !important;
+}
+
+/* --- btn-primary: dark instead of blue --- */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt)) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background: linear-gradient(135deg, var(--color-dark-alt), #3d3833) !important;
+  color: white !important;
+}
+
+/* --- btn-success: gold accent for save/confirm --- */
+.btn-success {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-dark) !important;
+  font-weight: 600;
+}
+
+.btn-success:hover,
+.btn-success:active {
+  background: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+  color: var(--color-dark) !important;
+}
+
+/* --- btn-warning: consistent --- */
+.btn-warning {
+  background: var(--color-warning) !important;
+  border-color: var(--color-warning) !important;
+  color: var(--color-dark) !important;
+}
+
+.btn-warning:hover {
+  background: #d49520 !important;
+  border-color: #d49520 !important;
+  color: var(--color-dark) !important;
+}
+
+/* --- btn-outline-dark: visible text on hover --- */
+.btn-outline-dark {
+  border-color: var(--color-dark) !important;
+  color: var(--color-dark) !important;
+}
+
+.btn-outline-dark:hover,
+.btn-outline-dark:active {
+  background-color: var(--color-dark) !important;
+  color: white !important;
+}
+
+/* --- btn-outline-secondary: visible text on hover --- */
+.btn-outline-secondary:hover,
+.btn-outline-secondary:active {
+  background-color: #6c757d !important;
+  color: white !important;
+}
+
+/* --- btn-outline-primary: dark instead of blue border --- */
+.btn-outline-primary {
+  color: var(--color-dark) !important;
+  border-color: var(--color-dark) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+  background-color: var(--color-dark) !important;
+  color: white !important;
+}
+
+/* --- btn-outline-danger: visible text on hover --- */
+.btn-outline-danger:hover,
+.btn-outline-danger:active {
+  color: white !important;
+}
+
+/* --- btn-dark-custom: always white text --- */
+.btn-dark-custom {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  color: white !important;
+  border: none;
+  font-weight: 600;
+  transition: all var(--transition-base);
+}
+
+.btn-dark-custom:hover,
+.btn-dark-custom:active,
+.btn-dark-custom:focus {
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-dark-custom:disabled {
+  background: var(--color-text-light) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* --- Bootstrap color utilities: dark instead of blue --- */
+.text-primary {
+  color: var(--color-dark) !important;
+}
+
+.bg-primary {
+  background-color: var(--color-dark) !important;
+}
+
+.border-primary {
+  border-color: var(--color-dark) !important;
+}
+
+/* --- Nav pills & tabs: dark instead of blue --- */
+.nav-pills .nav-link.active {
+  background-color: var(--color-dark) !important;
+  color: white !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--color-dark) !important;
+  border-bottom-color: var(--color-dark) !important;
+}
+
+.nav-link {
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-dark);
+}
+
+/* --- Form check (checkbox/radio): gold instead of blue --- */
+.form-check-input:checked {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(201, 166, 107, 0.25) !important;
+  border-color: var(--color-primary) !important;
+}
+
+/* ========================================
+   TOAST MESSAGES (Global)
+   ======================================== */
+.toast-message {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 1050;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: toastSlideIn 0.35s ease-out, toastFadeOut 0.4s ease-in 2.5s forwards;
+}
+
+.toast-success {
+  background-color: #e8f5e9;
+  border-left: 4px solid #43a047;
+  color: #2e7d32;
+}
+
+.toast-error {
+  background-color: #fce4ec;
+  border-left: 4px solid #e53935;
+  color: #c62828;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toastFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

@@ -23,8 +23,8 @@ export class RegisterComponent {
   currentStep: 'selectType' | 'registerUser' | 'registerGarage' = 'selectType';
   accountType: 'user' | 'garage' | null = null;
 
-  errorMessage = '';
-  successMessage = '';
+  message = '';
+  messageType: 'success' | 'error' = 'success';
   locations: any[] = [];
 
   // Datos para registro de usuario
@@ -70,27 +70,30 @@ export class RegisterComponent {
   selectAccountType(type: 'user' | 'garage') {
     this.accountType = type;
     this.currentStep = type === 'user' ? 'registerUser' : 'registerGarage';
-    this.errorMessage = '';
+    this.message = '';
   }
 
   backToSelection() {
     this.currentStep = 'selectType';
     this.accountType = null;
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.message = '';
   }
 
   registerUser() {
-    this.errorMessage = '';
+    this.message = '';
 
     // Validación de contraseñas
     if (this.userData.password !== this.userData.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
+      this.messageType = 'error';
+      this.message = 'Las contraseñas no coinciden.';
+      setTimeout(() => this.message = '', 3000);
       return;
     }
 
     if (this.userData.password.length < 6) {
-      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      this.messageType = 'error';
+      this.message = 'La contraseña debe tener al menos 6 caracteres.';
+      setTimeout(() => this.message = '', 3000);
       return;
     }
 
@@ -107,32 +110,39 @@ export class RegisterComponent {
 
     this.userService.createUser(userPayload).subscribe({
       next: (response) => {
-        this.successMessage = 'Usuario registrado exitosamente. Redirigiendo al login...';
+        this.messageType = 'success';
+        this.message = 'Usuario registrado exitosamente. Redirigiendo al login...';
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
       },
       error: (error) => {
+        this.messageType = 'error';
         if (error.status === 409) {
-          this.errorMessage = 'El DNI ya está registrado.';
+          this.message = 'El DNI ya está registrado.';
         } else {
-          this.errorMessage = 'Error al registrar usuario. Intente más tarde.';
+          this.message = 'Error al registrar usuario. Intente más tarde.';
         }
+        setTimeout(() => this.message = '', 3000);
       }
     });
   }
 
   registerGarage() {
-    this.errorMessage = '';
+    this.message = '';
 
     // Validación de contraseñas
     if (this.garageData.password !== this.garageData.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
+      this.messageType = 'error';
+      this.message = 'Las contraseñas no coinciden.';
+      setTimeout(() => this.message = '', 3000);
       return;
     }
 
     if (this.garageData.password.length < 6) {
-      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      this.messageType = 'error';
+      this.message = 'La contraseña debe tener al menos 6 caracteres.';
+      setTimeout(() => this.message = '', 3000);
       return;
     }
 
@@ -148,17 +158,20 @@ export class RegisterComponent {
 
     this.garageService.createGarage(garagePayload).subscribe({
       next: (response) => {
-        this.successMessage = 'Cochera registrada exitosamente. Redirigiendo al login...';
+        this.messageType = 'success';
+        this.message = 'Cochera registrada exitosamente. Redirigiendo al login...';
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
       },
       error: (error) => {
+        this.messageType = 'error';
         if (error.status === 409) {
-          this.errorMessage = 'El CUIT ya está registrado.';
+          this.message = 'El CUIT ya está registrado.';
         } else {
-          this.errorMessage = 'Error al registrar cochera. Intente más tarde.';
+          this.message = 'Error al registrar cochera. Intente más tarde.';
         }
+        setTimeout(() => this.message = '', 3000);
       }
     });
   }

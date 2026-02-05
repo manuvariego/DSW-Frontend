@@ -1,7 +1,11 @@
+/* ========================================
+   PROFILE PAGE STYLES
+   ======================================== */
+
 .card-box {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #f0f0f0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
 }
 
 .profile-bg-top {
@@ -10,16 +14,16 @@
   left: 0;
   width: 100%;
   height: 100px;
-  background: linear-gradient(135deg, #212529 0%, #495057 100%);
-  border-radius: 16px 16px 50% 50% / 0 0 30px 30px; 
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
+  border-radius: 16px 16px 50% 50% / 0 0 30px 30px;
 }
 
 .avatar-circle {
   width: 100px;
   height: 100px;
-  background-color: white; 
+  background-color: var(--color-surface);
   border-radius: 50%;
-  padding: 4px; 
+  padding: 4px;
   position: relative;
 }
 
@@ -29,8 +33,9 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: #212529; 
+  background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
   color: white;
+  font-family: 'Outfit', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   border-radius: 50%;
@@ -39,54 +44,108 @@
 .form-label-custom {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #6c757d;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   margin-bottom: 6px;
   letter-spacing: 0.5px;
 }
 
 .form-control-modern {
-  background-color: #f8f9fa;
-  border: 1px solid transparent;
-  border-radius: 10px;
+  background-color: var(--color-bg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
   padding: 12px 15px;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  color: #333;
-  transition: all 0.3s ease;
+  color: var(--color-text);
+  transition: all var(--transition-base);
   width: 100%;
 }
 
 .form-control-modern:focus {
-  background-color: #fff;
-  border-color: #dee2e6;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05); 
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
   outline: none;
 }
 
-
 .form-control-modern[readonly] {
-  background-color: #e9ecef;
-  color: #6c757d;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text-muted);
   cursor: not-allowed;
 }
 
 .btn-dark-custom {
-  background-color: #212529;
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
   color: white;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 12px;
   font-weight: 600;
-  transition: transform 0.2s;
+  transition: all var(--transition-base);
   border: none;
 }
 
 .btn-dark-custom:hover {
-  background-color: #000;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-dark-custom:disabled {
-  background-color: #6c757d;
+  background-color: var(--color-text-muted);
   transform: none;
+}
+
+/* ===== NUEVO: HEADER DE PERFIL ===== */
+
+.profile-header {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+/* ===== NUEVO: STAT CARDS (MÉTRICAS) ===== */
+
+.stat-card {
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bordes de color a la izquierda */
+.border-start-primary {
+  border-left: 4px solid #0d6efd;
+  /* azul tipo Bootstrap primary */
+}
+
+.border-start-info {
+  border-left: 4px solid #17a2b8;
+  /* celeste tipo info */
+}
+
+.border-start-warning {
+  border-left: 4px solid #ffc107;
+  /* amarillo tipo warning */
+}
+
+/* Icono redondo a la derecha */
+.icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fondos suaves para el icono */
+.bg-primary-light {
+  background: rgba(13, 110, 253, 0.08);
+}
+
+.bg-info-light {
+  background: rgba(23, 162, 184, 0.08);
+}
+
+.bg-warning-light {
+  background: rgba(255, 193, 7, 0.12);
 }

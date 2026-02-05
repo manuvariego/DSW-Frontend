@@ -17,7 +17,8 @@ import { ReservationService } from '../../services/reservation.service.js';
 })
 export class VehiclesComponent {
 
-  vehiculoCreado = false;
+  message = '';
+  isSuccess = false;
   private _apiservice = inject(VehiclesService)
   private _typeVehicleService = inject(TypeVehicleService)
   private _authService = inject(AuthService)
@@ -153,15 +154,26 @@ isVehicleBlocked(plate: string): boolean {
     this._apiservice.deleteVehicle(license_plate).subscribe({
       next: (response) => {
         console.log('Vehiculo eliminado exitosamente', response);
-        this.getVehicles(); // Refrescar la lista de usuarios
+        this.message = 'Vehículo eliminado correctamente.';
+        this.isSuccess = true;
+        this.getVehicles();
+
+        if (type == true) { this.currentSection = 'initVehicles' }
+
+        setTimeout(() => {
+          this.message = '';
+        }, 3000);
       },
       error: (error) => {
         console.error('Error al eliminar el vehiculo', error);
+        this.message = 'Error al eliminar el vehículo.';
+        this.isSuccess = false;
+
+        setTimeout(() => {
+          this.message = '';
+        }, 3000);
       }
     });
-
-
-    if (type == true) { this.currentSection = 'initVehicles' }
   }
 
   createVehicle(form: NgForm) {
@@ -178,13 +190,13 @@ isVehicleBlocked(plate: string): boolean {
     this._apiservice.createVehicle(this.vehicleData).subscribe({
       next: (response) => {
         console.log('Vehiculo creado exitosamente:', response);
-        this.vehiculoCreado = true;
+        this.message = 'Vehículo creado exitosamente.';
+        this.isSuccess = true;
         this.showSection('initVehicles');
         form.resetForm();
 
-        // Oculta el mensaje después de 3 segundos
         setTimeout(() => {
-          this.vehiculoCreado = false;
+          this.message = '';
         }, 3000);
         this.getVehicles();
         this.vehicleData = { license_plate: '', type: '', owner: '' };
