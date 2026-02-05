@@ -56,6 +56,15 @@ export class HomeComponent implements OnInit {
     L.marker([-32.94068892561842, -60.64257527575075]).addTo(map)
       .bindPopup('Estacionamiento Centro')
       .openPopup();
+
+     L.marker([-32.916742122507785, -60.78042659011688]).addTo(map)
+      .bindPopup('Estacionamiento Aeropuerto')
+      .openPopup();
+
+     L.marker([-32.91560116945068, -60.77296066535153]).addTo(map)
+      .bindPopup('Estacionamiento Fisherton')
+      .openPopup();
+
     // agregar mas marcadores donde nos parezca
   }
 }

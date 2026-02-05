@@ -287,3 +287,51 @@ h3.section-title {
     transform: translateY(-5px);
   }
 }
+
+/* Banner de Error cuando se superponen las reservas */
+.error-banner {
+    background-color: #fef2f2; 
+    border-left: 5px solid #dc2626; 
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 6px rgba(220, 38, 38, 0.1);
+}
+
+.error-icon {
+    background-color: #dc2626;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.error-content strong {
+    display: block;
+    color: #991b1b; /* Rojo oscuro para el título */
+    margin-bottom: 2px;
+}
+
+.error-content p {
+    margin: 0;
+    color: #7f1d1d;
+    font-size: 0.95rem;
+}
+
+/* Animación para que aparezca suave */
+.fade-in-anim {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

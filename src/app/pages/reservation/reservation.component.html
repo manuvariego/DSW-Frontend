@@ -44,7 +44,6 @@
 @if (currentSection == 'initial') {
 <div class="container mt-5 fade-in-anim">
 
-  <!-- Caso sin vehículos -->
   <div *ngIf="userVehicles.length === 0" class="card-box p-5 mx-auto text-center" style="max-width: 500px;">
     <div class="icon-container mb-4">
       <i class="fas fa-car fa-4x text-warning"></i>
@@ -63,7 +62,6 @@
     </div>
   </div>
 
-  <!-- Formulario de reserva (solo si tiene vehículos) -->
   <div *ngIf="userVehicles.length > 0" class="card-box p-5 mx-auto" style="max-width: 600px;">
     <div class="text-center mb-4">
       <h3 class="section-title mb-1">Reservá tu estacionamiento</h3>
@@ -75,14 +73,19 @@
     <form>
       <div class="form-group mb-3">
         <label class="form-label">Tu vehículo</label>
-        <select class="form-select modern-input" [(ngModel)]="reservationData.license_plate" name="vehicle" required
-          #license_plate="ngModel"
-          [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
+        
+        <select class="form-select modern-input" 
+                [(ngModel)]="reservationData.license_plate" 
+                name="vehicle" required
+                (change)="validateAvailability()" 
+                #license_plate="ngModel"
+                [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)">
           <option value="" disabled selected>Seleccioná tu vehículo...</option>
           <option *ngFor="let vehicle of userVehicles" [value]="vehicle.license_plate">
             {{ vehicle.license_plate }}
           </option>
         </select>
+        
         <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)"
           class="invalid-feedback">
           Seleccione un vehículo.
@@ -92,9 +95,14 @@
       <div class="row">
         <div class="col-md-6 form-group mb-3">
           <label class="form-label">Fecha y hora de ingreso</label>
-          <input type="datetime-local" class="form-control modern-input" [(ngModel)]="reservationData.check_in_at"
-            name="checkIn" required (change)="onCheckInChange()" #check_in_at="ngModel" [min]="minCheckIn"
-            [class.is-invalid]="(check_in_at.invalid && (check_in_at.dirty || check_in_at.touched)) || isDateInvalid" />
+          
+          <input type="datetime-local" class="form-control modern-input" 
+                 [(ngModel)]="reservationData.check_in_at"
+                 name="checkIn" required 
+                 (change)="onCheckInChange(); validateAvailability()" 
+                 #check_in_at="ngModel" [min]="minCheckIn"
+                 [class.is-invalid]="(check_in_at.invalid && (check_in_at.dirty || check_in_at.touched)) || isDateInvalid" />
+          
           <div *ngIf="check_in_at.errors?.['required'] && (check_in_at.dirty || check_in_at.touched)"
             class="invalid-feedback">
             Requerido.
@@ -103,9 +111,14 @@
 
         <div class="col-md-6 form-group mb-3">
           <label class="form-label">Fecha y hora de salida</label>
-          <input type="datetime-local" class="form-control modern-input" [(ngModel)]="reservationData.check_out_at"
-            name="checkOut" required (change)="validateDates()" #check_out_at="ngModel" [min]="minCheckOut"
-            [class.is-invalid]="(check_out_at.invalid && (check_out_at.dirty || check_out_at.touched)) || isDateInvalid" />
+          
+          <input type="datetime-local" class="form-control modern-input" 
+                 [(ngModel)]="reservationData.check_out_at"
+                 name="checkOut" required 
+                 (change)="validateDates(); validateAvailability()" 
+                 #check_out_at="ngModel" [min]="minCheckOut"
+                 [class.is-invalid]="(check_out_at.invalid && (check_out_at.dirty || check_out_at.touched)) || isDateInvalid" />
+          
           <div *ngIf="check_out_at.errors?.['required'] && (check_out_at.dirty || check_out_at.touched)"
             class="invalid-feedback">
             Requerido.
@@ -117,16 +130,40 @@
         <i class="fas fa-exclamation-triangle me-1"></i> {{ errorDateInvalid }}
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger mt-2 shadow-sm">
-        <i class="fas fa-times-circle me-1"></i> {{ errorMessage }}
+      <div *ngIf="isVehicleBusy" class="alert alert-danger mt-3 fade-in-anim border-danger border-start border-4">
+        <div class="d-flex align-items-center">
+             <div class="me-3">
+                 <i class="fas fa-calendar-times fa-2x text-danger"></i>
+             </div>
+             <div>
+                 <h6 class="alert-heading fw-bold mb-1">No disponible</h6>
+                 <p class="mb-0 small">{{ availabilityMessage }}</p>
+             </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-banner fade-in-anim mt-3">
+          <div class="error-icon">
+              <i class="bi bi-calendar-x"></i> 
+          </div>
+          <div class="error-content">
+              <strong>Atención</strong>
+              <p>{{ errorMessage }}</p>
+          </div>
       </div>
 
       <div class="d-grid gap-2 mt-4">
+        
         <button type="button" class="btn btn-dark-custom btn-lg"
-          [disabled]="license_plate.invalid || check_in_at.invalid || check_out_at.invalid || isDateInvalid || errorMessage"
+          [disabled]="license_plate.invalid || check_in_at.invalid || check_out_at.invalid || isDateInvalid || errorMessage || isVehicleBusy || isValidating"
           (click)="showSection('garages')">
-          <i class="fas fa-search me-1"></i> Buscar cocheras disponibles
+          
+          <span *ngIf="isValidating" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="!isValidating"><i class="fas fa-search me-1"></i> Buscar cocheras disponibles</span>
+          <span *ngIf="isValidating">Verificando disponibilidad...</span>
+
         </button>
+
         <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">
           Cancelar
         </button>

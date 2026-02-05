@@ -1,7 +1,3 @@
-/* ========================================
-   SERVICES PAGE STYLES
-   ======================================== */
-
 /* ANIMACIONES */
 .fade-in-anim {
   animation: fadeIn 0.4s ease-in-out;
@@ -256,6 +252,14 @@ h4.section-subtitle {
 }
 
 /* Action icons */
+.actions-container {
+  display: flex;
+  align-items: center;      
+  justify-content: flex-end; 
+  gap: 8px;   
+  width: 100%;
+}
+
 .btn-icon-action {
   width: 38px !important;
   height: 38px !important;

@@ -65,4 +65,14 @@ export class ReservationService {
   getReservationsForBlocking(cuit: string): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
 }
+
+checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Observable<any> {
+  let params = new HttpParams()
+    .set('license_plate', plate)
+    .set('check_in_at', checkIn)
+    .set('check_out_at', checkOut);
+
+  return this.http.get(`${this.apiUrl}/check-availability`, { params });
+}
+
 }

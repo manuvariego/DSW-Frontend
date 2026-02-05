@@ -27,22 +27,9 @@
             <i class="fas fa-parking fa-3x"></i>
           </div>
           <h5 class="card-title">Ver espacios</h5>
-          <p class="text-muted small">Consultá el listado de espacios creados.</p>
+          <p class="text-muted small">Consultá el listado de espacios creados. Podés editar y eliminar. </p>
           <button class="btn btn-dark-custom mt-2">
             Ver listado
-          </button>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="card menu-card h-100 text-center p-4" (click)="showSection('createParkingSpace')">
-          <div class="icon-container mb-3">
-            <i class="fas fa-plus-circle fa-3x"></i>
-          </div>
-          <h5 class="card-title">Nuevo espacio</h5>
-          <p class="text-muted small">Dá de alta un espacio individual.</p>
-          <button class="btn btn-dark-custom mt-2">
-            Crear espacio
           </button>
         </div>
       </div>
@@ -52,12 +39,12 @@
           <div class="icon-container mb-3">
             <i class="fas fa-layer-group fa-3x"></i>
           </div>
-          <h5 class="card-title">Crear múltiples</h5>
+          <h5 class="card-title">Crear</h5>
           <p class="text-muted small">
-            Generá varios espacios de estacionamiento de forma automática.
+            Generá uno o varios espacios de estacionamiento de forma automática.
           </p>
           <button class="btn btn-dark-custom mt-2">
-            Crear múltiples
+            Crear
           </button>
         </div>
       </div>
@@ -125,53 +112,6 @@
 }
 
 
-@if (currentSection == 'createParkingSpace') {
-<div class="container mt-5 fade-in-anim">
-  <div class="card-box p-5 mx-auto" style="max-width: 600px;">
-    <h3 class="text-center mb-2 section-title">Registrar nuevo espacio</h3>
-    <p class="text-muted text-center mb-4">
-      Creá un espacio individual asignando su número y el tipo de vehículo permitido.
-    </p>
-
-    <form (ngSubmit)="createParkingSpace(ParkingSpaceForm)" #ParkingSpaceForm="ngForm" class="needs-validation"
-      novalidate>
-
-      <div class="row">
-        <div class="col-12 form-group mb-3">
-          <label for="number" class="form-label">Número</label>
-          <input type="text" class="form-control modern-input" id="number" name="number"
-            [(ngModel)]="ParkingSpaceData.number" required placeholder="Ej: 10" #numberParkingSpace="ngModel"
-            [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
-          <div class="invalid-feedback">Requerido.</div>
-        </div>
-      </div>
-
-      <div class="form-group mb-4">
-        <label for="TypeVehicle" class="form-label">Tipo de vehículo aceptado</label>
-        <select class="form-select modern-input" id="TypeVehicle" name="TypeVehicle"
-          [(ngModel)]="ParkingSpaceData.TypeVehicle" #TypeVehicle="ngModel" required
-          [class.is-invalid]="TypeVehicle.invalid && (TypeVehicle.dirty || TypeVehicle.touched)">
-          <option *ngFor="let typeVehicle of typeVehicles" [value]="typeVehicle.id">
-            {{ typeVehicle.name }}
-          </option>
-        </select>
-        <div class="invalid-feedback">Seleccione un tipo.</div>
-      </div>
-
-      <div class="d-grid gap-2 mt-4">
-        <button type="submit" class="btn btn-dark-custom btn-lg">
-          Dar de alta
-        </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">
-          Cancelar
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-}
-
-
 @if (currentSection == 'createMultipleParkingSpaces') {
 <div class="container mt-4 fade-in-anim">
   <div class="row justify-content-center">
@@ -179,9 +119,9 @@
 
       <div class="card card-box shadow-lg">
         <div class="card-body">
-          <h3 class="section-title mb-2 text-center">Crear múltiples espacios</h3>
+          <h3 class="section-title mb-2 text-center">Crear espacios</h3>
           <p class="text-muted text-center mb-4">
-            Generá varios espacios de una sola vez seleccionando sus números en la grilla.
+            Generá uno o varios espacios de estacionamiento seleccionando sus números en la grilla.
           </p>
 
           <!-- Mostrar hasta -->
@@ -217,7 +157,7 @@
           <!-- Leyenda -->
           <div class="d-flex flex-wrap gap-3 mb-3 grid-legend">
             <small class="d-flex align-items-center gap-1">
-              <span class="legend-dot bg-success"></span> Seleccionado
+              <span class="legend-dot" style="background-color: #d49e17d0;"></span> Seleccionado
             </small>
             <small class="d-flex align-items-center gap-1">
               <span class="legend-dot bg-secondary"></span> Ya existente
@@ -258,19 +198,18 @@
   <div class="card-box p-5 mx-auto" style="max-width: 600px;">
     <h3 class="text-center mb-2 section-title">Modificar espacio</h3>
     <p class="text-muted text-center mb-4">
-      Actualizá el número o el tipo de vehículo permitido para este espacio.
+      Actualizá el tipo de vehículo permitido para este espacio.
     </p>
 
     <form (ngSubmit)="updateParkingSpace(parkingSpaceForm)" #parkingSpaceForm="ngForm" class="needs-validation"
       novalidate>
 
       <div class="row">
+
         <div class="col-md-6 form-group mb-3">
           <label for="number" class="form-label">Número</label>
           <input type="text" class="form-control modern-input" id="number" name="number"
-            [(ngModel)]="editingParkingSpace.number" required #numberParkingSpace="ngModel"
-            [class.is-invalid]="numberParkingSpace.invalid && (numberParkingSpace.dirty || numberParkingSpace.touched)" />
-          <div class="invalid-feedback">Requerido.</div>
+            [(ngModel)]="editingParkingSpace.number" readonly/>
         </div>
 
         <div class="col-md-6 form-group mb-3">

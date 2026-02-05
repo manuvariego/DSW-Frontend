@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -26,6 +27,11 @@ export class ReservationComponent implements OnInit {
   errorDateInvalid: string = '';
   reservationForm!: FormGroup;
   isDateInvalid: boolean = false;
+
+  // Variables nuevas para controlar el estado
+isVehicleBusy: boolean = false;
+availabilityMessage: string = '';
+isValidating: boolean = false;
 
   reservationData = {
 
@@ -277,36 +283,53 @@ ngOnInit() {
   }
 
   createReservation() {
+    this.errorMessage = ''; 
+
     const finalData = {
       ...this.reservationData, 
       services: this.selectedServicesIds,
       totalPrice: this.totalFinal, 
       paymentMethod: this.paymentMethod
-
     };
 
-    console.log("Enviando reserva con servicios:", finalData);
-    console.log("Enviando reserva con precio:", finalData);
+    console.log("Enviando reserva:", finalData);
 
     this.reservationService.createReservation(finalData).subscribe({
       next: (response) => {
         console.log('Reserva creada exitosamente:', response);
         this.theReservation = response;
+
         if (this.paymentMethod === 'MP') {
             const linkMercadoPago = 'https://link.mercadopago.com.ar'; 
             window.open(linkMercadoPago, '_blank');
         }
+        
         this.currentSection = 'realizada'; 
         this.reservationData = { check_in_at: '', check_out_at: '', license_plate: '', cuitGarage: '' };
         this.filters = { check_in_at: '', check_out_at: '', license_plate: '' };
-
       },
-      error: (error) => {
-        console.error('Error al crear la reserva:', error);
-        this.errorMessage = 'Hubo un error al procesar la reserva.';
+      error: (err) => {
+        console.error('Error al crear la reserva:', err);
+        
+        // MANEJO DEL ERROR DE SUPERPOSICIÓN
+        if (err.status === 400) {
+            const backendMessage = err.error.message || 'El vehículo no está disponible en esas fechas.';
+            
+            this.errorMessage = backendMessage;
+
+            Swal.fire({
+                icon: 'error',
+                title: 'No disponible',
+                text: backendMessage, // "El vehículo ya tiene una reserva..."
+                confirmButtonColor: '#d33'
+            });
+        } else {
+            this.errorMessage = 'Hubo un error técnico. Intente más tarde.';
+            Swal.fire('Error', 'Ocurrió un error inesperado', 'error');
+        }
       }
     });
-  }
+}
 
   showSection(section: string) {
     this.currentSection = section;
@@ -515,5 +538,38 @@ getServicesTotal(services: any[]): number {
 
     doc.save(`reserva_${reserva.id}.pdf`);
   }
+
+validateAvailability() {
+  if (!this.reservationData.license_plate || !this.filters.check_in_at || !this.filters.check_out_at) {
+    return;
+  }
+
+  this.isValidating = true;
+  this.errorMessage = '';
+
+  this.reservationService.checkVehicleAvailability(
+    this.reservationData.license_plate, 
+    this.filters.check_in_at, 
+    this.filters.check_out_at
+  ).subscribe({
+    next: (res: any) => {
+      this.isValidating = false;
+      
+      if (res.available === false) {
+        // OCUPADO
+        this.isVehicleBusy = true;
+        this.availabilityMessage = res.message; // Mensaje del backend
+      } else {
+        // LIBRE
+        this.isVehicleBusy = false;
+        this.availabilityMessage = '';
+      }
+    },
+    error: (err) => {
+      this.isValidating = false;
+      console.error("Error validando disponibilidad", err);
+    }
+  });
+}
 
 }
