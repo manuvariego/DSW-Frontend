@@ -250,6 +250,10 @@ h3.section-title {
   border-radius: 50%;
 }
 
+.legend-dot.bg-selected {
+  background-color: var(--color-primary);
+}
+
 /* FIN PARKING SPACE PAGE */
 
 /* Cuando el botón tiene la clase disabled-btn o el atributo disabled */

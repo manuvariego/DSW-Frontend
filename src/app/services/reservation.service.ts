@@ -63,6 +63,10 @@ export class ReservationService {
   }
 
   getReservationsForBlocking(cuit: string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
-}
+    return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
+  }
+
+  updateServiceStatus(reservationId: number, serviceId: number, status: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${reservationId}/services/${serviceId}`, { status });
+  }
 }

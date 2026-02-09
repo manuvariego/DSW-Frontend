@@ -748,15 +748,15 @@
     </div>
 
     <!-- Servicios -->
-    <div *ngIf="selectedReservation.services?.length > 0" class="border rounded p-3 mb-4">
+    <div *ngIf="selectedReservation.reservationServices?.length > 0" class="border rounded p-3 mb-4">
       <h6 class="text-muted mb-3">
         <i class="fas fa-concierge-bell me-2"></i>
         Servicios contratados
       </h6>
       <ul class="list-unstyled mb-0">
-        <li *ngFor="let service of selectedReservation.services" class="d-flex justify-content-between mb-2">
-          <span>{{ service.description || service.name }}</span>
-          <span class="fw-bold text-success">${{ service.price }}</span>
+        <li *ngFor="let rs of selectedReservation.reservationServices" class="d-flex justify-content-between mb-2">
+          <span>{{ rs.service.description || rs.service.name }}</span>
+          <span class="fw-bold text-success">${{ rs.service.price }}</span>
         </li>
       </ul>
     </div>
@@ -769,11 +769,11 @@
       </h6>
       <div class="d-flex justify-content-between mb-2">
         <span class="text-muted">Estadía</span>
-        <span>${{ selectedReservation.amount - getServicesTotal(selectedReservation.services) }}</span>
+        <span>${{ selectedReservation.amount - getServicesTotal(selectedReservation.reservationServices) }}</span>
       </div>
-      <div *ngIf="selectedReservation.services?.length > 0" class="d-flex justify-content-between mb-2">
+      <div *ngIf="selectedReservation.reservationServices?.length > 0" class="d-flex justify-content-between mb-2">
         <span class="text-muted">Servicios</span>
-        <span>+ ${{ getServicesTotal(selectedReservation.services) }}</span>
+        <span>+ ${{ getServicesTotal(selectedReservation.reservationServices) }}</span>
       </div>
       <hr class="my-2">
       <div class="d-flex justify-content-between">

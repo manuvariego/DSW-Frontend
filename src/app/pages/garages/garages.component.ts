@@ -41,6 +41,13 @@ export class GaragesComponent {
   paymentMethod: string = ''; //  efectivo o mercado pago
   p: number = 1; // Página actual para paginación
 
+  // === TABLERO DE SERVICIOS ===
+  serviceTickets: any[] = [];          // Lista plana: 1 ticket por cada (reserva, servicio)
+  pendingTickets: any[] = [];          // Filtrado: estado 'pendiente'
+  inProgressTickets: any[] = [];       // Filtrado: estado 'en_progreso'
+  completedTickets: any[] = [];        // Filtrado: estado 'completado'
+  totalPendingServices: number = 0;    // Contador para KPI del dashboard
+
   ngOnInit() {
     this.loadReservationsOnProgress();
   }
@@ -104,6 +111,7 @@ export class GaragesComponent {
         this.totalParkingSpacesAvailable = Math.max(0, this.totalParkingSpaces - this.totalResevartionsOnProgress);
         this.parkingSpaces = Array.isArray(results.spaces) ? results.spaces : [];
         this.activeReservations = results.reservations || [];
+        this.computePendingServicesCount(this.activeReservations);
         console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
       },
       error: (err) => {
@@ -202,5 +210,103 @@ cancelReservation(reserva: any) {
     if (section == 'getReservations') {
       this.getReservation();
     }
+    if (section == 'tableroServicios') {
+      this.loadServiceBoard();
+    }
+  }
+
+  // === TABLERO DE SERVICIOS - MÉTODOS ===
+
+  loadServiceBoard(): void {
+    const cuit = this._authService.getCurrentUserId();
+    if (!cuit) return;
+
+    this._reservationService.getReservationsOfGarage(cuit, false, {
+      status: 'activa'
+    }).subscribe({
+      next: (reservations: any[]) => {
+        const now = new Date();
+        this.serviceTickets = [];
+
+        for (const reservation of reservations) {
+          // Solo reservas en curso (el vehículo ya ingresó y todavía no salió)
+          const checkIn = new Date(reservation.check_in_at);
+          const checkOut = new Date(reservation.check_out_at);
+          if (checkIn > now || checkOut < now) continue;
+
+          // Solo reservas que tengan servicios contratados (ahora en reservationServices)
+          if (!reservation.reservationServices || reservation.reservationServices.length === 0) continue;
+
+          for (const rs of reservation.reservationServices) {
+            this.serviceTickets.push({
+              reservationId: reservation.id,
+              serviceId: rs.service.id,
+              serviceDescription: rs.service.description,
+              servicePrice: rs.service.price,
+              licensePlate: reservation.vehicle?.license_plate || 'N/A',
+              ownerName: `${reservation.vehicle?.owner?.name || ''} ${reservation.vehicle?.owner?.surname || ''}`.trim() || 'Desconocido',
+              checkInAt: reservation.check_in_at,
+              parkingSpaceNumber: reservation.parkingSpace?.number || null,
+              status: rs.status || 'pendiente'
+            });
+          }
+        }
+
+        this.categorizeTickets();
+      },
+      error: (err) => {
+        console.error('Error cargando tablero de servicios:', err);
+      }
+    });
+  }
+
+  private categorizeTickets(): void {
+    this.pendingTickets = this.serviceTickets.filter(t => t.status === 'pendiente');
+    this.inProgressTickets = this.serviceTickets.filter(t => t.status === 'en_progreso');
+    this.completedTickets = this.serviceTickets.filter(t => t.status === 'completado');
+    this.totalPendingServices = this.pendingTickets.length;
+  }
+
+  advanceServiceStatus(ticket: any): void {
+    let newStatus = '';
+
+    if (ticket.status === 'pendiente') {
+      newStatus = 'en_progreso';
+    } else if (ticket.status === 'en_progreso') {
+      newStatus = 'completado';
+    } else {
+      return;
+    }
+
+    this._reservationService.updateServiceStatus(ticket.reservationId, ticket.serviceId, newStatus).subscribe({
+      next: () => {
+        ticket.status = newStatus;
+        this.categorizeTickets();
+      },
+      error: (err) => {
+        console.error('Error actualizando estado del servicio:', err);
+      }
+    });
+  }
+
+  private computePendingServicesCount(reservations: any[]): void {
+    const now = new Date();
+    let count = 0;
+
+    for (const reservation of reservations) {
+      // Solo reservas en curso (el vehículo ya ingresó y todavía no salió)
+      const checkIn = new Date(reservation.check_in_at);
+      const checkOut = new Date(reservation.check_out_at);
+      if (checkIn > now || checkOut < now) continue;
+      if (!reservation.reservationServices || reservation.reservationServices.length === 0) continue;
+
+      for (const rs of reservation.reservationServices) {
+        if (rs.status === 'pendiente') {
+          count++;
+        }
+      }
+    }
+
+    this.totalPendingServices = count;
   }
 }

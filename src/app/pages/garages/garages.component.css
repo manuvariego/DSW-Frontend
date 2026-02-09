@@ -359,3 +359,191 @@ button.btn-icon-action.btn-delete-icon:disabled {
   border-radius: 999px;
   background: var(--color-primary);
 }
+
+/* ===== TABLERO DE SERVICIOS (KANBAN) ===== */
+
+.kanban-board {
+  min-height: 60vh;
+}
+
+.kanban-column {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.kanban-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.kanban-column-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-dark);
+}
+
+.kanban-pendiente {
+  border-top: 4px solid var(--color-warning);
+}
+
+.kanban-en-progreso {
+  border-top: 4px solid var(--color-info);
+}
+
+.kanban-completado {
+  border-top: 4px solid var(--color-success);
+}
+
+.kanban-column-body {
+  padding: 12px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* TICKET CARDS */
+
+.service-ticket {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.service-ticket:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.ticket-pendiente {
+  border-left-color: var(--color-warning);
+}
+
+.ticket-en-progreso {
+  border-left-color: var(--color-info);
+}
+
+.ticket-completado {
+  border-left-color: var(--color-success);
+  opacity: 0.7;
+}
+
+.ticket-plate {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-dark);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.ticket-service {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.ticket-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.ticket-price {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.ticket-separator {
+  color: var(--color-border);
+}
+
+.ticket-owner {
+  font-weight: 500;
+}
+
+.ticket-checkin {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-bottom: 4px;
+}
+
+.ticket-space {
+  margin-bottom: 2px;
+}
+
+/* BOTONES DE AVANCE */
+
+.btn-advance {
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  transition: all var(--transition-base);
+  border: none;
+}
+
+.btn-advance:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-advance-start {
+  background: var(--color-warning);
+  color: var(--color-dark);
+}
+
+.btn-advance-start:hover {
+  background: #d49520;
+  color: var(--color-dark);
+}
+
+.btn-advance-complete {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-advance-complete:hover {
+  background: #3d8b4e;
+  color: white;
+}
+
+/* ESTADO VACÍO */
+
+.kanban-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+/* RESPONSIVE */
+@media (max-width: 767.98px) {
+  .kanban-column {
+    min-height: 200px;
+  }
+
+  .kanban-column-body {
+    max-height: 40vh;
+  }
+}

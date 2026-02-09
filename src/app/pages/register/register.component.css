@@ -319,3 +319,32 @@
     padding: 24px 20px;
   }
 }
+
+/* Header de los formularios de registro */
+.register-header {
+  gap: 1rem;
+}
+
+/* Botón volver estilo pill */
+.back-pill {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+/* En mobile que no se rompa el layout */
+@media (max-width: 576px) {
+  .register-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .back-pill {
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+}
