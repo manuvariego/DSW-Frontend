@@ -388,9 +388,9 @@ ngOnInit() {
   });
 }
 
-getServicesTotal(services: any[]): number {
-  if (!services || services.length === 0) return 0;
-  return services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
+getServicesTotal(reservationServices: any[]): number {
+  if (!reservationServices || reservationServices.length === 0) return 0;
+  return reservationServices.reduce((sum: number, rs: any) => sum + (Number(rs.service?.price) || 0), 0);
 }
 
   downloadpdf(reserva: any) {
@@ -477,8 +477,8 @@ getServicesTotal(services: any[]): number {
     yPos += 35;
 
     // === SERVICIOS (si hay) ===
-    const services = reserva.services || [];
-    if (services.length > 0) {
+    const reservationServices = reserva.reservationServices || [];
+    if (reservationServices.length > 0) {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
       doc.text('Servicios Contratados', 20, yPos);
@@ -486,12 +486,12 @@ getServicesTotal(services: any[]): number {
 
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      
+
       let totalServices = 0;
-      services.forEach((service: any) => {
-        const price = Number(service.price) || 0;
+      reservationServices.forEach((rs: any) => {
+        const price = Number(rs.service?.price) || 0;
         totalServices += price;
-        doc.text(`• ${service.description || service.name}`, 25, yPos);
+        doc.text(`• ${rs.service?.description || rs.service?.name}`, 25, yPos);
         doc.text(`$${price}`, 170, yPos, { align: 'right' });
         yPos += 6;
       });
@@ -507,7 +507,7 @@ getServicesTotal(services: any[]): number {
     doc.setFont('helvetica', 'normal');
     
     // Calcular subtotales
-    const totalServices = services.reduce((sum: number, s: any) => sum + (Number(s.price) || 0), 0);
+    const totalServices = reservationServices.reduce((sum: number, rs: any) => sum + (Number(rs.service?.price) || 0), 0);
     const totalReservation = reserva.amount - totalServices;
 
     doc.text('Estadía:', 120, yPos);

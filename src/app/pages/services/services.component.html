@@ -7,7 +7,7 @@
       <p class="section-subtitle mb-0">Creá, editá y administrá los servicios adicionales que ofrecés a tus clientes.</p>
     </div>
   
-    <button class="btn btn-outline-dark"  routerLink="/">
+    <button class="btn btn-outline-dark"  routerLink="/garages">
       <i class="fas fa-arrow-left me-1"></i> Volver
     </button>
   </div>
@@ -104,8 +104,8 @@
           
           <td class="pe-4 text-end">
             <div class="actions-container">
-            <button class="btn btn-sm btn-light border me-2" (click)="editService(srv)" title="Editar">
-              <i class="fas fa-pen text-warning"></i>
+            <button type="button" class="btn-icon-action btn-edit-icon" (click)="editService(srv)" title="Editar">
+              <i class="fas fa-pen"></i>
             </button>
            <button type="button" 
                   class="btn-icon-action btn-delete-icon" 

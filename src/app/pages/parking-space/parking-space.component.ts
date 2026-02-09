@@ -5,7 +5,7 @@ import { ParkingSpaceService } from '../../services/parking-space.service';
 import { TypeVehicleService } from '../../services/type-vehicle.service';
 import { AuthService } from '../../services/auth.service';
 import { RouterLink } from '@angular/router';
-import { ReservationService } from '../../services/reservation.service.js';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
   selector: 'app-parking-space',

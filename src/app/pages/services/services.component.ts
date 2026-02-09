@@ -199,10 +199,10 @@ checkBlockedServices(cuit: string) {
       const blockedSet = new Set<string>();
 
       reservations.forEach(r => {
-        if (r.services && r.services.length > 0) {
-          r.services.forEach((servicio: any) => {
+        if (r.reservationServices && r.reservationServices.length > 0) {
+          r.reservationServices.forEach((rs: any) => {
             // Guardamos el ID del servicio
-            blockedSet.add(String(servicio.id));
+            blockedSet.add(String(rs.service.id));
           });
         }
       });

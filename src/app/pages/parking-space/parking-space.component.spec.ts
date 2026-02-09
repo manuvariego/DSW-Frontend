@@ -3,6 +3,7 @@ import { ParkingSpaceComponent } from './parking-space.component';
 import { ParkingSpaceService } from '../../services/parking-space.service';
 import { TypeVehicleService } from '../../services/type-vehicle.service';
 import { AuthService } from '../../services/auth.service';
+import { ReservationService } from '../../services/reservation.service';
 import { of, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +16,7 @@ describe('ParkingSpaceComponent', () => {
   let parkingServiceMock: any;
   let typeVehicleServiceMock: any;
   let authServiceMock: any;
+  let reservationServiceMock: any;
 
   beforeEach(async () => {
     // 2. Creamos los espías (Spies) para simular los servicios
@@ -28,6 +30,7 @@ describe('ParkingSpaceComponent', () => {
 
     typeVehicleServiceMock = jasmine.createSpyObj('TypeVehicleService', ['getTypeVehicles']);
     authServiceMock = jasmine.createSpyObj('AuthService', ['getCurrentUserId']);
+    reservationServiceMock = jasmine.createSpyObj('ReservationService', ['BlockedSpacesByGarage']);
 
     // Configuración por defecto de las respuestas de los mocks
     authServiceMock.getCurrentUserId.and.returnValue('20123456789'); // Un CUIT falso
@@ -36,6 +39,7 @@ describe('ParkingSpaceComponent', () => {
     parkingServiceMock.createParkingSpace.and.returnValue(of({}));
     parkingServiceMock.deleteParkingSpace.and.returnValue(of({}));
     parkingServiceMock.updateParkingSpace.and.returnValue(of({}));
+    reservationServiceMock.BlockedSpacesByGarage.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
       // Importamos el componente (porque es Standalone)
@@ -45,8 +49,9 @@ describe('ParkingSpaceComponent', () => {
         { provide: ParkingSpaceService, useValue: parkingServiceMock },
         { provide: TypeVehicleService, useValue: typeVehicleServiceMock },
         { provide: AuthService, useValue: authServiceMock },
+        { provide: ReservationService, useValue: reservationServiceMock },
         // Mock básico para RouterLink si es necesario
-        { provide: ActivatedRoute, useValue: {} } 
+        { provide: ActivatedRoute, useValue: {} }
       ]
     }).compileComponents();
 

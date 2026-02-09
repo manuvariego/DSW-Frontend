@@ -63,8 +63,8 @@ export class ReservationService {
   }
 
   getReservationsForBlocking(cuit: string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
-}
+    return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
+  }
 
 checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Observable<any> {
   let params = new HttpParams()
@@ -75,4 +75,8 @@ checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Obse
   return this.http.get(`${this.apiUrl}/check-availability`, { params });
 }
 
+
+  updateServiceStatus(reservationId: number, serviceId: number, status: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${reservationId}/services/${serviceId}`, { status });
+  }
 }

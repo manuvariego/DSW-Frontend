@@ -59,6 +59,18 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-3 col-sm-6">
+          <div class="card border-0 shadow-sm h-100 text-center py-4 stat-kpi">
+            <div class="card-body">
+              <div class="mb-3">
+                <i class="fas fa-concierge-bell fa-2x"></i>
+              </div>
+              <h2 class="fw-bold mb-1">{{ totalPendingServices }}</h2>
+              <p class="text-muted mb-0 small text-uppercase fw-bold">Servicios Pendientes</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- OCUPACIÓN ACTUAL -->
@@ -116,12 +128,21 @@
         </div>
       </div>
 
-      <!-- BOTÓN IR A RESERVAS -->
-      <div class="row justify-content-center mb-2">
+      <!-- BOTONES DE NAVEGACIÓN -->
+      <div class="row justify-content-center mb-2 g-2">
         <div class="col-auto">
           <button class="btn btn-dark rounded-pill px-5 py-3 shadow-sm"
             (click)="showSection('getReservations')">
             <i class="fas fa-clipboard-list me-2"></i> Ver Reservas
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-dark rounded-pill px-5 py-3 shadow-sm"
+            (click)="showSection('tableroServicios')">
+            <i class="fas fa-columns me-2"></i> Tablero de Servicios
+            @if (totalPendingServices > 0) {
+              <span class="badge rounded-pill bg-warning text-dark ms-2">{{ totalPendingServices }}</span>
+            }
           </button>
         </div>
       </div>
@@ -316,15 +337,15 @@
 
               <div class="col-12">
                 <label class="text-muted small fw-bold text-uppercase mb-2">Servicios Adicionales</label>
-                <div *ngIf="selectedReservation.services && selectedReservation.services.length > 0; else noServices">
+                <div *ngIf="selectedReservation.reservationServices && selectedReservation.reservationServices.length > 0; else noServices">
                   <ul class="list-group list-group-flush rounded-3">
-                    <li *ngFor="let service of selectedReservation.services"
+                    <li *ngFor="let rs of selectedReservation.reservationServices"
                       class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 mb-1 rounded">
                       <span>
                         <i class="fas fa-tools text-primary me-2"></i>
-                        {{ service.description }}
+                        {{ rs.service.description }}
                       </span>
-                      <span class="badge bg-dark rounded-pill">${{ service.price }}</span>
+                      <span class="badge bg-dark rounded-pill">${{ rs.service.price }}</span>
                     </li>
                   </ul>
                 </div>
@@ -359,5 +380,165 @@
     class="my-custom-pagination">
   </pagination-controls>
 </div>
+</div>
+}
+
+@if (currentSection == 'tableroServicios') {
+<div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
+  <div class="container-lg flex-grow-1 d-flex flex-column">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-2 reservas-header">
+      <div>
+        <h3 class="section-title mb-1">Tablero de Servicios</h3>
+        <p class="section-subtitle-sm mb-0">Gestioná los servicios solicitados por tus clientes.</p>
+      </div>
+      <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
+
+    <!-- KANBAN BOARD -->
+    <div class="row g-3 kanban-board">
+
+      <!-- COLUMNA: PENDIENTES -->
+      <div class="col-12 col-md-4">
+        <div class="kanban-column kanban-pendiente">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">
+              <i class="fas fa-clock me-2"></i>Pendientes
+            </span>
+            <span class="badge rounded-pill bg-warning text-dark">
+              {{ pendingTickets.length }}
+            </span>
+          </div>
+
+          <div class="kanban-column-body">
+            @for (ticket of pendingTickets; track ticket.reservationId + '_' + ticket.serviceId) {
+            <div class="service-ticket ticket-pendiente">
+              <div class="ticket-plate">
+                <i class="fas fa-car me-2"></i>{{ ticket.licensePlate }}
+              </div>
+              <div class="ticket-service">{{ ticket.serviceDescription }}</div>
+              <div class="ticket-details">
+                <span class="ticket-price">${{ ticket.servicePrice }}</span>
+                <span class="ticket-separator">|</span>
+                <span class="ticket-owner">{{ ticket.ownerName }}</span>
+              </div>
+              <div class="ticket-checkin">
+                <i class="fas fa-calendar-alt me-1"></i>
+                {{ ticket.checkInAt | date:'dd/MM/yy HH:mm' }}
+              </div>
+              @if (ticket.parkingSpaceNumber) {
+              <div class="ticket-space">
+                <span class="badge bg-secondary">Espacio #{{ ticket.parkingSpaceNumber }}</span>
+              </div>
+              }
+              <button class="btn btn-sm btn-advance btn-advance-start w-100 mt-2"
+                (click)="advanceServiceStatus(ticket)">
+                <i class="fas fa-play me-1"></i> Iniciar
+              </button>
+            </div>
+            } @empty {
+            <div class="kanban-empty">
+              <i class="fas fa-check-circle fa-2x mb-2 d-block"></i>
+              <small>No hay servicios pendientes</small>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA: EN PROGRESO -->
+      <div class="col-12 col-md-4">
+        <div class="kanban-column kanban-en-progreso">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">
+              <i class="fas fa-spinner me-2"></i>En Progreso
+            </span>
+            <span class="badge rounded-pill bg-info text-white">
+              {{ inProgressTickets.length }}
+            </span>
+          </div>
+
+          <div class="kanban-column-body">
+            @for (ticket of inProgressTickets; track ticket.reservationId + '_' + ticket.serviceId) {
+            <div class="service-ticket ticket-en-progreso">
+              <div class="ticket-plate">
+                <i class="fas fa-car me-2"></i>{{ ticket.licensePlate }}
+              </div>
+              <div class="ticket-service">{{ ticket.serviceDescription }}</div>
+              <div class="ticket-details">
+                <span class="ticket-price">${{ ticket.servicePrice }}</span>
+                <span class="ticket-separator">|</span>
+                <span class="ticket-owner">{{ ticket.ownerName }}</span>
+              </div>
+              <div class="ticket-checkin">
+                <i class="fas fa-calendar-alt me-1"></i>
+                {{ ticket.checkInAt | date:'dd/MM/yy HH:mm' }}
+              </div>
+              @if (ticket.parkingSpaceNumber) {
+              <div class="ticket-space">
+                <span class="badge bg-secondary">Espacio #{{ ticket.parkingSpaceNumber }}</span>
+              </div>
+              }
+              <button class="btn btn-sm btn-advance btn-advance-complete w-100 mt-2"
+                (click)="advanceServiceStatus(ticket)">
+                <i class="fas fa-check me-1"></i> Completar
+              </button>
+            </div>
+            } @empty {
+            <div class="kanban-empty">
+              <i class="fas fa-hourglass-half fa-2x mb-2 d-block"></i>
+              <small>No hay servicios en progreso</small>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA: COMPLETADOS -->
+      <div class="col-12 col-md-4">
+        <div class="kanban-column kanban-completado">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">
+              <i class="fas fa-check-double me-2"></i>Completados
+            </span>
+            <span class="badge rounded-pill bg-success text-white">
+              {{ completedTickets.length }}
+            </span>
+          </div>
+
+          <div class="kanban-column-body">
+            @for (ticket of completedTickets; track ticket.reservationId + '_' + ticket.serviceId) {
+            <div class="service-ticket ticket-completado">
+              <div class="ticket-plate">
+                <i class="fas fa-car me-2"></i>{{ ticket.licensePlate }}
+              </div>
+              <div class="ticket-service">{{ ticket.serviceDescription }}</div>
+              <div class="ticket-details">
+                <span class="ticket-price">${{ ticket.servicePrice }}</span>
+                <span class="ticket-separator">|</span>
+                <span class="ticket-owner">{{ ticket.ownerName }}</span>
+              </div>
+              <div class="ticket-checkin">
+                <i class="fas fa-calendar-alt me-1"></i>
+                {{ ticket.checkInAt | date:'dd/MM/yy HH:mm' }}
+              </div>
+            </div>
+            } @empty {
+            <div class="kanban-empty">
+              <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+              <small>No hay servicios completados</small>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mb-5"></div>
+  </div>
 </div>
 }
