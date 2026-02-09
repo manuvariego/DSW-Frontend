@@ -99,7 +99,14 @@ export class GaragesComponent {
       next: (results) => {
         console.log('All dashboard data received:', results);
 
-        this.totalResevartionsOnProgress = results.reservations ? results.reservations.length : 0;
+        const now = new Date();
+        const ongoingReservations = (results.reservations || []).filter(r => {
+          const checkIn = new Date(r.check_in_at);
+          const checkOut = new Date(r.check_out_at);
+          return checkIn <= now && checkOut >= now;
+        });
+        this.totalResevartionsOnProgress = ongoingReservations.length;
+
 
         if (Array.isArray(results.spaces)) {
           this.totalParkingSpaces = results.spaces.length;
