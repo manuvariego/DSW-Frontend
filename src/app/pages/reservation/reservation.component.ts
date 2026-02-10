@@ -158,11 +158,9 @@ ngOnInit() {
   }
 
   filterReservations() {
-    const ahora = new Date();
     
     this.reservasProximas = this.myReservations.filter(r => {
-      const fechaIngreso = new Date(r.check_in_at);
-      return r.estado === 'activa' && fechaIngreso >= ahora;
+      return r.estado === 'activa' || r.estado === 'en_curso';
     });
     
     this.reservasProximas.sort((a, b) => {
@@ -170,8 +168,7 @@ ngOnInit() {
     });
     
     this.reservasHistorial = this.myReservations.filter(r => {
-      const fechaIngreso = new Date(r.check_in_at);
-      return r.estado !== 'activa' || fechaIngreso < ahora;
+      return r.estado !== 'activa' && r.estado !== 'en_curso';
     });
 
     this.reservasHistorial.sort((a, b) => {
@@ -348,9 +345,9 @@ ngOnInit() {
     const ahora = new Date();
     const checkIn = new Date(reserva.check_in_at);
     const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
-    const enCurso = ahora >= new Date(reserva.check_in_at) && ahora <= new Date(reserva.check_out_at);
+    
 
-    if (enCurso) {
+    if (reserva.estado === 'en_curso') {
       alert('No podés cancelar una reserva que ya está en curso.');
       return;
     } 

@@ -130,15 +130,13 @@
         <i class="fas fa-exclamation-triangle me-1"></i> {{ errorDateInvalid }}
       </div>
 
-      <div *ngIf="isVehicleBusy" class="alert alert-danger mt-3 fade-in-anim border-danger border-start border-4">
-        <div class="d-flex align-items-center">
-             <div class="me-3">
-                 <i class="fas fa-calendar-times fa-2x text-danger"></i>
-             </div>
-             <div>
-                 <h6 class="alert-heading fw-bold mb-1">No disponible</h6>
-                 <p class="mb-0 small">{{ availabilityMessage }}</p>
-             </div>
+      <div *ngIf="isVehicleBusy" class="busy-banner fade-in-anim mt-3">
+        <div class="busy-icon">
+          <i class="fas fa-calendar-times"></i>
+        </div>
+        <div class="busy-content">
+          <strong>Vehículo no disponible</strong>
+          <p>{{ availabilityMessage }}</p>
         </div>
       </div>
 
@@ -434,7 +432,7 @@
           <td>{{ reserva.garage?.name || reserva.garage }}</td>
           <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
           <td>
-            <span class="badge bg-success">{{ reserva.estado | uppercase }}</span>
+            <span class="badge" [ngClass]="{'bg-success': reserva.estado === 'activa', 'bg-info': reserva.estado === 'en_curso'}">{{ reserva.estado === 'en_curso' ? 'EN CURSO' : (reserva.estado | uppercase) }}</span>
           </td>
           <td class="fw-bold">${{ reserva.amount }}</td>
           <td>
@@ -450,7 +448,8 @@
           </td>
           <td class="text-center">
             <button type="button" class="btn btn-outline-danger btn-sm"
-              (click)="$event.stopPropagation(); cancelReservation(reserva)" title="Cancelar reserva">
+              [disabled]="reserva.estado === 'en_curso'"
+              (click)="$event.stopPropagation(); cancelReservation(reserva)" [title]="reserva.estado === 'en_curso' ? 'No se puede cancelar una reserva en curso' : 'Cancelar reserva'">
               <i class="fas fa-times-circle"></i>
             </button>
           </td>
@@ -517,9 +516,10 @@
               <span class="badge" [ngClass]="{
                     'bg-success': reserva.estado === 'activa',
                     'bg-secondary': reserva.estado === 'completada',
-                    'bg-danger': reserva.estado === 'cancelada'
+                    'bg-danger': reserva.estado === 'cancelada',
+                    'bg-info': reserva.estado === 'en_curso'
                   }">
-                {{ reserva.estado | uppercase }}
+                {{ reserva.estado === 'en_curso' ? 'EN CURSO' : (reserva.estado | uppercase) }}
               </span>
             </td>
             <td class="fw-bold">${{ reserva.amount }}</td>
@@ -701,9 +701,10 @@
         <span class="badge px-3 py-2" [ngClass]="{
               'bg-success': selectedReservation.estado === 'activa',
               'bg-secondary': selectedReservation.estado === 'completada',
-              'bg-danger': selectedReservation.estado === 'cancelada'
+              'bg-danger': selectedReservation.estado === 'cancelada',
+              'bg-info': selectedReservation.estado === 'en_curso'
             }">
-          {{ selectedReservation.estado | uppercase }}
+          {{ selectedReservation.estado === 'en_curso' ? 'EN CURSO' : (selectedReservation.estado | uppercase) }}
         </span>
       </div>
     </div>

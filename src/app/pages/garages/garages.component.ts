@@ -34,7 +34,7 @@ export class GaragesComponent {
   totalParkingSpacesAvailable: number = 0;
   totalMoneyEarned: number = 0;
   totalReservationsAlltime: number = 0;
-  activeTab: string = 'activas';
+  activeTab: string = 'en_curso';
   parkingSpaces: any[] = [];
   activeReservations: any[] = [];
   errorMessage: string = '';
@@ -77,7 +77,7 @@ export class GaragesComponent {
     const monthStart = startOfMonth.toISOString().split('T')[0];
 
     const reservationsRequest$ = this._reservationService.getReservationsOfGarage(cuit, false, {
-      status: 'activa'
+      status: 'en_curso'
     });
 
     const reservationsRequest$$ = this._reservationService.getReservationsOfGarage(cuit, false, {});
@@ -99,13 +99,7 @@ export class GaragesComponent {
       next: (results) => {
         console.log('All dashboard data received:', results);
 
-        const now = new Date();
-        const ongoingReservations = (results.reservations || []).filter(r => {
-          const checkIn = new Date(r.check_in_at);
-          const checkOut = new Date(r.check_out_at);
-          return checkIn <= now && checkOut >= now;
-        });
-        this.totalResevartionsOnProgress = ongoingReservations.length;
+        this.totalResevartionsOnProgress = (results.reservations || []).length;
 
 
         if (Array.isArray(results.spaces)) {
@@ -128,15 +122,14 @@ export class GaragesComponent {
   }
 
 cancelReservation(reserva: any) {
+    if (reserva.estado === 'en_curso') {
+      alert('No podés cancelar una reserva que ya está en curso.');
+      return;
+    }
+
     const ahora = new Date();
     const checkIn = new Date(reserva.check_in_at);
     const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
-    const enCurso = ahora >= new Date(reserva.check_in_at) && ahora <= new Date(reserva.check_out_at);
-
-    if (enCurso) {
-      alert('No podés cancelar una reserva que ya está en curso.');
-      return;
-    } 
 
     if (diferenciaMinutos < 30) {
       alert('No podés cancelar una reserva con menos de 30 minutos de anticipación.');
@@ -165,6 +158,8 @@ cancelReservation(reserva: any) {
 
     if (this.activeTab === 'activas') {
       filters.status = 'activa';
+    } else if (this.activeTab === 'en_curso') {
+      filters.status = 'en_curso';
     } else if (this.activeTab === 'historial') {
       filters.status = 'completada';
     } else if (this.activeTab === 'canceladas') {
@@ -200,13 +195,8 @@ cancelReservation(reserva: any) {
   }
 
   isSpaceOccupied(spaceNumber: number): boolean {
-    const now = new Date();
     return this.activeReservations.some(r => {
-      const spaceMatch = r.parkingSpace?.number === spaceNumber || r.parking_space_number === spaceNumber;
-      if (!spaceMatch) return false;
-      const checkIn = new Date(r.check_in_at);
-      const checkOut = new Date(r.check_out_at);
-      return checkIn <= now && checkOut >= now;
+      return r.parkingSpace?.number === spaceNumber || r.parking_space_number === spaceNumber;
     });
   }
 
@@ -229,19 +219,13 @@ cancelReservation(reserva: any) {
     if (!cuit) return;
 
     this._reservationService.getReservationsOfGarage(cuit, false, {
-      status: 'activa'
+      status: 'en_curso'
     }).subscribe({
       next: (reservations: any[]) => {
-        const now = new Date();
         this.serviceTickets = [];
 
         for (const reservation of reservations) {
-          // Solo reservas en curso (el vehículo ya ingresó y todavía no salió)
-          const checkIn = new Date(reservation.check_in_at);
-          const checkOut = new Date(reservation.check_out_at);
-          if (checkIn > now || checkOut < now) continue;
-
-          // Solo reservas que tengan servicios contratados (ahora en reservationServices)
+          // Solo reservas que tengan servicios contratados
           if (!reservation.reservationServices || reservation.reservationServices.length === 0) continue;
 
           for (const rs of reservation.reservationServices) {
@@ -297,14 +281,9 @@ cancelReservation(reserva: any) {
   }
 
   private computePendingServicesCount(reservations: any[]): void {
-    const now = new Date();
     let count = 0;
 
     for (const reservation of reservations) {
-      // Solo reservas en curso (el vehículo ya ingresó y todavía no salió)
-      const checkIn = new Date(reservation.check_in_at);
-      const checkOut = new Date(reservation.check_out_at);
-      if (checkIn > now || checkOut < now) continue;
       if (!reservation.reservationServices || reservation.reservationServices.length === 0) continue;
 
       for (const rs of reservation.reservationServices) {

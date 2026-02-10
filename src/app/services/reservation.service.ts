@@ -66,14 +66,14 @@ export class ReservationService {
     return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
   }
 
-checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Observable<any> {
-  let params = new HttpParams()
-    .set('license_plate', plate)
-    .set('check_in_at', checkIn)
-    .set('check_out_at', checkOut);
+  checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Observable<any> {
+    let params = new HttpParams()
+      .set('license_plate', plate)
+      .set('check_in_at', checkIn)
+      .set('check_out_at', checkOut);
 
-  return this.http.get(`${this.apiUrl}/check-availability`, { params });
-}
+    return this.http.get(`${this.apiUrl}/check-availability`, { params });
+  }
 
 
   updateServiceStatus(reservationId: number, serviceId: number, status: string): Observable<any> {

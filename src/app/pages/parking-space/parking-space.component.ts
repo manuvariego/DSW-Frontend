@@ -207,30 +207,30 @@ export class ParkingSpaceComponent {
     });
   }
 
-checkBlockedSpaces(garageCuit: string, active: boolean) {
-  this.reservationService. BlockedSpacesByGarage(garageCuit).subscribe({
-    next: (response: any) => {
-      const listaDeReservas = response.data || response;
-      if (!Array.isArray(listaDeReservas)) {
-        return;
-      }
-
-      const blockedSet = new Set<number>();
-
-      listaDeReservas.forEach((r: any) => {
-        const espacio = r.parkingSpace || r.parking_space || r.garage;
-
-        if (espacio && espacio.number) {
-          blockedSet.add((espacio.number));
+  checkBlockedSpaces(garageCuit: string, active: boolean) {
+    this.reservationService. BlockedSpacesByGarage(garageCuit).subscribe({
+      next: (response: any) => {
+        const listaDeReservas = response.data || response;
+        if (!Array.isArray(listaDeReservas)) {
+          return;
         }
-      });
 
-      this.blockedSpaceIds = Array.from(blockedSet);},
-    error: (err) => console.error("Error de conexión:", err)
-  });
-}
-// Función para el HTML
-isSpaceBlocked(numberParkingSpace: number): boolean {
-  return this.blockedSpaceIds.includes((numberParkingSpace));
-}
+        const blockedSet = new Set<number>();
+
+        listaDeReservas.forEach((r: any) => {
+          const espacio = r.parkingSpace || r.parking_space || r.garage;
+
+          if (espacio && espacio.number) {
+            blockedSet.add((espacio.number));
+          }
+        });
+
+        this.blockedSpaceIds = Array.from(blockedSet);},
+      error: (err) => console.error("Error de conexión:", err)
+    });
+  }
+  // Función para el HTML
+  isSpaceBlocked(numberParkingSpace: number): boolean {
+    return this.blockedSpaceIds.includes((numberParkingSpace));
+  }
 }
