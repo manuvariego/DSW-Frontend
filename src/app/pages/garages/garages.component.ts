@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
 import { forkJoin } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-garages',
@@ -21,6 +22,7 @@ export class GaragesComponent {
   private _parkingSpaceService = inject(ParkingSpaceService);
   private _reservationService = inject(ReservationService);
   private _authService = inject(AuthService);
+  private socketService = inject(SocketService);
 
   ReservationsList: any[] = [];
   selectedReservation: any = null;
@@ -50,6 +52,27 @@ export class GaragesComponent {
 
   ngOnInit() {
     this.loadReservationsOnProgress();
+    
+    // Escuchar eventos de Socket.io para refrescar automáticamente
+    this.socketService.on('reservation:created').subscribe(() => {
+      this.loadReservationsOnProgress();
+    });
+
+    this.socketService.on('reservation:cancelled').subscribe(() => {
+      this.loadReservationsOnProgress();
+    });
+
+    this.socketService.on('reservation:inProgress').subscribe(() => {
+      this.loadReservationsOnProgress();
+    });
+
+    this.socketService.on('reservation:completed').subscribe(() => {
+      this.loadReservationsOnProgress();
+    });
+
+    this.socketService.on('service:statusChanged').subscribe(() => {
+      this.loadServiceBoard();
+    });
   }
 
   setActiveTab(tab: string) {
