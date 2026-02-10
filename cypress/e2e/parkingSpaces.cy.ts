@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('Gestión de Espacios de Estacionamiento', () => {
-  const mockGarageCuit = '899'; // CUIT Simulado
+  const mockGarageCuit = '11'; // CUIT Simulado
 
   beforeEach(() => {
     // ---------------------------------------------------------------
@@ -41,7 +41,7 @@ describe('Gestión de Espacios de Estacionamiento', () => {
 
     // Ajusta estos selectores a tu Login real
     cy.get('input[name="uname"]').type(mockGarageCuit);
-    cy.get('input[name="psw"]').type('centro');
+    cy.get('input[name="psw"]').type('111111');
     cy.get('button[type="submit"]').click();
 
     // Verificamos que salimos del login

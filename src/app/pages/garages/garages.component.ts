@@ -29,7 +29,7 @@ export class GaragesComponent {
   filterDateFrom: string = '';
   filterDateTo: string = '';
 
-  totalResevartionsOnProgress: number = 0;
+  totalReservationsOnProgress: number = 0;
   totalParkingSpaces: number = 0;
   totalParkingSpacesAvailable: number = 0;
   totalMoneyEarned: number = 0;
@@ -38,15 +38,14 @@ export class GaragesComponent {
   parkingSpaces: any[] = [];
   activeReservations: any[] = [];
   errorMessage: string = '';
-  paymentMethod: string = ''; //  efectivo o mercado pago
-  p: number = 1; // Página actual para paginación
+  paymentMethod: string = '';
+  p: number = 1;
 
-  // === TABLERO DE SERVICIOS ===
-  serviceTickets: any[] = [];          // Lista plana: 1 ticket por cada (reserva, servicio)
-  pendingTickets: any[] = [];          // Filtrado: estado 'pendiente'
-  inProgressTickets: any[] = [];       // Filtrado: estado 'en_progreso'
-  completedTickets: any[] = [];        // Filtrado: estado 'completado'
-  totalPendingServices: number = 0;    // Contador para KPI del dashboard
+  serviceTickets: any[] = [];
+  pendingTickets: any[] = [];
+  inProgressTickets: any[] = [];
+  completedTickets: any[] = [];
+  totalPendingServices: number = 0;
 
   ngOnInit() {
     this.loadReservationsOnProgress();
@@ -103,7 +102,7 @@ export class GaragesComponent {
       next: (results) => {
         console.log('All dashboard data received:', results);
 
-        this.totalResevartionsOnProgress = (results.reservations || []).length;
+        this.totalReservationsOnProgress = (results.reservations || []).length;
 
 
         if (Array.isArray(results.spaces)) {
@@ -113,13 +112,13 @@ export class GaragesComponent {
         }
         this.totalMoneyEarned = (results.revenue as any).totalRevenue || 0;
         this.totalReservationsAlltime = results.reservations2 ? results.reservations2.length : 0;
-        this.totalParkingSpacesAvailable = Math.max(0, this.totalParkingSpaces - this.totalResevartionsOnProgress);
+        this.totalParkingSpacesAvailable = Math.max(0, this.totalParkingSpaces - this.totalReservationsOnProgress);
         this.parkingSpaces = Array.isArray(results.spaces) ? results.spaces : [];
         this.activeReservations = results.reservations || [];
         this.computePendingServicesCount(this.activeReservations);
         console.log(monthStart, nowFormatted);
 
-        console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
+        console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalReservationsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
       },
       error: (err) => {
         console.error('Error loading dashboard data:', err);

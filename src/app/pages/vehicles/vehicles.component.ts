@@ -25,9 +25,6 @@ export class VehiclesComponent {
   private _reservationService = inject(ReservationService)
   vehiclesList: any[] = []
   typeVehicles: Array<any> = [];
-  licensePlate: string = ''
-  aVehicle: any = null
-  editingVehicle: any = null
   blockedPlates: string[] = [];
 
   currentSection: String = 'initVehicles'
@@ -66,32 +63,6 @@ isVehicleBlocked(plate: string): boolean {
   return this.blockedPlates.includes(plate);
 }
 
-  getAvehicle(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return; // Detiene el envío si el formulario no es válido
-    }
-
-    console.log('getAvehicle');
-
-    this._apiservice.getVehicle(this.licensePlate).subscribe(
-      (vehicle: any) => {
-        this.currentSection = "geTaVehicleTable"
-        console.log(vehicle)
-        this.aVehicle = vehicle
-        this.licensePlate = ''
-      },
-      (error) => {
-        console.error('Error al obtener un Vehiculo', error);
-        alert('El Vehiculo no existe o ocurrió un error al obtener la información.');
-      }
-    );
-  }
-
-
   getVehicles() {
     const userId = this._authService.getCurrentUserId();
     
@@ -110,40 +81,6 @@ isVehicleBlocked(plate: string): boolean {
     })
   }
 
-
-  changeVehicle(vehicle: any) {
-
-    this.currentSection = 'editVehicle';
-    this.editingVehicle = { ...vehicle };
-
-  }
-
-  updateVehicle(form: NgForm) {
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return;
-    }
-    const confirmation = confirm('¿Está seguro de que desea modificar este vehiculo?');
-    if (!confirmation) {
-      return; // Si el usuario cancela, no hacemos nada
-    }
-
-    this._apiservice.updateVehicle(this.editingVehicle).subscribe({
-      next: (response) => {
-        console.log('Vehiculo actualizado exitosamente', response);
-        this.editingVehicle = null; // Limpia la variable de edición
-        this.getVehicles(); // Refresca la lista de vehiculos
-        this.showSection('initVehicles');
-        form.resetForm();
-      },
-      error: (error) => {
-        console.error('Error al actualizar el Vehiculo', error);
-      }
-    });
-  }
 
   deleteVehicle(license_plate: string, type: boolean) {
     const confirmation = confirm('¿Está seguro de que desea eliminar este vehiculo?');

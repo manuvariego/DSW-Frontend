@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { isArray } from 'node:util';
 
 @Component({
   selector: 'app-users',
@@ -16,7 +15,6 @@ export class UsersComponent {
   currentSection: string = 'initial';
   userList: any[] = [];
   aUser: any = null;
-  vehicless : any[] = [];
   private _apiservice = inject(UsersService);
   userID: string = '';
   editingUser: any = null;

@@ -6,17 +6,18 @@ import { TypeVehicleService } from '../../services/type-vehicle.service';
 import { AuthService } from '../../services/auth.service';
 import { RouterLink } from '@angular/router';
 import { ReservationService } from '../../services/reservation.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-parking-space',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, NgxPaginationModule],
   templateUrl: './parking-space.component.html',
   styleUrl: './parking-space.component.css'
 })
 export class ParkingSpaceComponent {
 
-  parkingCreado = false;
+  parkingCreated = false;
   currentSection: string = 'initial'
   typeVehicles: Array<any> = [];
   parkingSpaceList: any[] = []
@@ -25,6 +26,7 @@ export class ParkingSpaceComponent {
   gridMaxNumber: number = 50;
   selectedSpaces: number[] = [];
   blockedSpaceIds: number[] = [];
+  p = 1; 
 
   private _apiservice = inject(ParkingSpaceService)
   private _typeVehicleService = inject(TypeVehicleService)
@@ -45,7 +47,6 @@ export class ParkingSpaceComponent {
     if (this.cuitGarage) {
       this.getParkingSpace();
     }
-    console.log("🚀 Iniciando búsqueda de bloqueos para:", this.cuitGarage);
     this.checkBlockedSpaces(this.cuitGarage, true);
   }
 
@@ -68,12 +69,12 @@ export class ParkingSpaceComponent {
     this.ParkingSpaceData.garage = this.cuitGarage;
     this._apiservice.createParkingSpace(this.ParkingSpaceData).subscribe({
       next: () => {
-        this.parkingCreado = true;
+        this.parkingCreated = true;
         this.showSection('initial');
         form.resetForm();
         // Oculta el mensaje después de 3 segundos
         setTimeout(() => {
-          this.parkingCreado = false;
+          this.parkingCreated = false;
         }, 3000);
       },
       error: (error) => {
@@ -100,11 +101,11 @@ export class ParkingSpaceComponent {
         next: () => {
           created++;
           if (created === total) {
-            this.parkingCreado = true;
+            this.parkingCreated = true;
             this.selectedSpaces = [];
             this.getParkingSpace();
             this.showSection('initial');
-            setTimeout(() => this.parkingCreado = false, 3000);
+            setTimeout(() => this.parkingCreated = false, 3000);
           }
         },
         error: (error) => {

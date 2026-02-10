@@ -92,7 +92,7 @@ describe('ParkingSpaceComponent', () => {
 
     // Assert: Verificaciones
     expect(parkingServiceMock.createParkingSpace).toHaveBeenCalled();
-    expect(component.parkingCreado).toBeTrue(); // Verifica que se active la alerta
+    expect(component.parkingCreated).toBeTrue(); // Verifica que se active la alerta
     expect(formMock.resetForm).toHaveBeenCalled();
   });
 

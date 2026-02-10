@@ -1,12 +1,11 @@
 @if (currentSection == 'initial') {
 <div class="fade-in-anim">
-  <!-- ALERTA DE CREACIÓN EXITOSA -->
-  <div *ngIf="parkingCreado" class="alert alert-success-spaces shadow-sm text-center mb-4">
+
+  <div *ngIf="parkingCreated" class="alert alert-success-spaces shadow-sm text-center mb-4">
     <i class="fas fa-check-circle me-2"></i> Espacio creado exitosamente.
   </div>
 
   <div class="container mt-4">
-    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4 spaces-header">
       <div>
         <h2 class="section-title mb-1">Gestionar mis Espacios</h2>
@@ -19,7 +18,6 @@
       </button>
     </div>
 
-    <!-- MENÚ DE OPCIONES -->
     <div class="row justify-content-center">
       <div class="col-md-4 mb-4">
         <div class="card menu-card h-100 text-center p-4" (click)="showSection('getParkingSpace')">
@@ -56,7 +54,6 @@
 
 @if (currentSection == 'getParkingSpace') {
 <div class="container mt-4 fade-in-anim">
-  <!-- HEADER -->
   <div class="d-flex justify-content-between align-items-center mb-3 spaces-header">
     <div>
       <h3 class="section-title mb-1">Espacios creados</h3>
@@ -79,7 +76,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let parkingSpace of parkingSpaceList; let i = index">
+          <tr *ngFor="let parkingSpace of parkingSpaceList | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
             <td class="fw-bold text-dark ps-4">{{ parkingSpace.number }}</td>
             <td>
               <span class="fw-bold text-muted">{{ parkingSpace.TypeVehicle?.name }}</span>
@@ -109,6 +106,12 @@
         </tbody>
       </table>
     </div>
+ <!-- Paginación -->
+  <div class="pagination-wrapper mt-4">
+    <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"
+      class="my-custom-pagination">
+    </pagination-controls>
+  </div>
   </div>
 }
 
@@ -125,14 +128,12 @@
             Generá uno o varios espacios de estacionamiento seleccionando sus números en la grilla.
           </p>
 
-          <!-- Mostrar hasta -->
           <div class="mb-3">
             <label for="gridMaxNumber" class="form-label">Mostrar hasta el número</label>
             <input type="number" class="form-control modern-input" id="gridMaxNumber" [(ngModel)]="gridMaxNumber"
               min="1" />
           </div>
 
-          <!-- Tipo de vehículo -->
           <div class="mb-3">
             <label for="multipleTypeVehicle" class="form-label">Tipo de vehículo</label>
             <select id="multipleTypeVehicle" class="form-select modern-input" [(ngModel)]="vehicleTypeId">
@@ -155,7 +156,6 @@
             </button>
           </div>
 
-          <!-- Leyenda -->
           <div class="d-flex flex-wrap gap-3 mb-3 grid-legend">
             <small class="d-flex align-items-center gap-1">
               <span class="legend-dot bg-selected"></span> Seleccionado
@@ -168,12 +168,10 @@
             </small>
           </div>
 
-          <!-- Resumen -->
           <div *ngIf="selectedSpaces.length > 0" class="alert alert-info mb-4">
             <strong>{{ selectedSpaces.length }}</strong> espacio(s) seleccionado(s).
           </div>
 
-          <!-- Botones -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">
               <i class="fas fa-arrow-left"></i> Volver

@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service.js';
 import { UsersService } from '../../services/users.service.js';
 import { AuthService } from '../../services/auth.service.js';
@@ -17,7 +16,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, NgxPaginationModule],
+  imports: [CommonModule, FormsModule, RouterLink, NgxPaginationModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
@@ -25,7 +24,6 @@ import Swal from 'sweetalert2';
 export class ReservationComponent implements OnInit {
   errorMessage: string = '';
   errorDateInvalid: string = '';
-  reservationForm!: FormGroup;
   isDateInvalid: boolean = false;
 
   // Variables nuevas para controlar el estado
@@ -50,7 +48,6 @@ isValidating: boolean = false;
   }
 
   constructor(
-  private fb: FormBuilder, 
   private reservationService: ReservationService, 
   private authService: AuthService, 
   private router: Router) {}  
