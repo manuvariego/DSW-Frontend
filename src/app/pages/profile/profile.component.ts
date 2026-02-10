@@ -7,6 +7,7 @@ import { GaragesService } from '../../services/garages.service';
 import { LocationsService } from '../../services/locations.service';
 import { RouterLink } from '@angular/router';
 import { ReservationService } from '../../services/reservation.service.js';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +23,7 @@ export class ProfileComponent implements OnInit {
   private _reservationService = inject(ReservationService);
   private _garagesService = inject(GaragesService);
   private _locationsService = inject(LocationsService);
+  private socketService = inject(SocketService);
 
   // Common
   isLoading = true;
@@ -55,6 +57,14 @@ export class ProfileComponent implements OnInit {
       } else {
         this.loadUserData(id);
         this.loadUserStats(id);
+
+        this.socketService.on('reservation:inProgress').subscribe((data) => {
+          this.loadUserStats(this._authService.getCurrentUserId()!);
+        });
+
+        this.socketService.on('service:statusChanged').subscribe(() => {
+          this.loadUserStats(this._authService.getCurrentUserId()!);
+        });
       }
     }
   }
