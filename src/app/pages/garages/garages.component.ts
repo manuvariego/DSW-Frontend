@@ -71,10 +71,14 @@ export class GaragesComponent {
       return;
     }
 
+
     const now = new Date();
-    const nowFormatted = now.toISOString().split('T')[0];
+
+    // 2. Úsala en tus variables
+    const nowFormatted = this.formatDateTime(now); // Resultado: "2026-02-10 12:25:46"
+
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthStart = startOfMonth.toISOString().split('T')[0];
+    const monthStart = this.formatDateTime(startOfMonth); // Resultado: "2026-02-01 00:00:00"
 
     const reservationsRequest$ = this._reservationService.getReservationsOfGarage(cuit, false, {
       status: 'en_curso'
@@ -113,6 +117,8 @@ export class GaragesComponent {
         this.parkingSpaces = Array.isArray(results.spaces) ? results.spaces : [];
         this.activeReservations = results.reservations || [];
         this.computePendingServicesCount(this.activeReservations);
+        console.log(monthStart, nowFormatted);
+
         console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
       },
       error: (err) => {
@@ -120,6 +126,11 @@ export class GaragesComponent {
       }
     });
   }
+
+formatDateTime = (date: Date) => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    };
 
 cancelReservation(reserva: any) {
     if (reserva.estado === 'en_curso') {
@@ -240,6 +251,7 @@ cancelReservation(reserva: any) {
               parkingSpaceNumber: reservation.parkingSpace?.number || null,
               status: rs.status || 'pendiente'
             });
+
           }
         }
 
