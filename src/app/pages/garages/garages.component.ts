@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GaragesService } from '../../services/garages.service.js';
@@ -16,7 +17,8 @@ import { SocketService } from '../../services/socket.service';
   templateUrl: './garages.component.html',
   styleUrl: './garages.component.css'
 })
-export class GaragesComponent {
+export class GaragesComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   currentSection: string = 'initial';
   private _apiservice = inject(GaragesService);
   private _parkingSpaceService = inject(ParkingSpaceService);
@@ -54,25 +56,27 @@ export class GaragesComponent {
     this.loadReservationsOnProgress();
     
     // Escuchar eventos de Socket.io para refrescar automáticamente
-    this.socketService.on('reservation:created').subscribe(() => {
-      this.loadReservationsOnProgress();
-    });
+    this.subscriptions.push(
+      this.socketService.on('reservation:created').subscribe(() => {
+        this.loadReservationsOnProgress();
+      }),
+      this.socketService.on('reservation:cancelled').subscribe(() => {
+        this.loadReservationsOnProgress();
+      }),
+      this.socketService.on('reservation:inProgress').subscribe(() => {
+        this.loadReservationsOnProgress();
+      }),
+      this.socketService.on('reservation:completed').subscribe(() => {
+        this.loadReservationsOnProgress();
+      }),
+      this.socketService.on('service:statusChanged').subscribe(() => {
+        this.loadServiceBoard();
+      })
+    );
+  }
 
-    this.socketService.on('reservation:cancelled').subscribe(() => {
-      this.loadReservationsOnProgress();
-    });
-
-    this.socketService.on('reservation:inProgress').subscribe(() => {
-      this.loadReservationsOnProgress();
-    });
-
-    this.socketService.on('reservation:completed').subscribe(() => {
-      this.loadReservationsOnProgress();
-    });
-
-    this.socketService.on('service:statusChanged').subscribe(() => {
-      this.loadServiceBoard();
-    });
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   setActiveTab(tab: string) {
@@ -90,7 +94,6 @@ export class GaragesComponent {
   loadReservationsOnProgress() {
     const cuit = this._authService.getCurrentUserId();
     if (!cuit) {
-      console.error('No CUIT found for current user.');
       return;
     }
 
@@ -124,7 +127,6 @@ export class GaragesComponent {
       reservations2: reservationsRequest$$
     }).subscribe({
       next: (results) => {
-        console.log('All dashboard data received:', results);
 
         this.totalResevartionsOnProgress = (results.reservations || []).length;
 
@@ -140,12 +142,9 @@ export class GaragesComponent {
         this.parkingSpaces = Array.isArray(results.spaces) ? results.spaces : [];
         this.activeReservations = results.reservations || [];
         this.computePendingServicesCount(this.activeReservations);
-        console.log(monthStart, nowFormatted);
 
-        console.log(`Calculation Complete: ${this.totalParkingSpaces} Total - ${this.totalResevartionsOnProgress} Occupied = ${this.totalParkingSpacesAvailable} Available`);
       },
       error: (err) => {
-        console.error('Error loading dashboard data:', err);
       }
     });
   }
@@ -173,11 +172,9 @@ cancelReservation(reserva: any) {
     if (confirm('¿Estás seguro de que querés cancelar esta reserva?')) {
           this._reservationService.cancelReservation(reserva.id).subscribe({
             next: () => {
-              console.log('Reserva cancelada exitosamente');
               this.getReservation();
             },
             error: (error) => {
-              console.error('Error al cancelar la reserva:', error);
               this.errorMessage = 'No se pudo cancelar la reserva.';
             }
           });
@@ -281,7 +278,6 @@ cancelReservation(reserva: any) {
         this.categorizeTickets();
       },
       error: (err) => {
-        console.error('Error cargando tablero de servicios:', err);
       }
     });
   }
@@ -310,7 +306,6 @@ cancelReservation(reserva: any) {
         this.categorizeTickets();
       },
       error: (err) => {
-        console.error('Error actualizando estado del servicio:', err);
       }
     });
   }

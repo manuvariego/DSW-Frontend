@@ -62,10 +62,8 @@ export class ReservationTypesComponent {
       next: (status) => {
         this.pricingStatus = status;
         this.tiposFaltantes = status.tiposFaltantes;
-        console.log('Estado de precios:', status);
       },
       error: (error) => {
-        console.error('Error al cargar estado de precios:', error);
       }
     });
   }
@@ -80,18 +78,15 @@ export class ReservationTypesComponent {
       return; // Detiene el envío si el formulario no es válido
     }
     
-    console.log('getReservationType');
 
     this._apiservice.getReservationType(this.reservationTypeData.description, this.reservationTypeData.garage).subscribe(
       (reservationType: any) => {
         this.currentSection = "geTaReservationTypeTable"
-        console.log(reservationType)
         this.aReservationType = reservationType
         this.desc = ''
         this.Cuit = ''
       },
       (error) => {
-        console.error('Error al obtener un tipo de Reserva', error);
         alert('El tipo de Reserva no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -129,7 +124,6 @@ export class ReservationTypesComponent {
 
     this._apiservice.updateReservationType(this.editingReservationType).subscribe({
       next: (response) => {
-        console.log('Precio actualizado exitosamente', response);
         this.editingReservationType = null;
         this.message = '¡Precio actualizado correctamente!';
         this.isSuccess = true;
@@ -137,7 +131,6 @@ export class ReservationTypesComponent {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        console.error('Error al actualizar el precio', error);
         alert('Error al actualizar el precio. Intente nuevamente.');
       }
     });
@@ -171,11 +164,9 @@ export class ReservationTypesComponent {
   
     this._apiservice.deleteReservationType(desc, cuit).subscribe({
       next: (response) => {
-        console.log(' Tipo de reserva eliminado exitosamente', response);
         this.getReservationTypes(); // Refrescar la lista
       },
       error: (error) => {
-        console.error('Error al eliminar el tipo de reserva', error);
       }
     });
 
@@ -194,7 +185,6 @@ export class ReservationTypesComponent {
 
     this._apiservice.createReservationType(this.reservationTypeData).subscribe({
       next: (response) => {
-        console.log('Tipo de reserva creado exitosamente:', response);
         this.message = '¡Tipo de estadía creado exitosamente!';
         this.isSuccess = true;
         this.showSection('initReservationType');
@@ -202,7 +192,6 @@ export class ReservationTypesComponent {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        console.error('Error al crear el tipo de reserva:', error);
       }
     });
   }
@@ -252,7 +241,6 @@ export class ReservationTypesComponent {
 
     Promise.all(promesas)
       .then(() => {
-        console.log('Todos los precios guardados exitosamente');
         this.message = '¡Todos los precios fueron guardados correctamente!';
         this.isSuccess = true;
         this.loadPricingStatus();
@@ -269,7 +257,6 @@ export class ReservationTypesComponent {
         };
       })
       .catch((error) => {
-        console.error('Error al guardar precios:', error);
         alert('Ocurrió un error al guardar los precios. Intente nuevamente.');
       });
   }

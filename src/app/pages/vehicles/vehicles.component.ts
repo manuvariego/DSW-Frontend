@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { TypeVehicleService } from '../../services/type-vehicle.service.js';
 import { AuthService } from '../../services/auth.service.js';
 import { ReservationService } from '../../services/reservation.service.js';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class VehiclesComponent {
   private _typeVehicleService = inject(TypeVehicleService)
   private _authService = inject(AuthService)
   private _reservationService = inject(ReservationService)
+  private _notificationService = inject(NotificationService)
   vehiclesList: any[] = []
   typeVehicles: Array<any> = [];
   licensePlate: string = ''
@@ -56,7 +58,6 @@ checkBlockedVehicles(userId: number | string) {
       const patentesUsadas = reservas.map(r => r.vehicle?.license_plate || r.vehicle);
       this.blockedPlates = [...new Set(patentesUsadas)];
       
-      console.log("Patentes bloqueadas por reservas:", this.blockedPlates);
     }
   });
 }
@@ -75,18 +76,15 @@ isVehicleBlocked(plate: string): boolean {
       return; // Detiene el envío si el formulario no es válido
     }
 
-    console.log('getAvehicle');
 
     this._apiservice.getVehicle(this.licensePlate).subscribe(
       (vehicle: any) => {
         this.currentSection = "geTaVehicleTable"
-        console.log(vehicle)
         this.aVehicle = vehicle
         this.licensePlate = ''
       },
       (error) => {
-        console.error('Error al obtener un Vehiculo', error);
-        alert('El Vehiculo no existe o ocurrió un error al obtener la información.');
+        this._notificationService.warning('El vehículo no existe o ocurrió un error.');
       }
     );
   }
@@ -96,7 +94,6 @@ isVehicleBlocked(plate: string): boolean {
     const userId = this._authService.getCurrentUserId();
     
     if (!userId) {
-      console.error('Usuario no logueado');
       return;
     }
 
@@ -106,7 +103,6 @@ isVehicleBlocked(plate: string): boolean {
       } else {
         this.vehiclesList = [data]
       }
-      console.log(data)
     })
   }
 
@@ -133,14 +129,12 @@ isVehicleBlocked(plate: string): boolean {
 
     this._apiservice.updateVehicle(this.editingVehicle).subscribe({
       next: (response) => {
-        console.log('Vehiculo actualizado exitosamente', response);
         this.editingVehicle = null; // Limpia la variable de edición
         this.getVehicles(); // Refresca la lista de vehiculos
         this.showSection('initVehicles');
         form.resetForm();
       },
       error: (error) => {
-        console.error('Error al actualizar el Vehiculo', error);
       }
     });
   }
@@ -153,7 +147,6 @@ isVehicleBlocked(plate: string): boolean {
 
     this._apiservice.deleteVehicle(license_plate).subscribe({
       next: (response) => {
-        console.log('Vehiculo eliminado exitosamente', response);
         this.message = 'Vehículo eliminado correctamente.';
         this.isSuccess = true;
         this.getVehicles();
@@ -165,7 +158,6 @@ isVehicleBlocked(plate: string): boolean {
         }, 3000);
       },
       error: (error) => {
-        console.error('Error al eliminar el vehiculo', error);
         this.message = 'Error al eliminar el vehículo.';
         this.isSuccess = false;
 
@@ -189,7 +181,6 @@ isVehicleBlocked(plate: string): boolean {
 
     this._apiservice.createVehicle(this.vehicleData).subscribe({
       next: (response) => {
-        console.log('Vehiculo creado exitosamente:', response);
         this.message = 'Vehículo creado exitosamente.';
         this.isSuccess = true;
         this.showSection('initVehicles');
@@ -202,7 +193,6 @@ isVehicleBlocked(plate: string): boolean {
         this.vehicleData = { license_plate: '', type: '', owner: '' };
       },
       error: (error) => {
-        console.error('Error al crear vehiculo:', error);
       }
     });
   }

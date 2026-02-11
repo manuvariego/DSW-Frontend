@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { isArray } from 'node:util';
 import { LocationsService } from '../../services/locations.service.js';
 
 @Component({
@@ -34,7 +33,6 @@ export class LocationsComponent {
   modificarLocation(location: any) {
 
     this.currentSection = 'editLocation';
-    console.log(location);
     this.editingLocation = { ...location };
 
   }
@@ -49,18 +47,15 @@ export class LocationsComponent {
       return; // Detiene el envío si el formulario no es válido
     }
 
-    console.log('getLocation');
 
 
     this._apiservice.getLocation(this.locationID).subscribe(
       (location: any) => {
         this.currentSection = "geTaLocationTable"
-        console.log(location)
         this.aLocation = location
         this.locationID = ''
       },
       (error) => {
-        console.error('Error al obtener un Location', error);
         alert('La Localidad no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -79,7 +74,6 @@ export class LocationsComponent {
 
     this._apiservice.createLocation(this.locationData).subscribe({
       next: (response) => {
-        console.log('Localidad dada de alta exitosamente:', response);
         this.localidadCreada = true;
         this.showSection('initial');
         form.resetForm();
@@ -90,7 +84,6 @@ export class LocationsComponent {
         }, 3000);
       },
       error: (error) => {
-        console.error('Error al crear la localidad:', error);
       }
     });
   }
@@ -107,7 +100,6 @@ export class LocationsComponent {
       }
 
 
-      console.log(data)
     })
   }
 
@@ -119,11 +111,9 @@ export class LocationsComponent {
 
     this._apiservice.deleteLocation(locationId).subscribe({
       next: (response) => {
-        console.log('Localidad eliminada exitosamente', response);
         this.getLocations(); // Refresca la lista de localidades
       },
       error: (error) => {
-        console.error('Error al eliminar la localidad', error);
       }
     });
 
@@ -147,14 +137,12 @@ export class LocationsComponent {
 
     this._apiservice.updateLocation(this.editingLocation).subscribe({
       next: (response) => {
-        console.log('Localidad actualizada exitosamente', response);
         this.editingLocation = null; // Limpia la variable de edición
         this.getLocations(); // Refresca la lista de localidades
         this.showSection('initial');
         form.resetForm();
       },
       error: (error) => {
-        console.error('Error al actualizar la localidad', error);
       }
     });
   }

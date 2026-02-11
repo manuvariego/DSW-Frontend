@@ -38,17 +38,14 @@ export class VehicleTypeComponent {
       return; // Detiene el envío si el formulario no es válido
     }
 
-    console.log('getATypevehicle');
 
     this._apiservice.getTypeVehicle(this.idType).subscribe(
       (typeVehicle: any) => {
         this.currentSection = "geTaTypeVehicleTable"
-        console.log(typeVehicle)
         this.aTypeVehicle = typeVehicle
         this.idType = ''
       },
       (error) => {
-        console.error('Error al obtener un typeVehicle', error);
         alert('El tipo de Vehiculo no existe o ocurrió un error al obtener la información.');
       }
     );
@@ -68,7 +65,6 @@ export class VehicleTypeComponent {
         this.typeVehiclesList = [data]
       }
 
-      console.log(data)
 
     })
 
@@ -100,13 +96,11 @@ export class VehicleTypeComponent {
 
     this._apiservice.updateTypeVehicle(this.editingTypeVehicle).subscribe({
       next: (response) => {
-        console.log('Tipo de Vehiculo actualizado exitosamente', response);
         this.editingTypeVehicle = null; // Limpia la variable de edición
         this.showSection('initial')
         form.resetForm()
       },
       error: (error) => {
-        console.error('Error al actualizar el usuario', error);
       }
     });
   }
@@ -119,11 +113,9 @@ export class VehicleTypeComponent {
 
     this._apiservice.deleteTypeVehicle(license_plate).subscribe({
       next: (response) => {
-        console.log('Vehiculo eliminado exitosamente', response);
         this.getTypeVehicles(); // Refrescar la lista de usuarios
       },
       error: (error) => {
-        console.error('Error al eliminar el vehiculo', error);
       }
     });
 
@@ -142,7 +134,6 @@ export class VehicleTypeComponent {
     }
     this._apiservice.createTypeVehicle(this.typeVehicleData).subscribe({
       next: (response) => {
-        console.log('Tipo de Vehiculo creado exitosamente:', response);
         this.tipoVehiculoCreado = true;
         this.showSection('initial');
         form.resetForm();
@@ -153,7 +144,6 @@ export class VehicleTypeComponent {
         }, 3000);
       },
       error: (error) => {
-        console.error('Error al crear el tipo de vehículo:', error);
       }
     });
   }

@@ -1,6 +1,7 @@
 import { inject, Injectable, NgZone } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
@@ -9,15 +10,13 @@ export class SocketService {
   private ngZone = inject(NgZone);
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io(environment.socketUrl);
 
     this.socket.on('connect', () => {
-      console.log('[Socket] Conectado al servidor:', this.socket.id);
       this.joinRoom();
     });
 
     this.socket.on('disconnect', () => {
-      console.log('[Socket] Desconectado del servidor');
     });
   }
 

@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { isArray } from 'node:util';
 
 @Component({
   selector: 'app-users',
@@ -34,7 +33,6 @@ export class UsersComponent {
   }
 
   changeUser(user:any){
-   console.log('changeUser');
    this.currentSection = 'editUser';
    this.editingUser = { ...user };
 
@@ -49,17 +47,14 @@ export class UsersComponent {
     return; // Detiene el envío si el formulario no es válido
   }
 
-  console.log('getOneUser');
 
   this._apiservice.getUser(this.userID).subscribe(
     (user: any) => {
       this.currentSection = 'getUserTable';
-      console.log(user);
       this.aUser = user;
       this.userID = '';
     },
     (error) => {
-      console.error('Error al obtener el usuario', error);
       alert('Usuario no encontrado.');
     }
   );
@@ -76,7 +71,6 @@ export class UsersComponent {
 
   this._apiservice.createUser(this.userData).subscribe({
     next: (response) => {
-      console.log('Usuario creado exitosamente:', response);
       this.usuarioCreado = true;
       this.showSection('initial');
       form.resetForm();
@@ -87,7 +81,6 @@ export class UsersComponent {
     }, 3000); 
     },
     error: (error) => {
-      console.error('Error al crear usuario:', error);
     }
   });
 }
@@ -104,7 +97,6 @@ export class UsersComponent {
     }
 
     
-    console.log(data)
   })
  }
 
@@ -117,15 +109,13 @@ export class UsersComponent {
 
   this._apiservice.delete(userId).subscribe({
     next: (response) => {
-      console.log('Usuario eliminado exitosamente', response);
       this.getUsers(); // Refrescar la lista de usuarios
     },
     error: (error) => {
-      console.error('Error al eliminar el usuario', error);
     }
   });
 
-  if(tipo == true){console.log('deleteUser'); this.currentSection = 'initial'}
+  if(tipo == true){ this.currentSection = 'initial'}
 
 }
   
@@ -145,21 +135,18 @@ export class UsersComponent {
 
     this._apiservice.update(this.editingUser).subscribe({
       next: (response) =>{
-      console.log('Usuario actualizado exitosamente', response);
       this.editingUser = null; // Limpia la variable de edición
       this.getUsers(); // Refresca la lista de usuarios
       this.showSection('initial');
       form.resetForm();
       },
     error: (error) => {
-      console.error('Error al actualizar el usuario', error);
     }
   });
   }
 
     // Método para actualizar la sección actual mostrada
     showSection(section: string) {
-      console.log('showSection',section);
       this.currentSection = section;
 
       if(section == 'getUsers'){
