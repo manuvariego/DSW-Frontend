@@ -150,7 +150,7 @@ export class ServiceComponent implements OnInit {
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6', 
+    cancelButtonColor: '#808080', 
     confirmButtonText: 'Sí, eliminar',
     cancelButtonText: 'Cancelar'
   }).then((result) => {
@@ -173,17 +173,17 @@ export class ServiceComponent implements OnInit {
           console.error(err);
 
           if (err.status === 400) {
-            Swal.fire({
-              icon: 'error',
-              title: 'No se puede eliminar',
-              text: err.error.message || 'El servicio está siendo usado en una reserva.'
-            });
-          } else {
-            Swal.fire(
+              Swal.fire(
               'Error',
               'Ocurrió un error inesperado al intentar eliminar.',
               'error'
             );
+          } else {
+              Swal.fire({
+              icon: 'error',
+              title: 'No se puede eliminar',
+              text:'El servicio está siendo usado en una reserva.'
+            });
           }
         }
       });
