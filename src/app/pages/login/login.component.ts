@@ -76,14 +76,7 @@ export class LoginComponent {
         this.authService.saveSession(response);
         
         // Unirse a la sala de Socket.io según el rol
-        const userId = this.authService.getCurrentUserId();
-        if (userId) {
-          if (this.authService.isGarage()) {
-            this.socketService.joinGarage(userId);
-          } else {
-            this.socketService.joinUser(userId);
-          }
-        }
+        this.socketService.joinRoom();
 
         if (this.authService.isGarage()) {
           this.router.navigate(['/garages']);

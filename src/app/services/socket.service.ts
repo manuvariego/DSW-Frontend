@@ -9,16 +9,29 @@ export class SocketService {
   private ngZone = inject(NgZone);
 
   constructor() {
-    // Se conecta al backend en puerto 3000 (donde corre Socket.io)
     this.socket = io('http://localhost:3000');
 
     this.socket.on('connect', () => {
       console.log('[Socket] Conectado al servidor:', this.socket.id);
+      this.joinRoom();
     });
 
     this.socket.on('disconnect', () => {
       console.log('[Socket] Desconectado del servidor');
     });
+  }
+
+  // Se une a la sala correspondiente según el rol en localStorage
+  joinRoom() {
+    const userId = localStorage.getItem('userId');
+    const role = localStorage.getItem('userRole');
+    if (userId && role) {
+      if (role === 'garage') {
+        this.joinGarage(userId);
+      } else {
+        this.joinUser(userId);
+      }
+    }
   }
 
   // Se une a la sala del garage (para que le lleguen eventos de SUS reservas)
