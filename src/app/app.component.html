@@ -8,7 +8,6 @@
     
     <div class="d-flex align-items-center gap-2">
 
-      <!-- botones de registrar e ingresar -->
       <a class="btn btn-navbar-outline"
          *ngIf="!authService.isLoggedIn()"
          routerLink="register"
@@ -42,7 +41,7 @@
   </div>
 </nav>
 
-<!-- MENÚ LATERAL (fuera del navbar para evitar conflicto con backdrop-filter) -->
+<!-- MENÚ LATERAL -->
 <div class="offcanvas offcanvas-end"
      tabindex="-1"
      id="offcanvasNavbar">
@@ -81,7 +80,7 @@
 
       </ng-container>
 
-      <!-- ===== MENÚ COCHERA (GARAGE) ===== -->
+      <!-- ===== MENÚ COCHERA ===== -->
       <ng-container *ngIf="authService.isGarage()">
 
         <li class="nav-item">

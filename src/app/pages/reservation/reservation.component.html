@@ -217,7 +217,7 @@
           <td>{{ garage.email }}</td>
           <td>{{ garage.phoneNumber }}</td>
           <td>{{ garage.location?.name }}</td>
-          <td class="fw-bold text-success">${{ garage.precioEstimado }}</td>
+          <td class="fw-bold text-success">${{ garage.estimatedPrice }}</td>
           <td class="text-center">
             <button type="button" class="btn btn-dark-custom btn-sm" (click)="saveGarage(garage)">
               Seleccionar <i class="fas fa-check ms-1"></i>
@@ -392,13 +392,13 @@
     <li class="nav-item">
       <a class="nav-link" [class.active]="activeTab === 'proximas'" (click)="activeTab = 'proximas'"
         style="cursor: pointer;">
-        <i class="fas fa-calendar-alt me-1"></i> Próximas ({{ reservasProximas.length }})
+        <i class="fas fa-calendar-alt me-1"></i> Próximas ({{ upcomingReservations.length }})
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" [class.active]="activeTab === 'historial'" (click)="activeTab = 'historial'"
         style="cursor: pointer;">
-        <i class="fas fa-history me-1"></i> Historial ({{ reservasHistorial.length }})
+        <i class="fas fa-history me-1"></i> Historial ({{ historyReservations.length }})
       </a>
     </li>
   </ul>
@@ -419,20 +419,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="reservasProximas.length === 0">
+        <tr *ngIf="upcomingReservations.length === 0">
           <td colspan="8" class="text-center p-5">
             <i class="fas fa-calendar-check fa-2x text-muted mb-3"></i>
             <p class="text-muted mb-0">No tenés reservas próximas.</p>
           </td>
         </tr>
-        <tr *ngFor="let reserva of reservasProximas | paginate: { itemsPerPage: 6, currentPage: p }"
+        <tr *ngFor="let reserva of upcomingReservations | paginate: { itemsPerPage: 6, currentPage: p }"
           (click)="viewReservationDetails(reserva)" style="cursor: pointer;">
           <td class="text-primary fw-bold">{{ reserva.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
           <td class="text-primary fw-bold">{{ reserva.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
           <td>{{ reserva.garage?.name || reserva.garage }}</td>
           <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
           <td>
-            <span class="badge" [ngClass]="{'bg-success': reserva.estado === 'activa', 'bg-info': reserva.estado === 'en_curso'}">{{ reserva.estado === 'en_curso' ? 'EN CURSO' : (reserva.estado | uppercase) }}</span>
+            <span class="badge" [ngClass]="{'bg-success': reserva.status === 'activa', 'bg-info': reserva.status === 'en_curso'}">{{ reserva.status === 'en_curso' ? 'EN CURSO' : (reserva.status | uppercase) }}</span>
           </td>
           <td class="fw-bold">${{ reserva.amount }}</td>
           <td>
@@ -448,8 +448,8 @@
           </td>
           <td class="text-center">
             <button type="button" class="btn btn-outline-danger btn-sm"
-              [disabled]="reserva.estado === 'en_curso'"
-              (click)="$event.stopPropagation(); cancelReservation(reserva)" [title]="reserva.estado === 'en_curso' ? 'No se puede cancelar una reserva en curso' : 'Cancelar reserva'">
+              [disabled]="reserva.status === 'en_curso'"
+              (click)="$event.stopPropagation(); cancelReservation(reserva)" [title]="reserva.status === 'en_curso' ? 'No se puede cancelar una reserva en curso' : 'Cancelar reserva'">
               <i class="fas fa-times-circle"></i>
             </button>
           </td>
@@ -514,12 +514,12 @@
             <td>{{ reserva.vehicle?.license_plate || reserva.vehicle }}</td>
             <td>
               <span class="badge" [ngClass]="{
-                    'bg-success': reserva.estado === 'activa',
-                    'bg-secondary': reserva.estado === 'completada',
-                    'bg-danger': reserva.estado === 'cancelada',
-                    'bg-info': reserva.estado === 'en_curso'
+                    'bg-success': reserva.status === 'activa',
+                    'bg-secondary': reserva.status === 'completada',
+                    'bg-danger': reserva.status === 'cancelada',
+                    'bg-info': reserva.status === 'en_curso'
                   }">
-                {{ reserva.estado === 'en_curso' ? 'EN CURSO' : (reserva.estado | uppercase) }}
+                {{ reserva.status === 'en_curso' ? 'EN CURSO' : (reserva.status | uppercase) }}
               </span>
             </td>
             <td class="fw-bold">${{ reserva.amount }}</td>
@@ -699,12 +699,12 @@
       <span class="fs-1 fw-bold">${{ selectedReservation.amount }}</span>
       <div class="mt-2">
         <span class="badge px-3 py-2" [ngClass]="{
-              'bg-success': selectedReservation.estado === 'activa',
-              'bg-secondary': selectedReservation.estado === 'completada',
-              'bg-danger': selectedReservation.estado === 'cancelada',
-              'bg-info': selectedReservation.estado === 'en_curso'
+              'bg-success': selectedReservation.status === 'activa',
+              'bg-secondary': selectedReservation.status === 'completada',
+              'bg-danger': selectedReservation.status === 'cancelada',
+              'bg-info': selectedReservation.status === 'en_curso'
             }">
-          {{ selectedReservation.estado === 'en_curso' ? 'EN CURSO' : (selectedReservation.estado | uppercase) }}
+          {{ selectedReservation.status === 'en_curso' ? 'EN CURSO' : (selectedReservation.status | uppercase) }}
         </span>
       </div>
     </div>

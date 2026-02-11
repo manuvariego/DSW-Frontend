@@ -133,9 +133,9 @@ loadUserStats(userId: string | number) {
           return;
         }
         const completedReservations = reservation.filter(r => 
-            r.estado?.toLowerCase() === 'completada' ||
-            r.estado?.toLowerCase() === 'activa' ||
-            r.estado?.toLowerCase() === 'en_curso'
+          r.status?.toLowerCase() === 'completada' ||
+          r.status?.toLowerCase() === 'activa' ||
+          r.status?.toLowerCase() === 'en_curso'
         );
         this.stats.totalSpent = completedReservations.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
         this.stats.completedReservations = completedReservations.length;

@@ -70,10 +70,8 @@ export class GaragesComponent {
       return;
     }
 
-
     const now = new Date();
 
-    // 2. Úsala en tus variables
     const nowFormatted = this.formatDateTime(now); // Resultado: "2026-02-10 12:25:46"
 
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -132,7 +130,7 @@ formatDateTime = (date: Date) => {
     };
 
 cancelReservation(reserva: any) {
-    if (reserva.estado === 'en_curso') {
+    if (reserva.status === 'en_curso') {
       alert('No podés cancelar una reserva que ya está en curso.');
       return;
     }

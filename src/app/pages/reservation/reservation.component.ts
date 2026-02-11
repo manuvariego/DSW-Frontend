@@ -70,8 +70,8 @@ isValidating: boolean = false;
   paymentMethod: string = ''; //  efectivo o mercado pago
   selectedGarage: any = null
   myReservations: any[] = []
-  reservasProximas: any[] = []
-  reservasHistorial: any[] = []
+  upcomingReservations: any[] = []
+  historyReservations: any[] = []
   activeTab: string = 'proximas'
   selectedReservation: any = null
     // History filters
@@ -156,19 +156,19 @@ ngOnInit() {
 
   filterReservations() {
     
-    this.reservasProximas = this.myReservations.filter(r => {
-      return r.estado === 'activa' || r.estado === 'en_curso';
+    this.upcomingReservations = this.myReservations.filter(r => {
+      return r.status === 'activa' || r.status === 'en_curso';
     });
     
-    this.reservasProximas.sort((a, b) => {
+    this.upcomingReservations.sort((a, b) => {
       return new Date(a.check_in_at).getTime() - new Date(b.check_in_at).getTime();
     });
     
-    this.reservasHistorial = this.myReservations.filter(r => {
-      return r.estado !== 'activa' && r.estado !== 'en_curso';
+    this.historyReservations = this.myReservations.filter(r => {
+      return r.status !== 'activa' && r.status !== 'en_curso';
     });
 
-    this.reservasHistorial.sort((a, b) => {
+    this.historyReservations.sort((a, b) => {
      return new Date(b.check_in_at).getTime() - new Date(a.check_in_at).getTime();
     });
   }
@@ -233,7 +233,7 @@ ngOnInit() {
     this.selectedGarageName = aGarage.name
     this.availableServices = aGarage.services || [];
     this.selectedServicesIds = [];
-    this.totalEstadia = Math.round(aGarage.precioEstimado || 0);
+    this.totalEstadia = Math.round(aGarage.estimatedPrice || 0);
     this.totalExtra = 0;
     this.totalFinal = this.totalEstadia;
     this.currentSection = 'services';
@@ -344,7 +344,7 @@ ngOnInit() {
     const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
     
 
-    if (reserva.estado === 'en_curso') {
+    if (reserva.status === 'en_curso') {
       alert('No podés cancelar una reserva que ya está en curso.');
       return;
     } 
@@ -369,10 +369,10 @@ ngOnInit() {
   }
 
   get filteredHistory(): any[] {
-    return this.reservasHistorial.filter(reservation => {
+    return this.historyReservations.filter(reservation => {
       // Status filter
       const matchesStatus = this.statusFilter === 'all' ||
-                            reservation.estado === this.statusFilter;
+                            reservation.status === this.statusFilter;
 
       // Vehicle filter
       const matchesVehicle = !this.vehicleFilter ||
@@ -387,7 +387,7 @@ getServicesTotal(reservationServices: any[]): number {
   return reservationServices.reduce((sum: number, rs: any) => sum + (Number(rs.service?.price) || 0), 0);
 }
 
-  downloadpdf(reserva: any) {
+  downloadpdf(reservation: any) {
     const doc = new jsPDF();
 
     // === HEADER ===
@@ -407,7 +407,7 @@ getServicesTotal(reservationServices: any[]): number {
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
     doc.text(`Fecha de emisión: ${new Date().toLocaleDateString()}`, 20, 50);
-    doc.text(`ID Reserva: #${reserva.id}`, 140, 50);
+    doc.text(`ID Reserva: #${reservation.id}`, 140, 50);
 
     doc.setDrawColor(200, 200, 200);
     doc.line(20, 55, 190, 55);
@@ -423,13 +423,13 @@ getServicesTotal(reservationServices: any[]): number {
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     
-    const garageName = reserva.garage?.name || 'Cochera ParkEasy';
-    const address = reserva.garage?.address || 'Dirección no disponible';
-    const location = reserva.garage?.location ? 
-      `${reserva.garage.location.name}, ${reserva.garage.location.province}` : '';
-    const phoneNumber = reserva.garage?.phoneNumber || '-';
-    const email = reserva.garage?.email || '-';
-    const parkingSpaceNumber = reserva.parkingSpace?.number || '-';
+    const garageName = reservation.garage?.name || 'Cochera ParkEasy';
+    const address = reservation.garage?.address || 'Dirección no disponible';
+    const location = reservation.garage?.location ? 
+      `${reservation.garage.location.name}, ${reservation.garage.location.province}` : '';
+    const phoneNumber = reservation.garage?.phoneNumber || '-';
+    const email = reservation.garage?.email || '-';
+    const parkingSpaceNumber = reservation.parkingSpace?.number || '-';
 
     doc.text(`Cochera: ${garageName}`, 20, yPos);
     yPos += 6;
@@ -449,7 +449,7 @@ getServicesTotal(reservationServices: any[]): number {
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    const licensePlate = reserva.vehicle?.license_plate || '-';
+    const licensePlate = reservation.vehicle?.license_plate || '-';
     doc.text(`Patente: ${licensePlate}`, 20, yPos);
     yPos += 12;
 
@@ -464,14 +464,14 @@ getServicesTotal(reservationServices: any[]): number {
 
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
-    const checkIn = new Date(reserva.check_in_at).toLocaleString();
-    const checkOut = new Date(reserva.check_out_at).toLocaleString();
+    const checkIn = new Date(reservation.check_in_at).toLocaleString();
+    const checkOut = new Date(reservation.check_out_at).toLocaleString();
     doc.text(checkIn, 35, yPos + 18);
     doc.text(checkOut, 125, yPos + 18);
     yPos += 35;
 
     // === SERVICIOS (si hay) ===
-    const reservationServices = reserva.reservationServices || [];
+    const reservationServices = reservation.reservationServices || [];
     if (reservationServices.length > 0) {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
@@ -502,7 +502,7 @@ getServicesTotal(reservationServices: any[]): number {
     
     // Calcular subtotales
     const totalServices = reservationServices.reduce((sum: number, rs: any) => sum + (Number(rs.service?.price) || 0), 0);
-    const totalReservation = reserva.amount - totalServices;
+    const totalReservation = reservation.amount - totalServices;
 
     doc.text('Estadía:', 120, yPos);
     doc.text(`$${totalReservation}`, 180, yPos, { align: 'right' });
@@ -521,7 +521,7 @@ getServicesTotal(reservationServices: any[]): number {
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('TOTAL:', 120, yPos);
-    doc.text(`$${reserva.amount}`, 180, yPos, { align: 'right' });
+    doc.text(`$${reservation.amount}`, 180, yPos, { align: 'right' });
 
     // === FOOTER ===
     doc.setFontSize(9);
@@ -530,7 +530,7 @@ getServicesTotal(reservationServices: any[]): number {
     doc.text('Gracias por confiar en ParkEasy.', 20, 280);
     doc.text('Ante cualquier duda, contáctese con soporte.', 20, 285);
 
-    doc.save(`reserva_${reserva.id}.pdf`);
+    doc.save(`reserva_${reservation.id}.pdf`);
   }
 
 validateAvailability() {

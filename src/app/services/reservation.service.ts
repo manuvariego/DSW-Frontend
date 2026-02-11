@@ -42,7 +42,7 @@ export class ReservationService {
         params = params.append('license_plate', filters.vehicleLicensePlate);
       }
       if (filters.status) {
-        params = params.append('estado', filters.status);
+        params = params.append('status', filters.status);
       }
       if (filters.checkInDate) {
         params = params.append('check_in_at', filters.checkInDate);
