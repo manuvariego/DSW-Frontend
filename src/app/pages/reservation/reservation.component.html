@@ -192,14 +192,12 @@
     <table class="table table-hover mb-0 align-middle">
       <thead class="thead-dark-custom">
         <tr>
-          <th scope="col">CUIT</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Dirección</th>
+          <th scope="col">Nombre Cochera</th>
           <th scope="col">Email</th>
-          <th scope="col">Teléfono</th>
+          <th scope="col">Dirección</th>
           <th scope="col">Localidad</th>
-          <th scope="col">Precio estimado</th>
-          <th scope="col" class="text-center">Seleccionar</th>
+          <th scope="col">Precio estadía</th>
+          <th scope="col" class="text-center"></th>
         </tr>
       </thead>
       <tbody>
@@ -211,11 +209,9 @@
         </tr>
 
         <tr *ngFor="let garage of Garages; let i = index">
-          <td class="fw-bold text-muted">{{ garage.cuit }}</td>
           <td>{{ garage.name }}</td>
-          <td>{{ garage.address }}</td>
           <td>{{ garage.email }}</td>
-          <td>{{ garage.phoneNumber }}</td>
+          <td>{{ garage.address }}</td>
           <td>{{ garage.location?.name }}</td>
           <td class="fw-bold text-success">${{ garage.estimatedPrice }}</td>
           <td class="text-center">
@@ -392,7 +388,7 @@
     <li class="nav-item">
       <a class="nav-link" [class.active]="activeTab === 'proximas'" (click)="activeTab = 'proximas'"
         style="cursor: pointer;">
-        <i class="fas fa-calendar-alt me-1"></i> Próximas ({{ upcomingReservations.length }})
+        <i class="fas fa-calendar-alt me-1"></i>En curso | Próximas ({{ upcomingReservations.length }})
       </a>
     </li>
     <li class="nav-item">
@@ -673,7 +669,7 @@
       <button type="button" class="btn btn-dark-custom btn-lg" (click)="showSection('misReservas')">
         <i class="fas fa-list-alt me-2"></i> Ver mis reservas
       </button>
-      <button type="button" class="btn btn-outline-secondary" (click)="showSection('menu')">
+      <button type="button" class="btn btn-outline-secondary" routerLink="/">
         <i class="fas fa-home me-2"></i> Volver al inicio
       </button>
     </div>
