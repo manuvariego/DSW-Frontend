@@ -78,7 +78,6 @@ export class ParkingSpaceComponent {
         }, 3000);
       },
       error: (error) => {
-        console.error('Error al crear Lugar de Estacionamiento:', error);
       }
     });
   }
@@ -109,7 +108,6 @@ export class ParkingSpaceComponent {
           }
         },
         error: (error) => {
-          console.error(`Error creando espacio ${num}:`, error);
         }
       });
     }
@@ -156,7 +154,6 @@ export class ParkingSpaceComponent {
         this.currentSection = 'initial';
       },
       error: (error) => {
-        console.error('Error al eliminar el Lugar de Estacionamiento', error);
       }
     });
   }
@@ -185,7 +182,6 @@ export class ParkingSpaceComponent {
         this.getParkingSpace();
       },
       error: (error) => {
-        console.error('Error al actualizar el Lugar de Estacionamiento', error);
       }
     });
   }
@@ -227,7 +223,7 @@ export class ParkingSpaceComponent {
         });
 
         this.blockedSpaceIds = Array.from(blockedSet);},
-      error: (err) => console.error("Error de conexión:", err)
+      error: () => {}
     });
   }
   // Función para el HTML

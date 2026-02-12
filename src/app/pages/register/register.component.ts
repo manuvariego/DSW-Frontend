@@ -62,7 +62,6 @@ export class RegisterComponent {
         this.locations = data;
       },
       error: (error) => {
-        console.error('Error al cargar localidades:', error);
       }
     });
   }

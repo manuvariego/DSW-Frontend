@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -16,7 +17,8 @@ import { SocketService } from '../../services/socket.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   private _authService = inject(AuthService);
   private _usersService = inject(UsersService);
@@ -58,15 +60,20 @@ export class ProfileComponent implements OnInit {
         this.loadUserData(id);
         this.loadUserStats(id);
 
-        this.socketService.on('reservation:inProgress').subscribe((data) => {
-          this.loadUserStats(this._authService.getCurrentUserId()!);
-        });
-
-        this.socketService.on('service:statusChanged').subscribe(() => {
-          this.loadUserStats(this._authService.getCurrentUserId()!);
-        });
+        this.subscriptions.push(
+          this.socketService.on('reservation:inProgress').subscribe(() => {
+            this.loadUserStats(this._authService.getCurrentUserId()!);
+          }),
+          this.socketService.on('service:statusChanged').subscribe(() => {
+            this.loadUserStats(this._authService.getCurrentUserId()!);
+          })
+        );
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   loadUserData(id: string | number) {
@@ -83,7 +90,6 @@ export class ProfileComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error(err);
         this.isLoading = false;
       }
     });
@@ -124,7 +130,6 @@ updateProfile() {
       setTimeout(() => this.message = '', 3000);
     },
     error: (err) => {
-      console.error(err);
       this.message = 'Error al actualizar los datos.';
       this.isSuccess = false;
       this.isLoading = false;
@@ -137,7 +142,6 @@ loadUserStats(userId: string | number) {
     
     this._reservationService.getReservationsByUser(userId).subscribe({
       next: (reservation: any[]) => {
-        console.log("Reservas del usuario para estadísticas:", reservation);
         if (!reservation || reservation.length === 0) {
           this.stats = { totalSpent: 0, completedReservations: 0, favoriteGarage: 'Todavía no tenes una cochera favorita' };
           return;
@@ -155,7 +159,6 @@ loadUserStats(userId: string | number) {
         this.stats.favoriteGarage = this.getMostFrequent(garageNames);
       },
       error: (err) => {
-        console.error("Error al cargar estadísticas:", err);
       }
     });
   }
@@ -185,7 +188,6 @@ loadUserStats(userId: string | number) {
         this.locations = data;
       },
       error: (err) => {
-        console.error('Error loading locations:', err);
       }
     });
   }
@@ -197,7 +199,6 @@ loadUserStats(userId: string | number) {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading garage:', err);
         this.isLoading = false;
       }
     });
@@ -255,7 +256,6 @@ loadUserStats(userId: string | number) {
         }, 4000);
       },
       error: (err) => {
-        console.error('Error updating garage:', err);
         this.message = 'Error al actualizar los datos.';
         this.isSuccess = false;
         this.isLoading = false;

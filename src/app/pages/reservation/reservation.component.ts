@@ -87,7 +87,6 @@ ngOnInit() {
 
     if (storedId) {
       this.userID = storedId;
-      console.log("Usuario detectado ID:", this.userID);
 
       // buscamos los vehículos de ese usuario
       this.getUserVehicles();
@@ -98,7 +97,6 @@ ngOnInit() {
         this.showSection(section);
       }
     } else {
-      console.warn("No hay usuario logueado.");
       this.router.navigate(['/login']); // Si no hay usuario, se va al login
     }
   }
@@ -108,12 +106,10 @@ ngOnInit() {
     if (!userId) return;
     this.reservationService.getReservationsByUser(Number(userId)).subscribe({
       next: (data: any) => {
-        console.log("Reservas cargadas:", data);
         this.myReservations = data;
         this.filterReservations();
       },
       error: (error) => {
-        console.error("Error cargando reservas:", error);
         this.errorMessage = "No se pudieron cargar tus reservas.";
       }
     });
@@ -125,11 +121,9 @@ ngOnInit() {
     
     this._vehiclesService.getVehiclesByOwner(Number(userId)).subscribe({
       next: (data: any) => {
-        console.log("Vehículos cargados:", data);
         this.userVehicles = data;
       },
       error: (error) => {
-        console.error("Error cargando vehículos:", error);
         this.errorMessage = "No se pudieron cargar tus vehículos.";
       }
     });
@@ -145,10 +139,8 @@ ngOnInit() {
           this.Garages = [data];
         }
         this.errorMessage = ''; // Limpiar mensaje de error si la solicitud es exitosa
-        console.log(data);
       },
       (error) => {
-        console.error('Error al obtener cocheras disponibles:', error);
         this.errorMessage = 'Error al obtener los datos. Verifique la información ingresada e intente nuevamente.';
       }
     );
@@ -222,7 +214,6 @@ ngOnInit() {
 
   viewReservationDetails(reservation: any) {
     this.selectedReservation = reservation;
-    console.log("Mostrando detalles de la reserva:", reservation);
     this.currentSection = 'reservationDetails';
   }
 
@@ -257,7 +248,6 @@ ngOnInit() {
     
     if (isChecked) {
       this.selectedServicesIds.push(service.id);
-      console.log(this.selectedServicesIds)
       this.totalExtra += Number(service.price); 
     } else {
       this.selectedServicesIds = this.selectedServicesIds.filter(id => id !== service.id);
@@ -286,11 +276,9 @@ ngOnInit() {
       paymentMethod: this.paymentMethod
     };
 
-    console.log("Enviando reserva:", finalData);
 
     this.reservationService.createReservation(finalData).subscribe({
       next: (response) => {
-        console.log('Reserva creada exitosamente:', response);
         this.theReservation = response;
 
         if (this.paymentMethod === 'MP') {
@@ -303,7 +291,6 @@ ngOnInit() {
         this.filters = { check_in_at: '', check_out_at: '', license_plate: '' };
       },
       error: (err) => {
-        console.error('Error al crear la reserva:', err);
         
         // MANEJO DEL ERROR DE SUPERPOSICIÓN
         if (err.status === 400) {
@@ -357,11 +344,9 @@ ngOnInit() {
     if (confirm('¿Estás seguro de que querés cancelar esta reserva?')) {
           this.reservationService.cancelReservation(reserva.id).subscribe({
             next: () => {
-              console.log('Reserva cancelada exitosamente');
               this.getMyReservations();
             },
             error: (error) => {
-              console.error('Error al cancelar la reserva:', error);
               this.errorMessage = 'No se pudo cancelar la reserva.';
             }
           });
@@ -561,7 +546,6 @@ validateAvailability() {
     },
     error: (err) => {
       this.isValidating = false;
-      console.error("Error validando disponibilidad", err);
     }
   });
 }

@@ -50,9 +50,6 @@ export class LoginComponent {
       this.fieldErrors.password = 'La contraseña es muy corta';
       isValid = false;
     }
-    console.log(this.username)
-    console.log(this.password)
-
     return isValid;
   }
 
@@ -138,7 +135,6 @@ async onForgotPassword() {
         );
       },
       error: (err) => {
-        console.error(err);
         Swal.fire('Error', 'No se pudo enviar el correo.', 'error');
       }
     });

@@ -12,10 +12,9 @@ export class ReservationService {
   private apiUrl = `${environment.apiUrl}/reservations`;
   private apiAvailables = `${environment.apiUrl}/garages/availables`;
 
-  constructor(private http: HttpClient) { }
 
   createReservation(reservationData: any): Observable<any> {
-    return this.http.post(this.apiUrl, reservationData);
+    return this._http.post(this.apiUrl, reservationData);
   }
 
 
@@ -25,7 +24,7 @@ export class ReservationService {
       .set('check_out_at', filters.check_out_at)
       .set('license_plate', filters.license_plate);
 
-    return this.http.get<any>(this.apiAvailables, { params });
+    return this._http.get<any>(this.apiAvailables, { params });
   }
 
   updateReservation(reservationData: any): Observable<any> {
@@ -51,7 +50,7 @@ export class ReservationService {
         params = params.append('check_out_at', filters.checkOutDate);
       }
     }
-    return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/${condition}`, { params });
+    return this._http.get<any[]>(`${this.apiUrl}/garage/${cuit}/${condition}`, { params });
   }  
   
   cancelReservation(reservationId: number | string): Observable<any> {
@@ -59,11 +58,11 @@ export class ReservationService {
   }
 
   BlockedSpacesByGarage(cuit: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/garage/${cuit}/list`);
+    return this._http.get<any[]>(`${this.apiUrl}/garage/${cuit}/list`);
   }
 
   getReservationsForBlocking(cuit: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
+    return this._http.get<any[]>(`${this.apiUrl}/blocking-data/${cuit}`);
   }
 
   checkVehicleAvailability(plate: string, checkIn: string, checkOut: string): Observable<any> {
@@ -72,11 +71,11 @@ export class ReservationService {
       .set('check_in_at', checkIn)
       .set('check_out_at', checkOut);
 
-    return this.http.get(`${this.apiUrl}/check-availability`, { params });
+    return this._http.get(`${this.apiUrl}/check-availability`, { params });
   }
 
 
   updateServiceStatus(reservationId: number, serviceId: number, status: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${reservationId}/services/${serviceId}`, { status });
+    return this._http.patch(`${this.apiUrl}/${reservationId}/services/${serviceId}`, { status });
   }
 }
