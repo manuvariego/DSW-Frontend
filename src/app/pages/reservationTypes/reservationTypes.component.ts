@@ -54,33 +54,6 @@ export class ReservationTypesComponent {
       }
     });
   }
-  
-
-  getReservationType(form: NgForm){
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return; // Detiene el envío si el formulario no es válido
-    }
-    
-    console.log('getReservationType');
-
-    this._apiservice.getReservationType(this.reservationTypeData.description, this.reservationTypeData.garage).subscribe(
-      (reservationType: any) => {
-        this.currentSection = "geTaReservationTypeTable"
-        console.log(reservationType)
-        this.aReservationType = reservationType
-        this.desc = ''
-        this.Cuit = ''
-      },
-      (error) => {
-        console.error('Error al obtener un tipo de Reserva', error);
-        alert('El tipo de Reserva no existe o ocurrió un error al obtener la información.');
-      }
-    );
-  }
 
   private ordenTipos = ['HOUR', 'HALF_DAY', 'DAY', 'WEEKLY', 'HALF_MONTH', 'MONTH'];
 
@@ -170,20 +143,6 @@ export class ReservationTypesComponent {
       });
       return;
     }
-
-    this._apiservice.createReservationType(this.reservationTypeData).subscribe({
-      next: (response) => {
-        console.log('Tipo de reserva creado exitosamente:', response);
-        this.message = '¡Tipo de estadía creado exitosamente!';
-        this.isSuccess = true;
-        this.showSection('initReservationType');
-        form.resetForm();
-        setTimeout(() => this.message = '', 3000);
-      },
-      error: (error) => {
-        console.error('Error al crear el tipo de reserva:', error);
-      }
-    });
   }
 
 
