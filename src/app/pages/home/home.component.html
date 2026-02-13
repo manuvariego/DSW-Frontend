@@ -1,4 +1,4 @@
-<section class="hero">
+<section class="hero" [class.is-authenticated]="authService.isUser()">
   <div class="hero-content">
     <h1>Tu cochera ideal,<br><span>a un clic de distancia</span></h1>
     <p>
@@ -13,7 +13,7 @@
     </a>
   </div>
 
-  <div class="stats-bar">
+  <div *ngIf="!authService.isUser()" class="stats-bar">
     <div class="stat-item">
       <div class="stat-number">200+</div>
       <div class="stat-label">cocheras activas</div>

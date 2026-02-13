@@ -126,15 +126,33 @@
     <form (ngSubmit)="createVehicle(userForm)" #userForm="ngForm" class="needs-validation" novalidate>
 
       <div class="form-group mb-3">
-        <label for="license_plate" class="form-label">Patente</label>
-        <input type="text" class="form-control modern-input" id="license_plate" name="license_plate"
-          [(ngModel)]="vehicleData.license_plate" required placeholder="Ej: AB 123 CD" #license_plate="ngModel"
-          [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)" />
-        <div *ngIf="license_plate.errors?.['required'] && (license_plate.dirty || license_plate.touched)"
-          class="invalid-feedback">
-          Requerido.
+  <label for="license_plate" class="form-label">Patente</label>
+  
+      <input type="text" class="form-control modern-input" id="license_plate" 
+        name="license_plate"
+        [(ngModel)]="vehicleData.license_plate" 
+        required 
+        placeholder="Ej: AB 123 CD o ABC 123" 
+        #license_plate="ngModel"
+        
+        pattern="^([A-Z]{3}\s\d{3}|[A-Z]{2}\s\d{3}\s[A-Z]{2})$"
+        
+        oninput="this.value = this.value.toUpperCase()"
+        
+        [class.is-invalid]="license_plate.invalid && (license_plate.dirty || license_plate.touched)" />
+
+      <div *ngIf="license_plate.invalid && (license_plate.dirty || license_plate.touched)" class="invalid-feedback">
+        
+        <div *ngIf="license_plate.errors?.['required']">
+          La patente es requerida.
         </div>
+        
+        <div *ngIf="license_plate.errors?.['pattern']">
+          Formato inválido. Debe ser "ABC 123" o "AB 123 CD" (con espacios).
+        </div>
+        
       </div>
+    </div>
 
       <div class="form-group mb-4">
         <label for="type" class="form-label">Tipo de vehículo</label>

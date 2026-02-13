@@ -99,6 +99,7 @@
           <input type="datetime-local" class="form-control modern-input" 
                  [(ngModel)]="reservationData.check_in_at"
                  name="checkIn" required 
+                 step="900"
                  (change)="onCheckInChange(); validateAvailability()" 
                  #check_in_at="ngModel" [min]="minCheckIn"
                  [class.is-invalid]="(check_in_at.invalid && (check_in_at.dirty || check_in_at.touched)) || isDateInvalid" />
