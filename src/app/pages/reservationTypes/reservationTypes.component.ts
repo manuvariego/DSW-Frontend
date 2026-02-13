@@ -19,11 +19,6 @@ export class ReservationTypesComponent {
   isSuccess = false;
   private _apiservice = inject(ReservationTypesService) 
   reservationTypeList: any[] = [] 
-
-  desc: string =''
-  Cuit: string = ''
-  aReservationType: any = null
-  reservationType: any = null 
   editingReservationType: any = null
   pricingStatus: any = null
   tiposFaltantes: string[] = []
@@ -37,14 +32,6 @@ export class ReservationTypesComponent {
     MONTH: null
   }
   private _authService = inject(AuthService)
-  
-  reservationTypeData = {
-
-    description: "",
-    price: "",
-    garage: ""
-
-  }
 
   ngOnInit() {
     // Si es un garage logueado, cargar su estado de precios
@@ -62,39 +49,10 @@ export class ReservationTypesComponent {
       next: (status) => {
         this.pricingStatus = status;
         this.tiposFaltantes = status.tiposFaltantes;
-        console.log('Estado de precios:', status);
       },
       error: (error) => {
-        console.error('Error al cargar estado de precios:', error);
       }
     });
-  }
-  
-
-  getReservationType(form: NgForm){
-    if (form.invalid) {
-      Object.keys(form.controls).forEach(field => {
-        const control = form.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
-      return; // Detiene el envío si el formulario no es válido
-    }
-    
-    console.log('getReservationType');
-
-    this._apiservice.getReservationType(this.reservationTypeData.description, this.reservationTypeData.garage).subscribe(
-      (reservationType: any) => {
-        this.currentSection = "geTaReservationTypeTable"
-        console.log(reservationType)
-        this.aReservationType = reservationType
-        this.desc = ''
-        this.Cuit = ''
-      },
-      (error) => {
-        console.error('Error al obtener un tipo de Reserva', error);
-        alert('El tipo de Reserva no existe o ocurrió un error al obtener la información.');
-      }
-    );
   }
 
   private ordenTipos = ['HOUR', 'HALF_DAY', 'DAY', 'WEEKLY', 'HALF_MONTH', 'MONTH'];
@@ -129,7 +87,6 @@ export class ReservationTypesComponent {
 
     this._apiservice.updateReservationType(this.editingReservationType).subscribe({
       next: (response) => {
-        console.log('Precio actualizado exitosamente', response);
         this.editingReservationType = null;
         this.message = '¡Precio actualizado correctamente!';
         this.isSuccess = true;
@@ -137,14 +94,9 @@ export class ReservationTypesComponent {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        console.error('Error al actualizar el precio', error);
         alert('Error al actualizar el precio. Intente nuevamente.');
       }
     });
-  }
-
-  isGarage(): boolean {
-    return this._authService.isGarage();
   }
 
   getNombreTipo(description: string): string {
@@ -191,20 +143,6 @@ export class ReservationTypesComponent {
       });
       return;
     }
-
-    this._apiservice.createReservationType(this.reservationTypeData).subscribe({
-      next: (response) => {
-        console.log('Tipo de reserva creado exitosamente:', response);
-        this.message = '¡Tipo de estadía creado exitosamente!';
-        this.isSuccess = true;
-        this.showSection('initReservationType');
-        form.resetForm();
-        setTimeout(() => this.message = '', 3000);
-      },
-      error: (error) => {
-        console.error('Error al crear el tipo de reserva:', error);
-      }
-    });
   }
 
 
@@ -252,7 +190,6 @@ export class ReservationTypesComponent {
 
     Promise.all(promesas)
       .then(() => {
-        console.log('Todos los precios guardados exitosamente');
         this.message = '¡Todos los precios fueron guardados correctamente!';
         this.isSuccess = true;
         this.loadPricingStatus();
@@ -269,7 +206,6 @@ export class ReservationTypesComponent {
         };
       })
       .catch((error) => {
-        console.error('Error al guardar precios:', error);
         alert('Ocurrió un error al guardar los precios. Intente nuevamente.');
       });
   }

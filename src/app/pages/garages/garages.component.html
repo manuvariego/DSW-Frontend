@@ -3,11 +3,8 @@
   style="min-height: 80vh; margin-top: 0px !important;">
 
   <div class="position-relative" style="z-index: 2;">
-
-    <!-- PANEL PRINCIPAL TIPO DASHBOARD -->
     <div class="dashboard-glass p-4 p-md-5 rounded-4 shadow-lg">
 
-      <!-- ENCABEZADO / HERO -->
       <div class="row mb-4 text-center text-lg-start align-items-center">
         <div class="col-lg-8">
           <h1 class="display-5 fw-bold mb-1">BIENVENIDO</h1>
@@ -22,7 +19,6 @@
         </div>
       </div>
 
-      <!-- CARDS DE ESTADÍSTICAS -->
       <div class="row justify-content-center mb-4 g-2 g-md-3">
         <div class="col-md-3 col-sm-6">
           <div class="card border-0 shadow-sm h-100 text-center py-4 stat-kpi">
@@ -30,7 +26,7 @@
               <div class="mb-3">
                 <i class="fas fa-car-side fa-2x"></i>
               </div>
-              <h2 class="fw-bold mb-1">{{ totalResevartionsOnProgress }}</h2>
+              <h2 class="fw-bold mb-1">{{ totalReservationsOnProgress }}</h2>
               <p class="text-muted mb-0 small text-uppercase fw-bold">En Curso</p>
             </div>
           </div>
@@ -73,7 +69,6 @@
         </div>
       </div>
 
-      <!-- OCUPACIÓN ACTUAL -->
       <div class="row justify-content-center mb-4">
         <div class="col-12 col-lg-10">
           <div class="card card-ocupacion border-0 shadow-sm p-3 p-md-4">
@@ -118,7 +113,6 @@
         </div>
       </div>
 
-      <!-- RESUMEN TOTAL RESERVAS -->
       <div class="row mb-4 text-center">
         <div class="col-12">
           <p class="text-muted" style="font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">
@@ -128,7 +122,6 @@
         </div>
       </div>
 
-      <!-- BOTONES DE NAVEGACIÓN -->
       <div class="row justify-content-center mb-2 g-2">
         <div class="col-auto">
           <button class="btn btn-dark rounded-pill px-5 py-3 shadow-sm"
@@ -163,7 +156,6 @@
       </button>
     </div>
 
-    <!-- Tabs -->
     <ul class="nav nav-pills mb-4">
       <li class="nav-item">
         <button class="nav-link" [class.active]="activeTab === 'en_curso'" (click)="setActiveTab('en_curso')">
@@ -192,7 +184,6 @@
       </li>
     </ul>
 
-    <!-- Filtros -->
     <div class="card card-box mb-4 p-3 p-md-4">
       <div class="row g-3 align-items-end">
         <div class="col-md-4">
@@ -240,11 +231,11 @@
             <td class="text-primary fw-bold">{{ res.check_in_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td class="text-primary fw-bold">{{ res.check_out_at | date: 'dd/MM/yy HH:mm' }}</td>
             <td>
-              <span class="badge rounded-pill" [ngClass]="res.estado === 'activa' ? 'bg-success' :
-                              res.estado === 'en_curso' ? 'bg-info' :
-                              res.estado === 'cancelada' ? 'bg-danger' :
-                              res.estado === 'completada' ? 'bg-secondary' : 'bg-warning'">
-                {{ res.estado === 'en_curso' ? 'EN CURSO' : (res.estado | uppercase) }}
+              <span class="badge rounded-pill" [ngClass]="res.status === 'activa' ? 'bg-success' :
+                              res.status === 'en_curso' ? 'bg-info' :
+                              res.status === 'cancelada' ? 'bg-danger' :
+                              res.status === 'completada' ? 'bg-secondary' : 'bg-warning'">
+                {{ res.status === 'en_curso' ? 'EN CURSO' : (res.status | uppercase) }}
               </span>
             </td>
             <td class="fw-bold text-dark">${{ res.amount }}</td>
@@ -257,9 +248,9 @@
                   <i class="fas fa-eye"></i>
                 </button>
                 <button type="button" class="btn-icon-action btn-delete-icon"
-                  [title]="res.estado === 'en_curso' ? 'No se puede cancelar una reserva en curso' :
-                           res.estado !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
-                  [disabled]="res.estado !== 'activa'" (click)="cancelReservation(res)">
+                  [title]="res.status === 'en_curso' ? 'No se puede cancelar una reserva en curso' :
+                           res.status !== 'activa' ? 'Solo se pueden cancelar reservas activas' : 'Cancelar Reserva'"
+                  [disabled]="res.status !== 'activa'" (click)="cancelReservation(res)">
                   <i class="fas fa-trash-alt"></i>
                 </button>
 
@@ -278,7 +269,6 @@
       </table>
     </div>
 
-    <!-- MODAL DETALLE -->
     <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4"
@@ -300,12 +290,12 @@
               <div class="col-6 text-end">
                 <label class="text-muted small fw-bold text-uppercase d-block">Estado</label>
                 <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                      'bg-success': selectedReservation.estado === 'activa',
-                      'bg-info': selectedReservation.estado === 'en_curso',
-                      'bg-secondary': selectedReservation.estado === 'completada',
-                      'bg-danger': selectedReservation.estado === 'cancelada'
+                      'bg-success': selectedReservation.status === 'activa',
+                      'bg-info': selectedReservation.status === 'en_curso',
+                      'bg-secondary': selectedReservation.status === 'completada',
+                      'bg-danger': selectedReservation.status === 'cancelada'
                     }">
-                  {{ selectedReservation.estado === 'en_curso' ? 'EN CURSO' : (selectedReservation.estado | uppercase) }}
+                  {{ selectedReservation.status === 'en_curso' ? 'EN CURSO' : (selectedReservation.status | uppercase) }}
                 </span>
               </div>
 
@@ -376,11 +366,7 @@
         </div>
       </div>
     </div>
-
-    <div class="mb-5"></div>
-  </div>
-
-<div class="pagination-wrapper mt-4">
+    <div class="pagination-wrapper mt-4">
   <pagination-controls
     (pageChange)="p = $event"
     previousLabel="Anterior"
@@ -388,6 +374,11 @@
     class="my-custom-pagination">
   </pagination-controls>
 </div>
+
+    <div class="mb-5"></div>
+  </div>
+
+
 </div>
 }
 
@@ -395,7 +386,6 @@
 <div class="container-fluid min-vh-100 d-flex flex-column pt-5 px-4 fade-in-anim">
   <div class="container-lg flex-grow-1 d-flex flex-column">
 
-    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4 mt-2 reservas-header">
       <div>
         <h3 class="section-title mb-1">Tablero de Servicios</h3>
@@ -406,7 +396,6 @@
       </button>
     </div>
 
-    <!-- KANBAN BOARD -->
     <div class="row g-3 kanban-board">
 
       <!-- COLUMNA: PENDIENTES -->

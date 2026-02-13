@@ -7,9 +7,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 
-
-//ESTA MAL MANEJAR COCHERAS DESDE ESTE ARCHIVO CREO YO
-
 export class ServiceService {
   private testapiUrl = `/api`
   private apiUrl = `${environment.apiUrl}/services`;

@@ -1,7 +1,3 @@
-/* ========================================
-   REGISTER PAGE STYLES
-   ======================================== */
-
 .register-wrapper {
   min-height: 100vh;
   display: flex;
@@ -13,7 +9,6 @@
   overflow: hidden;
 }
 
-/* Background decoration */
 .register-wrapper::before {
   content: '';
   position: absolute;
@@ -38,7 +33,6 @@
   pointer-events: none;
 }
 
-/* CARD CONTAINER */
 .card-box {
   background: var(--color-surface);
   border-radius: var(--radius-xl);
@@ -78,7 +72,6 @@
   animation: fadeIn 0.6s ease forwards;
 }
 
-/* HEADER */
 .section-title {
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
@@ -87,7 +80,6 @@
   margin-bottom: 8px;
 }
 
-/* ACCOUNT TYPE CARDS */
 .account-type-card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -169,7 +161,6 @@
   margin: 0;
 }
 
-/* FORM ELEMENTS */
 .form-label {
   display: block;
   font-weight: 600;
@@ -201,7 +192,6 @@
   box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
 }
 
-/* BUTTONS */
 .btn-dark-custom {
   width: 100%;
   padding: 16px 24px;
@@ -245,7 +235,6 @@
   transform: none;
 }
 
-/* ALERTS */
 .alert {
   display: flex;
   align-items: center;
@@ -270,7 +259,6 @@
   border: 1px solid rgba(74, 156, 93, 0.2);
 }
 
-/* LINKS */
 .login-link {
   color: var(--color-primary-dark);
   font-weight: 600;
@@ -296,7 +284,6 @@
   color: var(--color-primary-dark);
 }
 
-/* BACK BUTTON */
 .btn-link.text-muted {
   color: var(--color-text-muted);
 }
@@ -305,7 +292,6 @@
   color: var(--color-primary-dark);
 }
 
-/* RESPONSIVE */
 @media (max-width: 576px) {
   .card-box {
     padding: 36px 24px;
@@ -320,12 +306,10 @@
   }
 }
 
-/* Header de los formularios de registro */
 .register-header {
   gap: 1rem;
 }
 
-/* Botón volver estilo pill */
 .back-pill {
   border-radius: 999px;
   padding: 6px 14px;
@@ -336,7 +320,6 @@
   white-space: nowrap;
 }
 
-/* En mobile que no se rompa el layout */
 @media (max-width: 576px) {
   .register-header {
     flex-direction: column;

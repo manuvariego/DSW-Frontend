@@ -8,7 +8,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ParkingSpaceComponent } from './pages/parking-space/parking-space.component';
 import { ReservationComponent } from './pages/reservation/reservation.component';
 import { ServiceComponent } from './pages/services/services.component';
-import { ProfileComponent } from './pages/profile/profile.component.js';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
 import { garageGuard } from './guards/garage.guard';
 import { userGuard } from './guards/user.guard';

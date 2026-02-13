@@ -34,9 +34,6 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     const cuit = localStorage.getItem('userId');
-    console.log("CUIT")
-    console.log(cuit)
-    console.log("CUIT")
     // Usamos el CUIT del localStorage o uno por defecto para probar
     this.garageCuit = cuit ? Number(cuit) : 55555;
     this.loadData();
@@ -52,7 +49,6 @@ export class ServiceComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error cargando cochera', err);
         this.messageType = 'error';
         this.message = 'Error al cargar los datos.';
         this.isLoading = false;
@@ -90,7 +86,6 @@ export class ServiceComponent implements OnInit {
 
     this.serviceService.updateService(serviceToUpdate).subscribe({
       next: (response) => {
-        console.log('Servicio actualizado:', response);
         this.messageType = 'success';
         this.message = 'Servicio actualizado correctamente.';
 
@@ -100,7 +95,6 @@ export class ServiceComponent implements OnInit {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        console.error('Error al actualizar:', error);
         this.messageType = 'error';
         this.message = 'Error al actualizar el servicio. Intenta nuevamente.';
         this.isLoading = false;
@@ -138,7 +132,6 @@ export class ServiceComponent implements OnInit {
         this.isLoading = false;
         this.messageType = 'error';
         this.message = 'Error al crear el servicio.';
-        console.error(err);
       }
     });
   }
@@ -150,7 +143,7 @@ export class ServiceComponent implements OnInit {
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6', 
+    cancelButtonColor: '#808080', 
     confirmButtonText: 'Sí, eliminar',
     cancelButtonText: 'Cancelar'
   }).then((result) => {
@@ -170,20 +163,19 @@ export class ServiceComponent implements OnInit {
         },
         error: (err) => {
           this.isLoading = false;
-          console.error(err);
 
           if (err.status === 400) {
-            Swal.fire({
-              icon: 'error',
-              title: 'No se puede eliminar',
-              text: err.error.message || 'El servicio está siendo usado en una reserva.'
-            });
-          } else {
-            Swal.fire(
+              Swal.fire(
               'Error',
               'Ocurrió un error inesperado al intentar eliminar.',
               'error'
             );
+          } else {
+              Swal.fire({
+              icon: 'error',
+              title: 'No se puede eliminar',
+              text:'El servicio está siendo usado en una reserva.'
+            });
           }
         }
       });
@@ -194,7 +186,6 @@ export class ServiceComponent implements OnInit {
 checkBlockedServices(cuit: string) {
   this.reservationService.getReservationsForBlocking(cuit).subscribe({
     next: (reservations) => {
-      console.log("Reservas para bloqueo:", reservations);
 
       const blockedSet = new Set<string>();
 
@@ -208,9 +199,8 @@ checkBlockedServices(cuit: string) {
       });
 
       this.blockedServiceIds = Array.from(blockedSet);
-      console.log("Servicios bloqueados:", this.blockedServiceIds);
     },
-    error: (err) => console.error("Error trayendo bloqueos:", err)
+    error: () => {}
   });
 }
 

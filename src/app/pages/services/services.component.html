@@ -58,8 +58,7 @@
           {{ isEditing ? 'Guardar Cambios' : 'Agregar Servicio' }}
         </button>
 
-        <button *ngIf="isEditing" class="btn btn-outline-secondary btn-cancel-edit" (click)="cancelEdit()"
-          title="Cancelar">
+        <button *ngIf="isEditing" class="btn btn-outline-secondary btn-cancel-edit" (click)="cancelEdit()">
           <i class="fas fa-times"></i>
         </button>
       </div>

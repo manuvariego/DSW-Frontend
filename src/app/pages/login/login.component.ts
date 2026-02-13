@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SocketService } from '../../services/socket.service';
 import Swal from 'sweetalert2'; 
 
 @Component({
@@ -16,6 +17,7 @@ export class LoginComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private socketService = inject(SocketService);
 
   username = '';
   password = '';
@@ -48,9 +50,6 @@ export class LoginComponent {
       this.fieldErrors.password = 'La contraseña es muy corta';
       isValid = false;
     }
-    console.log(this.username)
-    console.log(this.password)
-
     return isValid;
   }
 
@@ -72,6 +71,9 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: (response: any) => {
         this.authService.saveSession(response);
+        
+        // Unirse a la sala de Socket.io según el rol
+        this.socketService.joinRoom();
 
         if (this.authService.isGarage()) {
           this.router.navigate(['/garages']);
@@ -133,7 +135,6 @@ async onForgotPassword() {
         );
       },
       error: (err) => {
-        console.error(err);
         Swal.fire('Error', 'No se pudo enviar el correo.', 'error');
       }
     });

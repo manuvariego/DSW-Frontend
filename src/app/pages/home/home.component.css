@@ -1,8 +1,3 @@
-/* ========================================
-   HOME PAGE - PREMIUM STYLES
-   ======================================== */
-
-/* HERO SECTION */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -23,6 +18,16 @@
   background-attachment: fixed;
   color: white;
   padding: 60px 20px;
+}
+
+.hero.is-authenticated {
+  min-height: 50vh; /* Mucho más bajito */
+  padding: 30px 20px; /* Menos relleno */
+}
+
+.hero.is-authenticated h1 {
+  font-size: 4.5rem; /* Título más chico */
+  margin-bottom: 20px;
 }
 
 /* Animated overlay */

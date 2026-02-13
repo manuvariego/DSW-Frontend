@@ -1,8 +1,3 @@
-/* ========================================
-   PRICING / RESERVATION TYPE PAGE STYLES
-   ======================================== */
-
-/* ANIMACIONES */
 .fade-in-anim {
   animation: fadeIn 0.4s ease-in-out;
 }
@@ -19,7 +14,6 @@
   }
 }
 
-/* TITULOS */
 h2.section-title,
 h3.section-title {
   font-family: 'Outfit', sans-serif;
@@ -30,7 +24,6 @@ h3.section-title {
   font-size: 1.8rem;
 }
 
-/* Subtítulo grande (debajo del h2/h3) */
 h4.section-subtitle {
   font-size: 1.1rem;
   color: var(--color-text-muted);
@@ -39,13 +32,11 @@ h4.section-subtitle {
   letter-spacing: 1px;
 }
 
-/* Subtítulo chico bajo el título principal */
 .section-subtitle-sm {
   font-size: 0.9rem;
   color: var(--color-text-muted);
 }
 
-/* Header con subrayado dorado (reutilizado como en Servicios) */
 .services-header {
   gap: 1rem;
 }
@@ -66,7 +57,6 @@ h4.section-subtitle {
   background: var(--color-primary);
 }
 
-/* Empty state precios */
 .empty-state-pricing h4 {
   font-size: 1.25rem;
 }
@@ -75,7 +65,6 @@ h4.section-subtitle {
   opacity: 0.7;
 }
 
-/* TOAST DE MENSAJE (por si lo usás luego) */
 .toast-message {
   position: fixed;
   top: 80px;
@@ -122,7 +111,6 @@ h4.section-subtitle {
   }
 }
 
-/* FORMULARIO / CARD */
 .card-box {
   background: var(--color-surface);
   border-radius: var(--radius-md);
@@ -136,7 +124,6 @@ h4.section-subtitle {
   box-shadow: 0 0 0 3px rgba(229, 166, 50, 0.12);
 }
 
-/* Icon circle (si lo usás en este módulo en algún momento) */
 .icon-circle {
   width: 40px;
   height: 40px;
@@ -158,7 +145,6 @@ h4.section-subtitle {
   color: var(--color-primary-dark);
 }
 
-/* INPUTS */
 .form-control,
 .input-group-text {
   background-color: var(--color-bg);
@@ -174,7 +160,6 @@ h4.section-subtitle {
   box-shadow: 0 0 0 4px rgba(201, 166, 107, 0.15);
 }
 
-/* BOTONES */
 .btn-dark-custom {
   background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-alt) 100%);
   color: white;
@@ -189,7 +174,6 @@ h4.section-subtitle {
   box-shadow: var(--shadow-md);
 }
 
-/* Botón dorado (lo usás en el banner de faltan precios) */
 .btn-warning {
   background-color: var(--color-warning);
   border: none;
@@ -202,7 +186,6 @@ h4.section-subtitle {
   background-color: var(--color-primary-dark);
 }
 
-/* Botón de cancelar edición (reutilizable) */
 .btn-cancel-edit {
   border-radius: 50%;
   width: 40px;
@@ -213,13 +196,11 @@ h4.section-subtitle {
   justify-content: center;
 }
 
-/* TABLA */
 .table-responsive {
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
-/* Header oscuro de tabla */
 .thead-dark-custom th {
   background: linear-gradient(135deg, var(--color-dark), var(--color-dark-alt));
   color: white;
@@ -240,7 +221,6 @@ h4.section-subtitle {
   background-color: var(--color-bg);
 }
 
-/* Botones de acción simples (si usás .btn-light en algún lado) */
 .btn-light {
   background: var(--color-surface);
   transition: all 0.2s;
@@ -252,19 +232,16 @@ h4.section-subtitle {
   transform: translateY(-1px);
 }
 
-/* Fila activa (si en algún momento marcás alguna) */
 .table-active {
   background-color: rgba(229, 166, 50, 0.1) !important;
   --bs-table-accent-bg: rgba(229, 166, 50, 0.1) !important;
 }
 
-/* Precio */
 .text-success {
   color: var(--color-success) !important;
   font-weight: 700;
 }
 
-/* Action icons */
 .btn-icon-action {
   width: 38px !important;
   height: 38px !important;

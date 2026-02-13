@@ -27,7 +27,6 @@ export class LocationsService {
   }
 
   updateLocation(location: any): Observable<any> {
-    console.log(location);
     return this._http.put(`${this.apiUrl}/${location.id}`, location);
   }
 
