@@ -1,12 +1,33 @@
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install
+# Install pnpm
+RUN npm install -g pnpm
 
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install
+
+# Copy source code
 COPY . .
 
-EXPOSE 4200
+# Build the Angular application for production
+# Output goes to dist/landing-page-angular17
+RUN pnpm run build
 
-CMD ["pnpm", "start"]
+# Production stage - serve with nginx
+FROM nginx:alpine
+
+# Copy built files from build stage to nginx html directory
+# Angular 17+ puts files in browser/ subdirectory
+COPY --from=build /app/dist/landing-page-angular17/browser /usr/share/nginx/html
+
+# Expose port 80 (nginx default)
+EXPOSE 80
+
+# Run nginx in foreground
+CMD ["nginx", "-g", "daemon off;"]
