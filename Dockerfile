@@ -22,6 +22,9 @@ RUN pnpm run build
 # Production stage - serve with nginx
 FROM nginx:alpine
 
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy built files from build stage to nginx html directory
 # Angular 17+ puts files in browser/ subdirectory
 COPY --from=build /app/dist/landing-page-angular17/browser /usr/share/nginx/html
