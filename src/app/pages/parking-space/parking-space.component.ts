@@ -25,6 +25,7 @@ export class ParkingSpaceComponent {
   gridMaxNumber: number = 50;
   selectedSpaces: number[] = [];
   blockedSpaceIds: number[] = [];
+  selectedSpace: any = null;
 
   private _apiservice = inject(ParkingSpaceService)
   private _typeVehicleService = inject(TypeVehicleService)
@@ -148,8 +149,9 @@ export class ParkingSpaceComponent {
 
     this._apiservice.deleteParkingSpace(numberParkingSpace, this.cuitGarage).subscribe({
       next: () => {
+        this.selectedSpace = null;
         this.getParkingSpace();
-        this.currentSection = 'initial';
+        this.checkBlockedSpaces(this.cuitGarage, true);
       },
       error: (error) => {
       }
@@ -174,10 +176,10 @@ export class ParkingSpaceComponent {
 
     this._apiservice.updateParkingSpace(this.editingParkingSpace).subscribe({
       next: () => {
-        this.showSection('initial');
+        this.selectedSpace = null;
+        this.showSection('getParkingSpace');
         form.resetForm();
         this.editingParkingSpace = null;
-        this.getParkingSpace();
       },
       error: (error) => {
       }
@@ -227,5 +229,13 @@ export class ParkingSpaceComponent {
   // Función para el HTML
   isSpaceBlocked(numberParkingSpace: number): boolean {
     return this.blockedSpaceIds.includes((numberParkingSpace));
+  }
+
+  selectSpace(space: any) {
+    this.selectedSpace = this.selectedSpace?.number === space.number ? null : space;
+  }
+
+  getSpaceByNumber(num: number): any {
+    return this.parkingSpaceList.find(s => Number(s.number) === num);
   }
 }

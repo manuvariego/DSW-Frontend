@@ -64,7 +64,7 @@ describe('Gestión de Espacios de Estacionamiento', () => {
     cy.contains('.card-title', 'Crear').should('be.visible');
   });
 
-  it('Debe entrar al Listado, ver datos y poder volver', () => {
+  it('Debe entrar al Listado, ver la grilla y poder volver', () => {
     // 1. Clic en la tarjeta de Ver espacios
     cy.contains('.card', 'Ver espacios').click();
 
@@ -74,15 +74,29 @@ describe('Gestión de Espacios de Estacionamiento', () => {
     // 3. Verificamos que cambió la vista (@if currentSection == 'getParkingSpace')
     cy.contains('h3', 'Espacios creados').should('be.visible');
 
-    // 4. Verificamos que la tabla tiene datos
-    cy.get('table').should('exist');
-    cy.contains('td', '101').should('be.visible'); // El dato mockeado
-    cy.contains('td', 'Auto').should('be.visible');
+    // 4. Verificamos que la grilla tiene los espacios mockeados
+    cy.get('.space-view-btn').should('have.length', 2);
+    cy.get('.space-view-btn').contains('101').should('be.visible');
+    cy.get('.space-view-btn').contains('102').should('be.visible');
 
-    // 5. Probamos el botón Volver
+    // 5. Clic en un espacio para ver el panel de detalle
+    cy.get('.space-view-btn').contains('101').click();
+    cy.get('.detail-panel').should('be.visible');
+    cy.contains('Espacio #101').should('be.visible');
+    cy.contains('Auto').should('be.visible');
+
+    // 6. Verificamos que los botones de acción están presentes
+    cy.get('.detail-panel').contains('button', 'Editar').should('be.visible');
+    cy.get('.detail-panel').contains('button', 'Eliminar').should('be.visible');
+
+    // 7. Clic en el mismo espacio para deseleccionar
+    cy.get('.space-view-btn').contains('101').click();
+    cy.get('.detail-panel').should('not.exist');
+
+    // 8. Probamos el botón Volver
     cy.contains('button', 'Volver').click();
 
-    // 6. Confirmamos que regresamos al menú inicial
+    // 9. Confirmamos que regresamos al menú inicial
     cy.contains('h2', 'Gestionar mis Espacios').should('be.visible');
   });
 

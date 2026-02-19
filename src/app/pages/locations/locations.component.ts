@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LocationsService } from '../../services/locations.service.js';
+import { LocationsService } from '../../services/locations.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-locations',
@@ -17,6 +18,7 @@ export class LocationsComponent {
   locationList: any[] = []
   garages: any[] = []
   private _apiservice = inject(LocationsService)
+  private _notificationService = inject(NotificationService);
   locationID: string = ''
   aLocation: any = null
   editingLocation: any = null;
@@ -56,7 +58,7 @@ export class LocationsComponent {
         this.locationID = ''
       },
       (error) => {
-        alert('La Localidad no existe o ocurrió un error al obtener la información.');
+        this._notificationService.warning('La localidad no existe o ocurrió un error.');
       }
     );
 

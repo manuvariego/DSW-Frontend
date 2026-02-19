@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReservationTypesService } from '../../services/reservationTypes.service.js';
-import { AuthService } from '../../services/auth.service.js';
+import { NotificationService } from '../../services/notification.service';
+import { ReservationTypesService } from '../../services/reservationTypes.service';
+import { AuthService } from '../../services/auth.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -37,6 +38,7 @@ export class ReservationTypesComponent {
     MONTH: null
   }
   private _authService = inject(AuthService)
+  private _notificationService = inject(NotificationService);
   
   reservationTypeData = {
 
@@ -87,7 +89,7 @@ export class ReservationTypesComponent {
         this.Cuit = ''
       },
       (error) => {
-        alert('El tipo de Reserva no existe o ocurrió un error al obtener la información.');
+        this._notificationService.warning('El tipo de reserva no existe o ocurrió un error.');
       }
     );
   }
@@ -131,7 +133,7 @@ export class ReservationTypesComponent {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        alert('Error al actualizar el precio. Intente nuevamente.');
+        this._notificationService.warning('Error al actualizar el precio. Intente nuevamente.');
       }
     });
   }
@@ -257,7 +259,7 @@ export class ReservationTypesComponent {
         };
       })
       .catch((error) => {
-        alert('Ocurrió un error al guardar los precios. Intente nuevamente.');
+        this._notificationService.warning('Error al guardar los precios. Intente nuevamente.');
       });
   }
 

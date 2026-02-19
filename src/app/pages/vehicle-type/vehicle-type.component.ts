@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { TypeVehicleService } from '../../services/type-vehicle.service.js';
+import { TypeVehicleService } from '../../services/type-vehicle.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../services/notification.service';
 import { FormsModule, NgForm } from '@angular/forms';
 
 
@@ -16,6 +17,7 @@ export class VehicleTypeComponent {
   tipoVehiculoCreado = false
   currentSection: String = 'initial'
   private _apiservice = inject(TypeVehicleService)
+  private _notificationService = inject(NotificationService);
   typeVehiclesList: any[] = []
   idType: string = ''
   aTypeVehicle: any = null
@@ -46,7 +48,7 @@ export class VehicleTypeComponent {
         this.idType = ''
       },
       (error) => {
-        alert('El tipo de Vehiculo no existe o ocurrió un error al obtener la información.');
+        this._notificationService.warning('El tipo de vehículo no existe o ocurrió un error.');
       }
     );
   }

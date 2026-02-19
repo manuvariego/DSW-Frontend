@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service.js';
+import { UsersService } from '../../services/users.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../services/notification.service';
 import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
@@ -17,6 +18,7 @@ export class UsersComponent {
   aUser: any = null;
   vehicless : any[] = [];
   private _apiservice = inject(UsersService);
+  private _notificationService = inject(NotificationService);
   userID: string = '';
   editingUser: any = null;
 
@@ -55,7 +57,7 @@ export class UsersComponent {
       this.userID = '';
     },
     (error) => {
-      alert('Usuario no encontrado.');
+      this._notificationService.warning('Usuario no encontrado.');
     }
   );
   }
