@@ -387,13 +387,13 @@
   <!-- TABS -->
   <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
-      <a class="nav-link" [class.active]="activeTab === 'proximas'" (click)="activeTab = 'proximas'"
+      <a class="nav-link" [class.active]="activeTab === 'proximas'" (click)="activeTab = 'proximas'; p = 1"
         style="cursor: pointer;">
         <i class="fas fa-calendar-alt me-1"></i>En curso | Próximas ({{ upcomingReservations.length }})
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [class.active]="activeTab === 'historial'" (click)="activeTab = 'historial'"
+      <a class="nav-link" [class.active]="activeTab === 'historial'" (click)="activeTab = 'historial'; p = 1"
         style="cursor: pointer;">
         <i class="fas fa-history me-1"></i> Historial ({{ historyReservations.length }})
       </a>
@@ -412,7 +412,7 @@
           <th scope="col">Estado</th>
           <th scope="col">Monto</th>
           <th scope="col">Método de pago</th>
-          <th scope="col" class="text-center">Acciones</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -462,15 +462,15 @@
     <div class="d-flex gap-3 mb-3 align-items-center flex-wrap">
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-sm" [class.btn-dark]="statusFilter === 'all'"
-          [class.btn-outline-dark]="statusFilter !== 'all'" (click)="statusFilter = 'all'">
+          [class.btn-outline-dark]="statusFilter !== 'all'" (click)="statusFilter = 'all'; p = 1">
           Todas
         </button>
         <button type="button" class="btn btn-sm" [class.btn-secondary]="statusFilter === 'completada'"
-          [class.btn-outline-secondary]="statusFilter !== 'completada'" (click)="statusFilter = 'completada'">
+          [class.btn-outline-secondary]="statusFilter !== 'completada'" (click)="statusFilter = 'completada'; p = 1">
           Completadas
         </button>
         <button type="button" class="btn btn-sm" [class.btn-danger]="statusFilter === 'cancelada'"
-          [class.btn-outline-danger]="statusFilter !== 'cancelada'" (click)="statusFilter = 'cancelada'">
+          [class.btn-outline-danger]="statusFilter !== 'cancelada'" (click)="statusFilter = 'cancelada'; p = 1">
           Canceladas
         </button>
       </div>

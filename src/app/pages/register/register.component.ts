@@ -26,6 +26,7 @@ export class RegisterComponent {
   message = '';
   messageType: 'success' | 'error' = 'success';
   locations: any[] = [];
+  fieldErrors: { [key: string]: string } = {};
 
   // Datos para registro de usuario
   userData = {
@@ -80,6 +81,7 @@ export class RegisterComponent {
 
   registerUser() {
     this.message = '';
+    this.fieldErrors = {};
 
     // Validación de contraseñas
     if (this.userData.password !== this.userData.confirmPassword) {
@@ -117,18 +119,32 @@ export class RegisterComponent {
       },
       error: (error) => {
         this.messageType = 'error';
+        this.fieldErrors = {};
         if (error.status === 409) {
           this.message = 'El DNI ya está registrado.';
+        } else if (error.error?.errors?.length) {
+          this.message = '';
+          for (const err of error.error.errors) {
+            if (err.path) {
+              this.fieldErrors[err.path] = err.msg;
+            }
+          }
+          if (Object.keys(this.fieldErrors).length === 0) {
+            this.message = error.error.errors[0].msg;
+          }
         } else {
           this.message = 'Error al registrar usuario. Intente más tarde.';
         }
-        setTimeout(() => this.message = '', 3000);
+        if (this.message) {
+          setTimeout(() => this.message = '', 5000);
+        }
       }
     });
   }
 
   registerGarage() {
     this.message = '';
+    this.fieldErrors = {};
 
     // Validación de contraseñas
     if (this.garageData.password !== this.garageData.confirmPassword) {
@@ -165,12 +181,25 @@ export class RegisterComponent {
       },
       error: (error) => {
         this.messageType = 'error';
+        this.fieldErrors = {};
         if (error.status === 409) {
           this.message = 'El CUIT ya está registrado.';
+        } else if (error.error?.errors?.length) {
+          this.message = '';
+          for (const err of error.error.errors) {
+            if (err.path) {
+              this.fieldErrors[err.path] = err.msg;
+            }
+          }
+          if (Object.keys(this.fieldErrors).length === 0) {
+            this.message = error.error.errors[0].msg;
+          }
         } else {
           this.message = 'Error al registrar cochera. Intente más tarde.';
         }
-        setTimeout(() => this.message = '', 3000);
+        if (this.message) {
+          setTimeout(() => this.message = '', 5000);
+        }
       }
     });
   }

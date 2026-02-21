@@ -18,6 +18,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 export class ParkingSpaceComponent {
 
   parkingCreated = false;
+  message = '';
+  isSuccess = false;
   currentSection: string = 'initial'
   typeVehicles: Array<any> = [];
   parkingSpaceList: any[] = []
@@ -26,6 +28,7 @@ export class ParkingSpaceComponent {
   gridMaxNumber: number = 50;
   selectedSpaces: number[] = [];
   blockedSpaceIds: number[] = [];
+  selectedSpace: any = null;
   p = 1; 
 
   private _apiservice = inject(ParkingSpaceService)
@@ -150,8 +153,12 @@ export class ParkingSpaceComponent {
 
     this._apiservice.deleteParkingSpace(numberParkingSpace, this.cuitGarage).subscribe({
       next: () => {
+        this.selectedSpace = null;
         this.getParkingSpace();
-        this.currentSection = 'initial';
+        this.checkBlockedSpaces(this.cuitGarage, true);
+        this.message = 'Espacio eliminado correctamente.';
+        this.isSuccess = true;
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
       }
@@ -176,10 +183,13 @@ export class ParkingSpaceComponent {
 
     this._apiservice.updateParkingSpace(this.editingParkingSpace).subscribe({
       next: () => {
-        this.showSection('initial');
+        this.selectedSpace = null;
+        this.showSection('getParkingSpace');
         form.resetForm();
         this.editingParkingSpace = null;
-        this.getParkingSpace();
+        this.message = 'Espacio modificado correctamente.';
+        this.isSuccess = true;
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
       }
@@ -229,5 +239,13 @@ export class ParkingSpaceComponent {
   // Función para el HTML
   isSpaceBlocked(numberParkingSpace: number): boolean {
     return this.blockedSpaceIds.includes((numberParkingSpace));
+  }
+
+  selectSpace(space: any) {
+    this.selectedSpace = this.selectedSpace?.number === space.number ? null : space;
+  }
+
+  getSpaceByNumber(num: number): any {
+    return this.parkingSpaceList.find(s => Number(s.number) === num);
   }
 }

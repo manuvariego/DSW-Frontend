@@ -66,39 +66,45 @@
           <div class="col-md-6 mb-3">
             <label for="dni" class="form-label">DNI *</label>
             <input type="text" id="dni" class="form-control modern-input" name="dni" [(ngModel)]="userData.dni"
-              required>
+              required [class.is-invalid]="fieldErrors['dni']">
+            <div *ngIf="fieldErrors['dni']" class="invalid-feedback d-block">{{ fieldErrors['dni'] }}</div>
           </div>
 
           <div class="col-md-6 mb-3">
             <label for="name" class="form-label">Nombre *</label>
             <input type="text" id="name" class="form-control modern-input" name="name" [(ngModel)]="userData.name"
-              required>
+              required [class.is-invalid]="fieldErrors['name']">
+            <div *ngIf="fieldErrors['name']" class="invalid-feedback d-block">{{ fieldErrors['name'] }}</div>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="lastname" class="form-label">Apellido *</label>
           <input type="text" id="lastname" class="form-control modern-input" name="lastname"
-            [(ngModel)]="userData.lastname" required>
+            [(ngModel)]="userData.lastname" required [class.is-invalid]="fieldErrors['lastname']">
+          <div *ngIf="fieldErrors['lastname']" class="invalid-feedback d-block">{{ fieldErrors['lastname'] }}</div>
         </div>
 
         <div class="mb-3">
           <label for="email" class="form-label">Email *</label>
           <input type="email" id="email" class="form-control modern-input" name="email" [(ngModel)]="userData.email"
-            required>
+            required [class.is-invalid]="fieldErrors['email']">
+          <div *ngIf="fieldErrors['email']" class="invalid-feedback d-block">{{ fieldErrors['email'] }}</div>
         </div>
 
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="phoneNumber" class="form-label">Teléfono *</label>
             <input type="tel" id="phoneNumber" class="form-control modern-input" name="phoneNumber"
-              [(ngModel)]="userData.phoneNumber" required>
+              [(ngModel)]="userData.phoneNumber" required [class.is-invalid]="fieldErrors['phoneNumber']">
+            <div *ngIf="fieldErrors['phoneNumber']" class="invalid-feedback d-block">{{ fieldErrors['phoneNumber'] }}</div>
           </div>
 
           <div class="col-md-6 mb-3">
             <label for="address" class="form-label">Dirección *</label>
             <input type="text" id="address" class="form-control modern-input" name="address"
-              [(ngModel)]="userData.address" required>
+              [(ngModel)]="userData.address" required [class.is-invalid]="fieldErrors['address']">
+            <div *ngIf="fieldErrors['address']" class="invalid-feedback d-block">{{ fieldErrors['address'] }}</div>
           </div>
         </div>
 
@@ -106,7 +112,8 @@
           <div class="col-md-6 mb-3">
             <label for="password" class="form-label">Contraseña *</label>
             <input type="password" id="password" class="form-control modern-input" name="password"
-              [(ngModel)]="userData.password" required>
+              [(ngModel)]="userData.password" required [class.is-invalid]="fieldErrors['password']">
+            <div *ngIf="fieldErrors['password']" class="invalid-feedback d-block">{{ fieldErrors['password'] }}</div>
           </div>
 
           <div class="col-md-6 mb-3">
@@ -141,49 +148,56 @@
         <div class="mb-3">
           <label for="cuit" class="form-label">CUIT *</label>
           <input type="text" id="cuit" class="form-control modern-input" name="cuit" [(ngModel)]="garageData.cuit"
-            required>
+            required [class.is-invalid]="fieldErrors['cuit']">
+          <div *ngIf="fieldErrors['cuit']" class="invalid-feedback d-block">{{ fieldErrors['cuit'] }}</div>
         </div>
 
         <div class="mb-3">
           <label for="garageName" class="form-label">Nombre de la cochera *</label>
           <input type="text" id="garageName" class="form-control modern-input" name="garageName"
-            [(ngModel)]="garageData.name" required>
+            [(ngModel)]="garageData.name" required [class.is-invalid]="fieldErrors['name']">
+          <div *ngIf="fieldErrors['name']" class="invalid-feedback d-block">{{ fieldErrors['name'] }}</div>
         </div>
 
         <div class="mb-3">
           <label for="garageEmail" class="form-label">Email *</label>
           <input type="email" id="garageEmail" class="form-control modern-input" name="garageEmail"
-            [(ngModel)]="garageData.email" required>
+            [(ngModel)]="garageData.email" required [class.is-invalid]="fieldErrors['email']">
+          <div *ngIf="fieldErrors['email']" class="invalid-feedback d-block">{{ fieldErrors['email'] }}</div>
         </div>
 
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="garagePhone" class="form-label">Teléfono *</label>
             <input type="tel" id="garagePhone" class="form-control modern-input" name="garagePhone"
-              [(ngModel)]="garageData.phoneNumber" required>
+              [(ngModel)]="garageData.phoneNumber" required [class.is-invalid]="fieldErrors['phoneNumber']">
+            <div *ngIf="fieldErrors['phoneNumber']" class="invalid-feedback d-block">{{ fieldErrors['phoneNumber'] }}</div>
           </div>
 
           <div class="col-md-6 mb-3">
             <label for="garageAddress" class="form-label">Dirección *</label>
             <input type="text" id="garageAddress" class="form-control modern-input" name="garageAddress"
-              [(ngModel)]="garageData.address" required>
+              [(ngModel)]="garageData.address" required [class.is-invalid]="fieldErrors['address']">
+            <div *ngIf="fieldErrors['address']" class="invalid-feedback d-block">{{ fieldErrors['address'] }}</div>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="location" class="form-label">Localidad *</label>
           <select id="location" class="form-control modern-input" name="location" [(ngModel)]="garageData.location"
-            required>
+            required [class.is-invalid]="fieldErrors['location']">
             <option value="">Seleccioná una localidad</option>
             <option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</option>
           </select>
+          <div *ngIf="fieldErrors['location']" class="invalid-feedback d-block">{{ fieldErrors['location'] }}</div>
         </div>
 
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="garagePassword" class="form-label">Contraseña *</label>
             <input type="password" id="garagePassword" class="form-control modern-input" name="garagePassword"
-              [(ngModel)]="garageData.password" required>
+              [(ngModel)]="garageData.password" required [class.is-invalid]="fieldErrors['password']">
+            <div *ngIf="fieldErrors['password']" class="invalid-feedback d-block">{{ fieldErrors['password'] }}</div>
           </div>
 
           <div class="col-md-6 mb-3">

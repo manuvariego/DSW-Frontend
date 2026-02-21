@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { TypeVehicleService } from '../../services/type-vehicle.service.js';
+import { TypeVehicleService } from '../../services/type-vehicle.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../services/notification.service';
 import { FormsModule, NgForm } from '@angular/forms';
 
 
@@ -13,9 +14,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class VehicleTypeComponent {
 
-  tipoVehiculoCreado = false
+  tipoVehiculoCreado = false;
+  message = '';
+  isSuccess = false;
   currentSection: String = 'initial'
   private _apiservice = inject(TypeVehicleService)
+  private _notificationService = inject(NotificationService);
   typeVehiclesList: any[] = []
   idType: string = ''
   aTypeVehicle: any = null
@@ -46,7 +50,7 @@ export class VehicleTypeComponent {
         this.idType = ''
       },
       (error) => {
-        alert('El tipo de Vehiculo no existe o ocurrió un error al obtener la información.');
+        this._notificationService.warning('El tipo de vehículo no existe o ocurrió un error.');
       }
     );
   }
@@ -96,9 +100,12 @@ export class VehicleTypeComponent {
 
     this._apiservice.updateTypeVehicle(this.editingTypeVehicle).subscribe({
       next: (response) => {
-        this.editingTypeVehicle = null; // Limpia la variable de edición
-        this.showSection('initial')
-        form.resetForm()
+        this.editingTypeVehicle = null;
+        this.showSection('initial');
+        form.resetForm();
+        this.message = 'Tipo de vehículo modificado correctamente.';
+        this.isSuccess = true;
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
       }
@@ -113,7 +120,10 @@ export class VehicleTypeComponent {
 
     this._apiservice.deleteTypeVehicle(license_plate).subscribe({
       next: (response) => {
-        this.getTypeVehicles(); // Refrescar la lista de usuarios
+        this.getTypeVehicles();
+        this.message = 'Tipo de vehículo eliminado correctamente.';
+        this.isSuccess = true;
+        setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
       }

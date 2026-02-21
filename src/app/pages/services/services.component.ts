@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceService } from '../../services/service.service.js';
+import { ServiceService } from '../../services/service.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ReservationService } from '../../services/reservation.service.js';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
   selector: 'app-service',

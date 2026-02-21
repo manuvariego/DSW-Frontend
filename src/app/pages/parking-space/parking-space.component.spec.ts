@@ -113,7 +113,8 @@ describe('ParkingSpaceComponent', () => {
   // --- TEST DE ELIMINACIÓN ---
   it('deleteParkingSpace debe llamar al servicio si el usuario confirma', () => {
     // Arrange
-    spyOn(window, 'confirm').and.returnValue(true); // Simulamos que el usuario dice "Aceptar"
+    spyOn(window, 'confirm').and.returnValue(true);
+    component.selectedSpace = { number: 10, TypeVehicle: { name: 'Auto' } };
     const espacioId = '10';
 
     // Act
@@ -122,8 +123,9 @@ describe('ParkingSpaceComponent', () => {
     // Assert
     expect(window.confirm).toHaveBeenCalled();
     expect(parkingServiceMock.deleteParkingSpace).toHaveBeenCalledWith(espacioId, component.cuitGarage);
-    // Verifica que recargue la lista después de borrar
     expect(parkingServiceMock.getParkingSpaceOfGarage).toHaveBeenCalledTimes(2); // 1 en ngOnInit + 1 al borrar
+    expect(reservationServiceMock.BlockedSpacesByGarage).toHaveBeenCalledTimes(2); // 1 en ngOnInit + 1 al borrar
+    expect(component.selectedSpace).toBeNull(); // Se limpia la selección
   });
 
   it('deleteParkingSpace NO debe hacer nada si el usuario cancela', () => {
@@ -156,5 +158,63 @@ describe('ParkingSpaceComponent', () => {
     component.gridMaxNumber = 5;
     const result = component.getGridNumbers();
     expect(result).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  // --- TEST DE SELECCIÓN DE ESPACIO ---
+  it('selectSpace debe seleccionar un espacio', () => {
+    const space = { number: 5, TypeVehicle: { name: 'Auto' } };
+
+    component.selectSpace(space);
+
+    expect(component.selectedSpace).toEqual(space);
+  });
+
+  it('selectSpace debe deseleccionar si se hace click en el mismo espacio', () => {
+    const space = { number: 5, TypeVehicle: { name: 'Auto' } };
+
+    component.selectSpace(space);
+    expect(component.selectedSpace).toEqual(space);
+
+    component.selectSpace(space);
+    expect(component.selectedSpace).toBeNull();
+  });
+
+  it('selectSpace debe cambiar la selección al hacer click en otro espacio', () => {
+    const space1 = { number: 5, TypeVehicle: { name: 'Auto' } };
+    const space2 = { number: 8, TypeVehicle: { name: 'Moto' } };
+
+    component.selectSpace(space1);
+    expect(component.selectedSpace).toEqual(space1);
+
+    component.selectSpace(space2);
+    expect(component.selectedSpace).toEqual(space2);
+  });
+
+  // --- TEST DE isSpaceBlocked ---
+  it('isSpaceBlocked debe devolver true si el espacio está en blockedSpaceIds', () => {
+    component.blockedSpaceIds = [3, 7, 10];
+
+    expect(component.isSpaceBlocked(7)).toBeTrue();
+    expect(component.isSpaceBlocked(1)).toBeFalse();
+  });
+
+  // --- TEST DE getSpaceByNumber ---
+  it('getSpaceByNumber debe devolver el espacio correcto', () => {
+    component.parkingSpaceList = [
+      { number: '1', TypeVehicle: { name: 'Auto' } },
+      { number: '5', TypeVehicle: { name: 'Moto' } }
+    ];
+
+    const result = component.getSpaceByNumber(5);
+    expect(result).toEqual({ number: '5', TypeVehicle: { name: 'Moto' } });
+  });
+
+  it('getSpaceByNumber debe devolver undefined si no existe', () => {
+    component.parkingSpaceList = [
+      { number: '1', TypeVehicle: { name: 'Auto' } }
+    ];
+
+    const result = component.getSpaceByNumber(99);
+    expect(result).toBeUndefined();
   });
 });
