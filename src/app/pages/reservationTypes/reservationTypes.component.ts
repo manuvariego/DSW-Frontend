@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReservationTypesService } from '../../services/reservationTypes.service.js';
-import { AuthService } from '../../services/auth.service.js';
+import { NotificationService } from '../../services/notification.service';
+import { ReservationTypesService } from '../../services/reservationTypes.service';
+import { AuthService } from '../../services/auth.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -32,6 +33,15 @@ export class ReservationTypesComponent {
     MONTH: null
   }
   private _authService = inject(AuthService)
+  private _notificationService = inject(NotificationService);
+  
+  reservationTypeData = {
+
+    description: "",
+    price: "",
+    garage: ""
+
+  }
 
   ngOnInit() {
     // Si es un garage logueado, cargar su estado de precios
@@ -54,6 +64,7 @@ export class ReservationTypesComponent {
       }
     });
   }
+  
 
   private ordenTipos = ['HOUR', 'HALF_DAY', 'DAY', 'WEEKLY', 'HALF_MONTH', 'MONTH'];
 
@@ -94,7 +105,7 @@ export class ReservationTypesComponent {
         setTimeout(() => this.message = '', 3000);
       },
       error: (error) => {
-        alert('Error al actualizar el precio. Intente nuevamente.');
+        this._notificationService.warning('Error al actualizar el precio. Intente nuevamente.');
       }
     });
   }
@@ -123,11 +134,11 @@ export class ReservationTypesComponent {
   
     this._apiservice.deleteReservationType(desc, cuit).subscribe({
       next: (response) => {
-        console.log(' Tipo de reserva eliminado exitosamente', response);
-        this.getReservationTypes(); // Refrescar la lista
+        this.getReservationTypes();
+        this._notificationService.success('Precio eliminado correctamente.');
       },
       error: (error) => {
-        console.error('Error al eliminar el tipo de reserva', error);
+        this._notificationService.warning('Error al eliminar el precio.');
       }
     });
 
@@ -206,7 +217,7 @@ export class ReservationTypesComponent {
         };
       })
       .catch((error) => {
-        alert('Ocurrió un error al guardar los precios. Intente nuevamente.');
+        this._notificationService.warning('Error al guardar los precios. Intente nuevamente.');
       });
   }
 

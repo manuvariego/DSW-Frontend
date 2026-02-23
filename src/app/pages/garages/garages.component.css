@@ -123,21 +123,6 @@ h2.section-title, h3.section-title {
   box-shadow: var(--shadow-md);
 }
 
-.btn-gold-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #e2b873 100%);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 10px 24px;
-  font-weight: 600;
-  transition: all var(--transition-base);
-}
-
-.btn-gold-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  color: #fff;
-}
 
 .btn-icon-action {
   width: 38px !important;

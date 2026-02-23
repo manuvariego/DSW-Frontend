@@ -246,7 +246,7 @@ h4.section-subtitle {
   width: 38px !important;
   height: 38px !important;
   border-radius: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;

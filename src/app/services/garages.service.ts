@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Garage } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -10,26 +11,23 @@ export class GaragesService {
   private _http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/garages`;
 
-  getGarages(): Observable<any[]>{
-    return this._http.get<any[]>(this.apiUrl);
+  getGarages(): Observable<Garage[]> {
+    return this._http.get<Garage[]>(this.apiUrl);
   }
 
-  getGarage(garageCuit: string): Observable<any>{
-    return this._http.get<any>(`${this.apiUrl}/${garageCuit}`)
+  getGarage(garageCuit: string): Observable<Garage> {
+    return this._http.get<Garage>(`${this.apiUrl}/${garageCuit}`);
   }
 
-  createGarage(garage: any): Observable<any> {
-    return this._http.post<any>(this.apiUrl, garage);
-  } 
-
-  deleteGarage(garageCuit: string): Observable<any> {
-    return this._http.delete(`${this.apiUrl}/${garageCuit}`);
+  createGarage(garage: any): Observable<Garage> {
+    return this._http.post<Garage>(this.apiUrl, garage);
   }
 
-  updateGarage(garage: any): Observable<any> {
-    return this._http.put(`${this.apiUrl}/${garage.cuit}`, garage);
+  deleteGarage(garageCuit: string): Observable<void> {
+    return this._http.delete<void>(`${this.apiUrl}/${garageCuit}`);
   }
 
-
-
- } 
+  updateGarage(garage: any): Observable<Garage> {
+    return this._http.put<Garage>(`${this.apiUrl}/${garage.cuit}`, garage);
+  }
+}

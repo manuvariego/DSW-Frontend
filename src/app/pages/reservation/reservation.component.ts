@@ -1,14 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ReservationService } from '../../services/reservation.service.js';
-import { UsersService } from '../../services/users.service.js';
-import { AuthService } from '../../services/auth.service.js';
-import { VehiclesService } from '../../services/vehicles.service.js';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { ReservationService } from '../../services/reservation.service';
+import { UsersService } from '../../services/users.service';
+import { AuthService } from '../../services/auth.service';
+import { VehiclesService } from '../../services/vehicles.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GaragesService } from '../../services/garages.service.js';
+import { GaragesService } from '../../services/garages.service';
 import { Router, RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
+import { NotificationService } from '../../services/notification.service';
+import { SocketService } from '../../services/socket.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 
@@ -21,7 +25,8 @@ import Swal from 'sweetalert2';
   styleUrl: './reservation.component.css'
 })
 
-export class ReservationComponent implements OnInit {
+export class ReservationComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   errorMessage: string = '';
   errorDateInvalid: string = '';
   isDateInvalid: boolean = false;
@@ -48,13 +53,15 @@ isValidating: boolean = false;
   }
 
   constructor(
-  private reservationService: ReservationService, 
-  private authService: AuthService, 
-  private router: Router) {}  
+  private reservationService: ReservationService,
+  private authService: AuthService,
+  private router: Router,
+  private socketService: SocketService) {}
   private _apiservice = inject(UsersService)
   private _apiserviceGarage = inject(GaragesService)
   private _vehiclesService = inject(VehiclesService)
   private route = inject(ActivatedRoute);
+  private _notificationService = inject(NotificationService);
   
 
   userID: string = ''
@@ -99,6 +106,26 @@ ngOnInit() {
     } else {
       this.router.navigate(['/login']); // Si no hay usuario, se va al login
     }
+
+    // Escuchar eventos de Socket.io para refrescar automáticamente
+    this.subscriptions.push(
+      this.socketService.on('reservation:inProgress').subscribe(() => {
+        this.getMyReservations();
+      }),
+      this.socketService.on('reservation:completed').subscribe(() => {
+        this.getMyReservations();
+      }),
+      this.socketService.on('reservation:cancelled').subscribe(() => {
+        this.getMyReservations();
+      }),
+      this.socketService.on('service:statusChanged').subscribe(() => {
+        this.getMyReservations();
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   getMyReservations() {
@@ -332,12 +359,12 @@ ngOnInit() {
     
 
     if (reserva.status === 'en_curso') {
-      alert('No podés cancelar una reserva que ya está en curso.');
+      this._notificationService.warning('No podés cancelar una reserva que ya está en curso.');
       return;
     } 
 
     if (diferenciaMinutos < 30) {
-      alert('No podés cancelar una reserva con menos de 30 minutos de anticipación.');
+      this._notificationService.warning('No podés cancelar con menos de 30 min de anticipación.');
       return;
     }
 

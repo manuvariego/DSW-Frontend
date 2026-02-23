@@ -2,38 +2,38 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Garage, GarageService } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class ServiceService {
-  private testapiUrl = `/api`
   private apiUrl = `${environment.apiUrl}/services`;
-  constructor(private http: HttpClient) { }
+  private garagesUrl = `${environment.apiUrl}/garages`;
 
-  getAllServices(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+  constructor(private http: HttpClient) {}
+
+  getAllServices(): Observable<GarageService[]> {
+    return this.http.get<GarageService[]>(this.apiUrl);
   }
 
-  createService(serviceData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, serviceData);
+  createService(serviceData: Partial<GarageService> & { garageCuit: number }): Observable<GarageService> {
+    return this.http.post<GarageService>(this.apiUrl, serviceData);
   }
 
-  deleteService(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteService(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getGarageByCuit(cuit: number): Observable<any> {
-    return this.http.get<any>(`${this.testapiUrl}/garages/${cuit}`);
+  getGarageByCuit(cuit: number): Observable<Garage> {
+    return this.http.get<Garage>(`${this.garagesUrl}/${cuit}`);
   }
 
-  updateGarageServices(cuit: number, servicesIds: number[]): Observable<any> {
-    return this.http.put(`${this.testapiUrl}/garages/${cuit}`, { services: servicesIds });
+  updateGarageServices(cuit: number, servicesIds: number[]): Observable<Garage> {
+    return this.http.put<Garage>(`${this.garagesUrl}/${cuit}`, { services: servicesIds });
   }
 
-  updateService(service: { id: any; description: string; price: number; garageId: string }) {
-  return this.http.put(`/api/services/${service.id}`, service);
-}
-
+  updateService(service: { id: number; description: string; price: number; garageId: string }): Observable<GarageService> {
+    return this.http.put<GarageService>(`${this.apiUrl}/${service.id}`, service);
+  }
 }

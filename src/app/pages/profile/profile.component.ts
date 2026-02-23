@@ -7,7 +7,7 @@ import { UsersService } from '../../services/users.service';
 import { GaragesService } from '../../services/garages.service';
 import { LocationsService } from '../../services/locations.service';
 import { RouterLink } from '@angular/router';
-import { ReservationService } from '../../services/reservation.service.js';
+import { ReservationService } from '../../services/reservation.service';
 import { SocketService } from '../../services/socket.service';
 
 @Component({

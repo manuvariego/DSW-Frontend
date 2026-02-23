@@ -2,13 +2,14 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GaragesService } from '../../services/garages.service.js';
-import { ParkingSpaceService } from '../../services/parking-space.service.js';
-import { AuthService } from '../../services/auth.service.js';
-import { ReservationService } from '../../services/reservation.service.js';
+import { GaragesService } from '../../services/garages.service';
+import { ParkingSpaceService } from '../../services/parking-space.service';
+import { AuthService } from '../../services/auth.service';
+import { ReservationService } from '../../services/reservation.service';
 import { forkJoin } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SocketService } from '../../services/socket.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-garages',
@@ -25,6 +26,7 @@ export class GaragesComponent implements OnInit, OnDestroy {
   private _reservationService = inject(ReservationService);
   private _authService = inject(AuthService);
   private socketService = inject(SocketService);
+  private _notificationService = inject(NotificationService);
 
   ReservationsList: any[] = [];
   selectedReservation: any = null;
@@ -58,18 +60,24 @@ export class GaragesComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.socketService.on('reservation:created').subscribe(() => {
         this.loadReservationsOnProgress();
+        if (this.currentSection === 'getReservations') this.getReservation();
       }),
       this.socketService.on('reservation:cancelled').subscribe(() => {
         this.loadReservationsOnProgress();
+        if (this.currentSection === 'getReservations') this.getReservation();
       }),
       this.socketService.on('reservation:inProgress').subscribe(() => {
         this.loadReservationsOnProgress();
+        if (this.currentSection === 'getReservations') this.getReservation();
       }),
       this.socketService.on('reservation:completed').subscribe(() => {
         this.loadReservationsOnProgress();
+        if (this.currentSection === 'getReservations') this.getReservation();
       }),
       this.socketService.on('service:statusChanged').subscribe(() => {
-        this.loadServiceBoard();
+        if (this.currentSection === 'tableroServicios') this.loadServiceBoard();
+        if (this.currentSection === 'getReservations') this.getReservation();
+        this.loadReservationsOnProgress();
       })
     );
   }
@@ -80,6 +88,7 @@ export class GaragesComponent implements OnInit, OnDestroy {
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
+    this.p = 1;
     this.getReservation();
   }
 
@@ -87,6 +96,7 @@ export class GaragesComponent implements OnInit, OnDestroy {
     this.filterLicensePlate = '';
     this.filterDateFrom = '';
     this.filterDateTo = '';
+    this.p = 1;
     this.getReservation();
   }
 
@@ -163,7 +173,7 @@ cancelReservation(reserva: any) {
     const diferenciaMinutos = (checkIn.getTime() - ahora.getTime()) / (1000 * 60);
 
     if (diferenciaMinutos < 30) {
-      alert('No podés cancelar una reserva con menos de 30 minutos de anticipación.');
+      this._notificationService.warning('No podés cancelar con menos de 30 min de anticipación.');
       return;
     }
 
@@ -171,6 +181,7 @@ cancelReservation(reserva: any) {
           this._reservationService.cancelReservation(reserva.id).subscribe({
             next: () => {
               this.getReservation();
+              this._notificationService.success('Reserva cancelada correctamente.');
             },
             error: (error) => {
               this.errorMessage = 'No se pudo cancelar la reserva.';
@@ -216,6 +227,7 @@ cancelReservation(reserva: any) {
   }
 
   applyReservationFilters() {
+    this.p = 1;
     this.getReservation();
   }
 

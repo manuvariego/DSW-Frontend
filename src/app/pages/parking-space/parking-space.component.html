@@ -54,65 +54,68 @@
 
 @if (currentSection == 'getParkingSpace') {
 <div class="container mt-4 fade-in-anim">
+  <div *ngIf="message" class="alert shadow-sm text-center mb-4"
+    [class.alert-success]="isSuccess" [class.alert-danger]="!isSuccess">
+    <i class="fas" [class.fa-check-circle]="isSuccess" [class.fa-times-circle]="!isSuccess"></i>
+    {{ message }}
+  </div>
   <div class="d-flex justify-content-between align-items-center mb-3 spaces-header">
     <div>
       <h3 class="section-title mb-1">Espacios creados</h3>
       <p class="spaces-subtitle mb-0">
-        Listado de espacios y tipos de vehículo asociados.
+        Seleccioná un espacio para ver sus detalles, editarlo o eliminarlo.
       </p>
     </div>
-    <button type="button" class="btn btn-outline-dark" (click)="showSection('initial')">
+    <button type="button" class="btn btn-outline-dark" (click)="showSection('initial'); selectedSpace = null">
       <i class="fas fa-arrow-left"></i> Volver
     </button>
   </div>
 
-    <div class="table-responsive shadow-lg rounded bg-white card-table-spaces">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="thead-dark-custom">
-          <tr>
-            <th scope="col" class="ps-4">Número Espacio</th>
-            <th scope="col">Tipo de vehículo</th>
-            <th scope="col" class="text-center pe-4">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let parkingSpace of parkingSpaceList | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
-            <td class="fw-bold text-dark ps-4">{{ parkingSpace.number }}</td>
-            <td>
-              <span class="fw-bold text-muted">{{ parkingSpace.TypeVehicle?.name }}</span>
-            </td>
-            <td>
-              <div class="d-flex justify-content-center gap-3">
-                 <button type="button" class="btn-icon-action btn-edit-icon" (click)="selectParkingSpaceToEdit(parkingSpace)" title="Editar">
-                   <i class="fas fa-pen"></i>
-                </button>
-                <button type="button" class="btn-icon-action btn-delete-icon"
-                  [disabled]="isSpaceBlocked(parkingSpace.number)"
-                  [class.disabled-btn]="isSpaceBlocked(parkingSpace.number)"
-                  [title]="isSpaceBlocked(parkingSpace.number) ? 'No se puede eliminar un espacio que tiene reservas asociadas' : 'Eliminar'"
-                  (click)="deleteParkingSpace(parkingSpace.number)">
-                   <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="parkingSpaceList.length === 0">
-            <td colspan="3" class="text-center py-4 text-muted">
-              <i class="fas fa-folder-open mb-2 d-block"></i>
-                <strong>No hay espacios registrados todavía.</strong>
-                <br> <em>Volvé al menú anterior y seleccioná "Crear" para generar tus espacios de estacionamiento.</em>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- GRILLA DE ESPACIOS -->
+  <div *ngIf="parkingSpaceList.length > 0" class="card-box p-4 mb-4">
+    <div class="d-flex flex-wrap gap-2">
+      <button *ngFor="let space of parkingSpaceList" type="button"
+        class="btn btn-sm space-view-btn"
+        [class.space-selected]="selectedSpace?.number === space.number"
+        (click)="selectSpace(space)">
+        {{ space.number }}
+      </button>
     </div>
- <!-- Paginación -->
-  <div class="pagination-wrapper mt-4">
-    <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"
-      class="my-custom-pagination">
-    </pagination-controls>
   </div>
+
+  <!-- MENSAJE VACÍO -->
+  <div *ngIf="parkingSpaceList.length === 0" class="card-box p-4 text-center text-muted">
+    <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
+    <strong>No hay espacios registrados todavía.</strong>
+    <br><em>Volvé al menú anterior y seleccioná "Crear" para generar tus espacios de estacionamiento.</em>
   </div>
+
+  <!-- PANEL DE DETALLE DEL ESPACIO SELECCIONADO -->
+  <div *ngIf="selectedSpace" class="card-box p-4 detail-panel fade-in-anim">
+    <h5 class="fw-bold mb-3">
+      <i class="fas fa-parking me-2"></i> Espacio #{{ selectedSpace.number }}
+    </h5>
+    <div class="mb-3">
+      <span class="text-muted">Tipo de vehículo:</span>
+      <p class="fw-bold mb-0">{{ selectedSpace.TypeVehicle?.name || 'Sin tipo asignado' }}</p>
+    </div>
+    <div *ngIf="isSpaceBlocked(selectedSpace.number)" class="alert alert-warning py-2 mb-3">
+      <i class="fas fa-exclamation-triangle me-1"></i> Este espacio tiene reservas asociadas y no se puede eliminar.
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-dark-custom btn-sm"
+        (click)="selectParkingSpaceToEdit(selectedSpace)">
+        <i class="fas fa-pen me-1"></i> Editar
+      </button>
+      <button type="button" class="btn btn-outline-danger btn-sm"
+        [disabled]="isSpaceBlocked(selectedSpace.number)"
+        [title]="isSpaceBlocked(selectedSpace.number) ? 'No se puede eliminar un espacio con reservas asociadas' : 'Eliminar'"
+        (click)="deleteParkingSpace(selectedSpace.number)">
+        <i class="fas fa-trash-alt me-1"></i> Eliminar
+      </button>
+    </div>
+  </div>
+</div>
 }
 
 
@@ -230,7 +233,7 @@
         <button type="submit" class="btn btn-dark-custom btn-block">
           Guardar cambios
         </button>
-        <button type="button" class="btn btn-outline-secondary" (click)="showSection('initial')">
+        <button type="button" class="btn btn-outline-secondary" (click)="showSection('getParkingSpace')">
           Cancelar
         </button>
       </div>

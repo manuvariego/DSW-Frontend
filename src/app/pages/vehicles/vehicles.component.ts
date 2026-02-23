@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VehiclesService } from '../../services/vehicles.service.js';
+import { VehiclesService } from '../../services/vehicles.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TypeVehicleService } from '../../services/type-vehicle.service.js';
-import { AuthService } from '../../services/auth.service.js';
-import { ReservationService } from '../../services/reservation.service.js';
+import { TypeVehicleService } from '../../services/type-vehicle.service';
+import { AuthService } from '../../services/auth.service';
+import { ReservationService } from '../../services/reservation.service';
 import { NotificationService } from '../../services/notification.service';
 
 

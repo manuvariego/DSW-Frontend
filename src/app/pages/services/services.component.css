@@ -237,7 +237,7 @@ h4.section-subtitle {
 .actions-container {
   display: flex;
   align-items: center;      
-  justify-content: flex-end; 
+  justify-content: center;
   gap: 8px;   
   width: 100%;
 }
